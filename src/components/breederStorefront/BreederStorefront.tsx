@@ -65,7 +65,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 		}
 
 		return listOfBreedersData.map((data) => (
-			<Col key={data.id} xs={12} sm={12} md={8} lg={6} xl={6} xxl={6}>
+			<Col key={data.id} xs={12} sm={12} md={8} lg={breederId ? 8 : 6} xl={breederId ? 8 : 6} xxl={breederId ? 8 : 6}>
 				<Fade>
 					<BreederCard
 						id={data.id}
@@ -104,7 +104,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 					</Col>
 				</Row>
 				<Row className="breederStorefrontFilters" gutter={[24, 24]}>
-					<Col span={16}>
+					<Col span={breederId ? 15 : 16}>
 						<Input
 							prefix={<i className="ri-search-line"></i>}
 							size="large"
@@ -126,7 +126,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							<Select.Option value="createdAsc">Oldest</Select.Option>
 						</Select>
 					</Col>
-					<Col className="sortFilterCta" span={1}>
+					<Col className="sortFilterCta" span={breederId ? 2 : 1}>
 						<Button onClick={() => setOpenAdvancedFiter(true)} size="large">
 							<i className="ri-equalizer-line ri-lg"></i>
 						</Button>

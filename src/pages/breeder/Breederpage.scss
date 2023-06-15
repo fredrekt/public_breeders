@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .breederPage {
 	.breederCoverPhoto {
 		height: 300px;
@@ -12,28 +14,55 @@
 		}
 	}
 	.breederContent {
-		.breederName {
-		}
-		.breederLocation {
-			display: flex;
-			align-items: center;
-			gap: 7px;
-		}
-		.breederOwnerInfo {
-			display: flex;
-			align-items: center;
-			gap: 20px;
-			.breederOwnerName {
-				margin: 0;
+		max-width: 1600px;
+		width: 100%;
+		padding: 50px 0;
+		margin-left: auto!important;
+		margin-right: auto!important;
+		.breederCardProfile {
+			text-align: center;
+			.breederName {
 			}
-		}
-		.breederDetails {
-			margin-top: 25px;
-			.breederDocuments {
+			.breederLocation {
+				display: flex;
+				align-items: center;
+				text-align: center;
+				justify-content: center;
+				gap: 7px;
+				color: $textGray;
+			}
+			.breederDescription {
+				margin: 25px 0;
+				text-align: center;
+			}
+			.breederDetails {
 				margin-top: 25px;
+				.breederDocuments {
+					margin-top: 25px;
+				}
+			}
+			.breederContactCta {
+				width: 100%;
+			}
+			.breederCustomersList {
+				margin-bottom: 25px;
 			}
 		}
-		.breederCta {
+		.breederCardDocuments {
+			margin: 50px 0;
+			.breederCardDocumentHeadingTxt {
+				text-align: center;
+				margin-top: 0;
+			}
+			.breederCardDocumentList {
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+				margin: 25px 0 0;
+			}
+		}
+		.breederStorefront {
+			padding: 0;
 		}
 	}
 	.breederStoreFilterCategory {
