@@ -1,0 +1,71 @@
+@import '../../variables.scss';
+
+.ordersPage {
+	.ordersFilterContainer {
+		margin-top: 25px;
+	}
+	.ordersTableContainer {
+		margin-top: 25px;
+		.ant-table {
+			background: transparent;
+			thead {
+				th,
+				td {
+					background: transparent;
+				}
+			}
+			tbody {
+				tr {
+					&:nth-child(odd) {
+						background-color: #f8fff8;
+					}
+				}
+			}
+		}
+
+		.orderTitleContent {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			.ant-image-img {
+				width: 100px;
+				border-radius: 4px;
+			}
+			.orderTitleBreederContent {
+				display: flex;
+				flex-direction: column;
+				.orderTitleTxt {
+					font-weight: 600;
+					font-size: 15px;
+				}
+				.orderTitleOwnerTxt {
+					font-size: 12px;
+				}
+			}
+		}
+
+		.orderStatusTag {
+			text-transform: capitalize;
+		}
+	}
+}
+
+.ordersTableColCtaDropdown {
+	.orderTableColCta {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 5px;
+	}
+	.deleteCta {
+		.orderTableColCta {
+			color: #ff4d4f;
+		}
+		&:hover {
+			background-color: #ff4d4f !important;
+			.orderTableColCta {
+				color: #ffffff;
+			}
+		}
+	}
+}

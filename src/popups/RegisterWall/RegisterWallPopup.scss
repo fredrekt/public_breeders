@@ -1,0 +1,30 @@
+@import '../../variables.scss';
+
+.registerWallPopup {
+	.ant-modal-content {
+		border-radius: 0;
+	}
+	.registerWallPopupContent {
+		text-align: center;
+	}
+	.registerImg {
+		margin: 10px 0;
+	}
+	.registerWallTitleTxt {
+		margin-top: 0;
+	}
+	.registerWallSubTxt {
+		margin-bottom: 15px;
+		width: 75%;
+		margin-left: auto;
+		margin-right: auto;
+		color: $textGray;
+	}
+	.registerWallPopupCta {
+		button {
+			border-radius: 0;
+			width: 150px;
+			margin: 15px 0;
+		}
+	}
+}

@@ -1,0 +1,31 @@
+.loginPage {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	.loginForm {
+		margin-top: 15px;
+		.loginHelpersContainer {
+			justify-content: flex-end;
+			width: 100%;
+			.forgotPasswordCta {
+				display: flex;
+				align-items: center;
+				gap: 7px;
+				margin: 0;
+			}
+		}
+		.loginCta {
+			width: 100%;
+		}
+	}
+	.loginRegisterCta {
+		text-align: center;
+	}
+}

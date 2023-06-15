@@ -1,0 +1,87 @@
+@import '../../variables';
+
+.breederCard {
+	.ant-card-cover {
+		width: 100%;
+		height: 400px;
+		.breederCardImg {
+			height: 100%;
+			object-fit: cover;
+			width: 100%;
+			object-position: center;
+			border-radius: 8px;
+		}
+		.ant-image {
+			height: 100%;
+		}
+	}
+	.ant-typography {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	.breederCardContent {
+		.breederCardName {
+			margin: 0;
+		}
+		.breederCardLikeCta {
+			text-align: right;
+			.saved {
+				color: red;
+			}
+		}
+		.ownerInfoRow {
+			display: flex;
+			align-items: center;
+			gap: 7px;
+			.ownerName {
+				margin: 0;
+			}
+		}
+		.pricingContent {
+			text-align: right;
+			.pricingText {
+				margin: 0;
+				color: $secondaryColor;
+			}
+		}
+	}
+	/**
+    * Basic CSS Media Query Template
+    * ------------------------------------------
+    *  Responsive Grid Media Queries - 1280, 1024, 768, 480
+    *   1280-1024   - desktop (default grid)
+    *   1024-768    - tablet landscape
+    *   768-480     - tablet 
+    *   480-less    - phone landscape & smaller
+    * --------------------------------------------
+    */
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.ant-card-cover {
+			width: 100%;
+			height: 350px;
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.ant-card-cover {
+			width: 100%;
+			height: 300px;
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.ant-card-cover {
+			width: 100%;
+			height: 250px;
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.ant-card-cover {
+			width: 100%;
+			height: 200px;
+		}
+	}
+}

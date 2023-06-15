@@ -1,0 +1,33 @@
+.accountTypeSelection {
+	cursor: pointer;
+	width: 50%;
+	&.selected {
+		background: #97c66a;
+		.setupSelectionLabel {
+			color: #ffffff;
+		}
+	}
+	&:hover {
+		background: rgba(151, 198, 106, 0.5);
+		.setupSelectionLabel {
+			color: #ffffff;
+		}
+	}
+	.accountTypePreviewImg {
+		width: 100%;
+		height: 175px;
+		img {
+			width: 100%;
+			object-fit: contain;
+			height: 100%;
+			object-position: center;
+		}
+	}
+	.setupSelectionLabel {
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		margin-top: 15px;
+		font-weight: 500;
+	}
+}

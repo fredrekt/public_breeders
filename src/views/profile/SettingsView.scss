@@ -1,0 +1,43 @@
+.settingsView {
+	.settingsHeaderCard {
+		margin-bottom: 25px;
+		.settingsHeader {
+			.ant-typography {
+				margin: 0;
+			}
+			.settingsHeaderAvatar {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+			}
+			.settingsHeaderCta {
+				text-align: right;
+			}
+		}
+	}
+	.settingsPersonalInfoCard {
+		margin: 25px 0;
+		.settingsPersonalInfoHeaderTxt {
+			margin-top: 0;
+			margin-bottom: 25px;
+		}
+	}
+	.settingsBusinessInfoCard {
+		margin: 25px 0;
+		.settingsBusinessInfoHeaderTxt {
+			margin-top: 0;
+			margin-bottom: 25px;
+		}
+	}
+	.twoFormCol {
+		display: flex;
+		margin-bottom: 8px;
+		flex-wrap: wrap;
+		.ant-space-item {
+			flex-grow: 1;
+			.ant-form-item {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

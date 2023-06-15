@@ -1,0 +1,11 @@
+.privateNavigation {
+	justify-content: center;
+	.ant-menu-item {
+		display: flex;
+		align-items: center;
+	}
+	.ant-menu-submenu-title {
+		display: flex;
+		align-items: center;
+	}
+}

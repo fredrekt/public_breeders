@@ -1,0 +1,21 @@
+.breederDocumentCard {
+	&.primaryColor {
+		background-color: #fef2d9;
+	}
+	&.tertiaryColor {
+		background-color: #e5e5e9;
+	}
+	.breederDocumentCardContent {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		.breederDocumentTitle {
+			margin: 0;
+			text-align: center;
+		}
+		button {
+			color: #aaaaaa;
+		}
+	}
+}

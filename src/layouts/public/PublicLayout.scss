@@ -1,0 +1,14 @@
+@import '../../variables';
+
+.publicLayoutContainer {
+	height: 100%;
+	position: relative;
+	background: $bgPrimaryColor;
+	.publicLayoutContentContainer {
+		.publicLayoutLogo {
+			.ant-col {
+				text-align: center;
+			}
+		}
+	}
+}

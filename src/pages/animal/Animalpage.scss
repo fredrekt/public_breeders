@@ -1,0 +1,98 @@
+@import '~react-image-gallery/styles/scss/image-gallery.scss';
+
+.animalPage {
+	.animalContentRow {
+		.animalPreviewContainer {
+			.thumbnailAnimalGallery {
+				height: 100px;
+				width: 100px;
+				cursor: pointer;
+				.image-gallery-thumbnail-inner {
+					width: 100%;
+					height: 100%;
+				}
+				.image-gallery-thumbnail-image {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+				}
+			}
+		}
+		.animalInfoContainer {
+			.animalCategory {
+				text-transform: uppercase;
+				font-size: 12px;
+				font-weight: 900;
+				color: lightgray;
+			}
+			.animalNameHeader {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 25px;
+				.animalTitle {
+					display: flex;
+					align-items: center;
+					gap: 15px;
+					.animalName {
+						margin: 0;
+					}
+					i {
+						cursor: pointer;
+					}
+					.saved {
+						color: red;
+					}
+				}
+				.animalPricing {
+					margin: 0;
+					color: #97c66a;
+					font-weight: 700;
+				}
+			}
+			.animalFavoritesInfo {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				margin-bottom: 15px;
+			}
+			.animalInfoTabs {
+				margin-bottom: 25px;
+				.animalLocationMap {
+					iframe {
+						width: 100%;
+					}
+				}
+			}
+			.animalShareSocials {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				margin: 25px 0;
+				.ant-typography {
+					text-transform: uppercase;
+					font-weight: 600;
+				}
+				.animalSocials {
+					display: flex;
+					align-items: center;
+					gap: 7px;
+					i {
+						cursor: pointer;
+					}
+				}
+			}
+			.animalCta {
+				display: flex;
+				align-items: center;
+				gap: 25px;
+				button {
+					width: 100%;
+					text-transform: uppercase;
+					font-weight: bold;
+				}
+			}
+		}
+	}
+}
