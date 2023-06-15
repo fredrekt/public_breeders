@@ -18,7 +18,7 @@ const ViewDocumentDrawer: React.FC<ViewDocumentDrawerProps> = ({ title, opened, 
 			width={`100%`}
 			height={`100%`}
 		>
-			<iframe title={title} src={'http://africau.edu/images/default/sample.pdf'} height={`100%`} width={`100%`} />
+			<iframe title={title} src={require('../../assets/pdf/document_test.pdf')} height={`100%`} width={`100%`} />
 		</Drawer>
 	);
 };
