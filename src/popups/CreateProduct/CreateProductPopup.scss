@@ -1,0 +1,12 @@
+.createProductPopup {
+    .createProductForm {
+        margin-top: 20px;
+        .createProductCta {
+            margin-bottom: 0;
+            .createProductCtaSpace {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+}

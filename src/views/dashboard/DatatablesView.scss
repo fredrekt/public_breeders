@@ -1,0 +1,37 @@
+.datatableViewContainer {
+	.datatableViewHeader {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 25px;
+		.datatableViewHeaderTxt {
+			margin: 0;
+		}
+	}
+    .datatableTableContainer {
+        .tableTitleContent {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            .ant-image-img {
+                width: 100px;
+                border-radius: 4px;
+            }
+            .tableTitleBreederContent {
+                display: flex;
+                flex-direction: column;
+                .titleTxt {
+                    font-weight: 600;
+                    font-size: 15px;
+                }
+                .titleOwnerTxt {
+                    font-size: 12px;
+                }
+            }
+        }
+        .menuItemCta {
+            display: flex;
+            margin-left: auto;
+        }
+    }
+}

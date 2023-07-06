@@ -4,3 +4,20 @@ html {
 	height: 100%;
 	margin: 0;
 }
+
+.text-center {
+	text-align: center;
+}
+
+.absolute-centered {
+	position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+	z-index: 0;
+}

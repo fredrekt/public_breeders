@@ -1,0 +1,44 @@
+@import '../../variables';
+
+.messageBlock {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    &.rightAlign {
+        justify-content: end;
+        flex-direction: row-reverse;
+        .messageBlockMeta {
+            .messageBlockMetaInfo {
+                justify-content: right;
+                flex-direction: row-reverse;
+            }
+            .messageBlockMsg {
+                border-radius: 10px 0 10px 10px;
+            }
+        }
+    }
+    .messageBlockMeta {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        .messageBlockMetaInfo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            .messageBlockUser {
+                font-size: 15px;
+            }
+            .messageBlockDate {
+                color: $textGray;
+            }
+        }
+        .messageBlockMsg {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 0 10px 10px 10px;
+            .messageBlockTxt {
+                margin: 0;
+            }
+        }
+    }
+}

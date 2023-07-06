@@ -21,6 +21,9 @@ const RegisterWallPopup: React.FC<RegisterWallPopupProps> = ({ opened, onCancel,
 				<Link className="registerWallPopupCta" to="/register">
 					<Button type="primary">Get started</Button>
 				</Link>
+				<Typography.Paragraph className="registerExistingAccount">
+					Already have an account? <Link to="/login">Sign in</Link>
+				</Typography.Paragraph>
 			</div>
 		</Modal>
 	);

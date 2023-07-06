@@ -7,7 +7,7 @@ import descriptionContent from './content.json';
 interface PageTitleProps {
 	title: string;
 	className?: string;
-	level?: typeof TITLE_ELE_LIST[number];
+	level?: (typeof TITLE_ELE_LIST)[number];
 }
 
 declare const TITLE_ELE_LIST: readonly [1, 2, 3, 4, 5];
@@ -29,7 +29,9 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, className, level }) => {
 				</title>
 				<meta name="description" content={description} />
 			</Helmet>
-			<Typography.Title className={className} level={level}>{title}</Typography.Title>
+			<Typography.Title className={className} level={level}>
+				{title}
+			</Typography.Title>
 		</>
 	);
 };

@@ -9,6 +9,9 @@ import HelpView from '../../views/profile/HelpView';
 import NotificationView from '../../views/profile/NotificationView';
 import OrdersView from '../../views/profile/OrdersView';
 import { useNavigate } from 'react-router-dom';
+import { removeToken } from '../../utils/authHelpers';
+import PrivacyPolicyView from '../../views/profile/PrivacyPolicyView';
+import TermsOfServiceView from '../../views/profile/TermsOfServiceView';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -32,6 +35,7 @@ const Profilepage: React.FC = () => {
 
 	const logout = async () => {
 		try {
+			removeToken();
 			navigate(`/login`);
 			message.success(`Successfully logout.`);
 		} catch (error) {
@@ -44,10 +48,19 @@ const Profilepage: React.FC = () => {
 		getItem('Notification', 1, <i className="ri-notification-3-line"></i>),
 		getItem('My Orders', 2, <i className="ri-file-list-line"></i>),
 		getItem('Help', 3, <i className="ri-question-line"></i>),
-		getItem(<span onClick={() => logout()}>Logout</span>, 4, <i className="ri-logout-box-line"></i>)
+		getItem('Privacy Policy', 4, <i className="ri-shield-check-line"></i>),
+		getItem('Terms of Service', 5, <i className="ri-pages-line"></i>),
+		getItem('Logout', 6, <i className="ri-logout-box-line"></i>)
 	];
 
-	const listOfViews = [<SettingsView />, <NotificationView />, <OrdersView />, <HelpView />];
+	const listOfViews = [
+		<SettingsView />,
+		<NotificationView />,
+		<OrdersView />,
+		<HelpView />,
+		<PrivacyPolicyView />,
+		<TermsOfServiceView />
+	];
 
 	return (
 		<PrivateLayout className="profilePage customLayoutWidth">
@@ -56,8 +69,16 @@ const Profilepage: React.FC = () => {
 				<Col lg={4}>
 					<Menu
 						style={{ width: 256 }}
-						onSelect={(e: any) => setSelectedView(e.key)}
-						onChange={(e: any) => alert(JSON.stringify(e))}
+						onSelect={(e: any) => {
+							if (e.key === '6') {
+								logout();
+								return;
+							} else if (e.key === '2') {
+								navigate(`/orders`);
+							} else {
+								setSelectedView(e.key);
+							}
+						}}
 						defaultSelectedKeys={[selectedView.toString()]}
 						mode={'vertical'}
 						theme={'light'}

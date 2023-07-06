@@ -21,11 +21,34 @@
 			}
 			.inboxConversationContent {
 				padding: 25px;
+				&.emptyConversation {
+					height: 100%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				&.conversationContent {
+					padding: 35px 25px;
+					display: flex;
+					flex-direction: column;
+					gap: 40px;
+					max-height: 570px;
+					overflow: auto;
+				}
 			}
 			.inboxConversationCta {
 				position: absolute;
 				width: 100%;
 				bottom: 0;
+				border-top: 1px solid #d9d9d9;
+				.inboxConversationInput {
+					width: 85%;
+				}
+				.inboxConversationSend {
+					position: absolute;
+					right: 20px;
+					bottom: 20px;
+				}
 			}
 		}
 	}
@@ -34,6 +57,7 @@
 .inboxList {
 	overflow-y: scroll;
 	height: 100%;
+	border-right: 1px solid #d9d9d9;
 	.inboxListItem {
 		background: #ffffff;
 		padding: 15px;

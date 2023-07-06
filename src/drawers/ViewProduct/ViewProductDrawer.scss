@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.viewProductDrawer {
+    .viewProductSubTxt {
+        text-align: center;
+        color: $textGray;
+    }
+    .ant-drawer-body {
+        background-color: #fafafa;
+    }
+}

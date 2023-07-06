@@ -1,0 +1,52 @@
+.checkoutDrawer {
+    .checkoutAnimalCard {
+        .ant-card-body {
+            padding: 10px;
+        }
+        .checkoutAnimalInfoContainer{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            img {
+                width: 100px;
+                height: 100px;
+            }
+            .orderTitleBreederContent {
+                display: flex;
+                flex-direction: column;
+                .orderTitleTxt {
+					font-weight: 600;
+					font-size: 15px;
+				}
+				.orderTitleOwnerTxt {
+					font-size: 12px;
+				}
+            }
+        }
+    }
+    .checkoutFormContainer {
+        margin: 35px 0;
+        .checkoutFormStepper {
+            margin-bottom: 25px;
+        }
+        .checkoutOrderForm {
+            .ant-input {
+                margin-bottom: 15px;
+            }
+            .checkoutOrderFormItemCol {
+                width: 100%;
+                .ant-space-item {
+                    width: 50%;
+                }
+            }
+        }
+    }
+    .checkoutCta {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        button {
+            width: 100%;
+        }
+    }
+}

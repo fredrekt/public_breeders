@@ -4,7 +4,7 @@ import { Avatar, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
 interface AnimalBreederInfoProps {
-	breederId: string;
+	breederId: number;
 	name: string;
 	avatarUrl: string;
 	description: string;
@@ -29,7 +29,7 @@ const AnimalBreederInfo: React.FC<AnimalBreederInfoProps> = ({
 						<Typography.Title level={5} className="businessName">
 							{name}
 						</Typography.Title>
-						<i className={`ri-checkbox-circle-${verified ? 'fill verified' : 'line'} ri-1x`}></i>
+						<i className={`ri-checkbox-circle-${verified ? 'fill verified' : 'line unverified'} ri-1x`}></i>
 					</div>
 					<Typography.Paragraph className="businessDescription">{description}</Typography.Paragraph>
 				</div>

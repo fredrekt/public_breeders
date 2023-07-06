@@ -1,0 +1,57 @@
+@import '../../../variables.scss';
+.publicNavbar {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	height: 64px;
+	.navLink {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		color: #262626;
+		b {
+			font-weight: normal;
+		}
+		&.selected {
+			z-index: 1;
+			border-bottom: 2px solid $primaryColor;
+			color: #262626;
+			b {
+				font-weight: 700;
+				color: #262626;
+			}
+			i {
+				color: #262626;
+			}
+		}
+	}
+	.publicNavLogo {
+		a {
+			display: flex;
+			align-items: center;
+			.publicNavLogoImg {
+				width: 45px;
+				height: 45px;
+			}
+		}
+	}
+	.publicNavCenter {
+		display: flex;
+		gap: 35px;
+		align-items: center;
+		justify-content: center;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	.publicNavProfile {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+		.loginCta {
+            color: #262626;
+        }
+        .signUpCta {
+
+        }
+	}
+}

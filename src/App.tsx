@@ -11,6 +11,18 @@ import Favoritespage from './pages/favorites/Favoritespage';
 import Orderspage from './pages/orders/Orderspage';
 import Profilepage from './pages/profile/Profilepage';
 import Animalpage from './pages/animal/Animalpage';
+import ProtectedRoute from './utils/ProtectedRoute';
+import Dashboardpage from './pages/dashboard/Dashboardpage';
+import Aboutpage from './pages/about/Aboutpage';
+import Contactpage from './pages/contact/Contactpage';
+import Demopage from './pages/demo/Demopage';
+import AppStorepage from './pages/appStore/AppStorepage';
+import { message } from 'antd';
+
+message.config({
+	duration: 1,
+	top: 80
+})
 
 const App: React.FC = () => {
 	return (
@@ -20,12 +32,66 @@ const App: React.FC = () => {
 				<Route path="/login" element={<Loginpage />} />
 				<Route path="/register" element={<Registerpage />} />
 				<Route path="/forgot-password" element={<ForgotPassword />} />
-				<Route path="/breeder/:id" element={<Breederpage />} />
-				<Route path="/animal/:id" element={<Animalpage />} />
-				<Route path="/inbox" element={<Inboxpage />} />
-				<Route path="/favorites" element={<Favoritespage />} />
-				<Route path="/orders" element={<Orderspage />} />
-				<Route path="/profile" element={<Profilepage />} />
+				<Route path="/about" element={<Aboutpage />} />
+				<Route path="/contact" element={<Contactpage />} />
+				<Route path="/demo" element={<Demopage />} />
+				<Route path="/mobile" element={<AppStorepage />} />
+				<Route
+					path="/breeder/:id"
+					element={
+						<ProtectedRoute>
+							<Breederpage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/animal/:id"
+					element={
+						<ProtectedRoute>
+							<Animalpage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/inbox"
+					element={
+						<ProtectedRoute>
+							<Inboxpage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/favorites"
+					element={
+						<ProtectedRoute>
+							<Favoritespage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/orders"
+					element={
+						<ProtectedRoute>
+							<Orderspage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/profile"
+					element={
+						<ProtectedRoute>
+							<Profilepage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/dashboard"
+					element={
+						<ProtectedRoute>
+							<Dashboardpage />
+						</ProtectedRoute>
+					}
+				/>
 			</Routes>
 		</>
 	);

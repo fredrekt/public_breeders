@@ -3,11 +3,21 @@ import './Loginpage.scss';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { Col, Row, Space, Typography, message } from 'antd';
 import { Button, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL } from '../../utils/constant';
+import { setToken } from '../../utils/authHelpers';
 
 const Loginpage: React.FC = () => {
-	const onLogin = async () => {
+	const navigate = useNavigate();
+
+	const onLogin = async (values: any) => {
 		try {
+			const res = await axios.post(`${API_URL}/auth/local`, values);
+			if (!res) return;
+			setToken(res.data.jwt);
+			message.success(`Successfully logged in.`);
+			navigate('/');
 		} catch (error) {
 			message.error(`Wrong password/username.`);
 		}
@@ -25,10 +35,10 @@ const Loginpage: React.FC = () => {
 						onFinish={onLogin}
 						size="large"
 					>
-						<Form.Item name="username" rules={[{ required: true, message: 'Please input your Username!' }]}>
+						<Form.Item name="identifier">
 							<Input placeholder="Emaill Address" />
 						</Form.Item>
-						<Form.Item name="password" rules={[{ required: true, message: 'Please input your Password!' }]}>
+						<Form.Item name="password">
 							<Input.Password type="password" placeholder="Password" />
 						</Form.Item>
 						<Form.Item>

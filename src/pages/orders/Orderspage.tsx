@@ -1,115 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Orderspage.scss';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
 import PageTitle from '../../components/PageTitle/PageTitle';
-import { Button, Col, Dropdown, Image, Modal, Row, Typography } from 'antd';
+import { Button, Col, Dropdown, Image, Modal, Row, Typography, message } from 'antd';
 import ButtonGroup from 'antd/es/button/button-group';
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import FormatMoney from '../../utils/FormatMoney';
 import type { MenuProps } from 'antd';
 import ViewOrderDrawer from '../../drawers/ViewOrder/ViewOrderDrawer';
-
-interface DataType {
-	key: string;
-	name: string;
-	age: number;
-	address: string;
-	status: string[];
-}
-
-const data: DataType[] = [
-	{
-		key: '1',
-		name: 'John Brown',
-		age: 32,
-		address: 'New York No. 1 Lake Park',
-		status: ['Delivered', 'Pending']
-	},
-	{
-		key: '2',
-		name: 'Jim Green',
-		age: 42,
-		address: 'London No. 1 Lake Park',
-		status: ['Cancelled']
-	},
-	{
-		key: '3',
-		name: 'Joe Black',
-		age: 32,
-		address: 'Sydney No. 1 Lake Park',
-		status: ['Delievered']
-	},
-	{
-		key: '4',
-		name: 'John Brown',
-		age: 32,
-		address: 'New York No. 1 Lake Park',
-		status: ['Delivered', 'Pending']
-	},
-	{
-		key: '5',
-		name: 'Jim Green',
-		age: 42,
-		address: 'London No. 1 Lake Park',
-		status: ['Cancelled']
-	},
-	{
-		key: '6',
-		name: 'Joe Black',
-		age: 32,
-		address: 'Sydney No. 1 Lake Park',
-		status: ['Delievered']
-	},
-	{
-		key: '11',
-		name: 'John Brown',
-		age: 32,
-		address: 'New York No. 1 Lake Park',
-		status: ['Delivered', 'Pending']
-	},
-	{
-		key: '22',
-		name: 'Jim Green',
-		age: 42,
-		address: 'London No. 1 Lake Park',
-		status: ['Cancelled']
-	},
-	{
-		key: '33',
-		name: 'Joe Black',
-		age: 32,
-		address: 'Sydney No. 1 Lake Park',
-		status: ['Delievered']
-	},
-	{
-		key: '44',
-		name: 'John Brown',
-		age: 32,
-		address: 'New York No. 1 Lake Park',
-		status: ['Delivered', 'Pending']
-	},
-	{
-		key: '55',
-		name: 'Jim Green',
-		age: 42,
-		address: 'London No. 1 Lake Park',
-		status: ['Cancelled']
-	},
-	{
-		key: '66',
-		name: 'Joe Black',
-		age: 32,
-		address: 'Sydney No. 1 Lake Park',
-		status: ['Delievered']
-	}
-];
+import axios from 'axios';
+import { API_URL } from '../../utils/constant';
+import { Model } from '../../models/model';
+import { useUserContext } from '../../context/UserContext';
+import statusColor from '../../utils/statusColors';
+import { randomVector } from '../../utils/randomVector';
 
 const { confirm } = Modal;
 
 const Orderspage: React.FC = () => {
+	const { user } = useUserContext();
 	const [orderStatus, setOrderStatus] = useState<string>('All');
 	const [openViewOrder, setOpenViewOrder] = useState<boolean>(false);
+	const [orderListing, setOrderListing] = useState<Model.Order[]>([]);
 
 	const onChangeOrderStatus = (status: string) => setOrderStatus(status);
 
@@ -149,46 +62,48 @@ const Orderspage: React.FC = () => {
 		{
 			key: '1',
 			label: (
-				<Typography.Text onClick={onViewOrder} className="orderTableColCta">
+				<Typography.Text className="orderTableColCta">
 					<i className="ri-eye-line"></i> View
 				</Typography.Text>
-			)
+			),
+			onClick: () => onViewOrder()
 		},
 		{
 			key: '2',
 			label: (
-				<Typography.Text onClick={onCancelOrder} className="orderTableColCta">
+				<Typography.Text className="orderTableColCta">
 					<i className="ri-close-circle-line"></i> Cancel
 				</Typography.Text>
-			)
+			),
+			onClick: () => onCancelOrder()
 		},
 		{
 			key: '3',
 			label: (
-				<Typography.Text onClick={onDeleteOrder} className="orderTableColCta">
+				<Typography.Text className="orderTableColCta">
 					<i className="ri-delete-bin-line"></i> Delete
 				</Typography.Text>
 			),
-			className: 'deleteCta'
+			disabled: true,
+			className: 'deleteCta',
+			onClick: () => onDeleteOrder()
 		}
 	];
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<Model.Order> = [
 		{
 			title: 'Name',
-			dataIndex: 'name',
+			dataIndex: '',
 			key: 'name',
-			render: (text) => {
+			render: ({ animal, breeder, ordered_by }) => {
 				return (
 					<div className="orderTitleContent">
 						<Image
-							src={
-								'https://images.pexels.com/photos/2774140/pexels-photo-2774140.jpeg?auto=compress&cs=tinysrgb&w=1600'
-							}
+							src={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)}
 						/>
 						<div className="orderTitleBreederContent">
-							<Typography.Text className="orderTitleTxt">{text}</Typography.Text>
-							<Typography.Text className="orderTitleOwnerTxt">Fred Garingo</Typography.Text>
+							<Typography.Text className="orderTitleTxt">{animal.name}</Typography.Text>
+							<Typography.Text className="orderTitleOwnerTxt">{!user?.isBuyer ? ordered_by.email : breeder.businessName}</Typography.Text>
 						</div>
 					</div>
 				);
@@ -196,39 +111,40 @@ const Orderspage: React.FC = () => {
 		},
 		{
 			title: 'Price',
-			dataIndex: 'age',
+			dataIndex: 'animal',
 			key: 'age',
-			render: (age) => {
-				return FormatMoney(age);
+			render: (animal: Model.Animal) => {
+				return FormatMoney(animal.price);
 			}
-		},
-		{
-			title: 'Address',
-			dataIndex: 'address',
-			key: 'address'
 		},
 		{
 			title: 'Status',
 			key: 'status',
 			dataIndex: 'status',
-			render: (_, { status }) => (
-				<>
-					{status.map((tag) => {
-						let color = tag.length > 5 ? 'geekblue' : 'green';
-						if (tag === 'Cancelled') {
-							color = 'volcano';
-						} else if (tag === 'Delievered') {
-							color = 'success';
-						} else if (tag === 'Pending') {
-							color = '';
-						}
-						return (
-							<Tag className="orderStatusTag" color={color} key={tag}>
-								{tag}
-							</Tag>
-						);
-					})}
-				</>
+			render: (status) => (
+				<Tag className="orderStatusTag" color={statusColor(status)} key={`id-${status}`}>
+					{status.toLowerCase()}
+				</Tag>
+			)
+		},
+		{
+			title: 'Address',
+			dataIndex: 'addressLine1',
+			key: 'address'
+		},
+		{
+			title: 'Description',
+			dataIndex: 'itemDescription',
+			key: 'itemDescription'
+		},
+		{
+			title: 'Payment Status',
+			key: 'paymentStatus',
+			dataIndex: 'paymentStatus',
+			render: (status) => (
+				<Tag className="orderStatusTag" color={statusColor(status)} key={`id-${status}`}>
+					{status.toLowerCase()}
+				</Tag>
 			)
 		},
 		{
@@ -250,6 +166,25 @@ const Orderspage: React.FC = () => {
 		}
 	];
 
+	const loadListOfOrders = async () => {
+		if (!user) return;
+		try {
+			let qry = `?populate=deep,5&filters[status][$eq]=${orderStatus}`;
+			const res = (await axios.get(`${API_URL}/orders${qry}`)).data;
+			if (res) {
+				console.log(JSON.stringify(res))
+				setOrderListing(res);
+			}
+		} catch (error) {
+			message.error(`Something wen't wrong in getting list of orders.`);
+		}
+	}
+
+	useEffect(() => {
+		loadListOfOrders();
+		// eslint-disable-next-line
+	}, [orderStatus, user]);
+
 	return (
 		<PrivateLayout className="ordersPage customLayoutWidth">
 			<PageTitle title="Orders" />
@@ -263,20 +198,20 @@ const Orderspage: React.FC = () => {
 							All
 						</Button>
 						<Button
-							onClick={() => onChangeOrderStatus('Pending')}
-							type={orderStatus === 'Pending' ? 'primary' : 'default'}
+							onClick={() => onChangeOrderStatus('PENDING')}
+							type={orderStatus === 'PENDING' ? 'primary' : 'default'}
 						>
 							Pending
 						</Button>
 						<Button
-							onClick={() => onChangeOrderStatus('Delivered')}
-							type={orderStatus === 'Delivered' ? 'primary' : 'default'}
+							onClick={() => onChangeOrderStatus('DELIVERED')}
+							type={orderStatus === 'DELIVERED' ? 'primary' : 'default'}
 						>
 							Delivered
 						</Button>
 						<Button
-							onClick={() => onChangeOrderStatus('Cancelled')}
-							type={orderStatus === 'Cancelled' ? 'primary' : 'default'}
+							onClick={() => onChangeOrderStatus('CANCELLED')}
+							type={orderStatus === 'CANCELLED' ? 'primary' : 'default'}
 						>
 							Cancelled
 						</Button>
@@ -284,7 +219,7 @@ const Orderspage: React.FC = () => {
 				</Col>
 			</Row>
 			<div className="ordersTableContainer">
-				<Table columns={columns} dataSource={data} />
+				<Table columns={columns} dataSource={orderListing} />
 			</div>
 			<ViewOrderDrawer
 				opened={openViewOrder}

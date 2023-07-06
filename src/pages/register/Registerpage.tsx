@@ -3,19 +3,51 @@ import './Registerpage.scss';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { Col, Row, Space, Typography, message } from 'antd';
 import { Button, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import breederAccountType from '../../assets/images/breeder.png';
 import buyerAccountType from '../../assets/images/buyer.png';
 import AccountTypeSelection from '../../components/AccountTypeSelection/AccountTypeSelection';
+import axios from 'axios';
+import { API_URL } from '../../utils/constant';
+import { Api } from '../../models/api';
+import { setToken } from '../../utils/authHelpers';
 
 const Registerpage: React.FC = () => {
+	const navigate = useNavigate();
 	const [registrationStep, setRegistrationStep] = useState<number>(1);
 	const [accountType, setAccountType] = useState<number>(1);
 
-	const onRegister = async () => {
+	const onRegister = async (values: any) => {
+		if (!values) return;
 		try {
-		} catch (error) {
-			message.error(`Something wen't wrong in creating an account.`);
+			let registerData: Api.User.Req.Create = {
+				isBuyer: accountType === 1 ? true : false,
+				firstName: values.firstName,
+				lastName: values.lastName,
+				username: values.username,
+				email: values.username,
+				password: values.password
+			};
+			if (accountType === 0) {
+				registerData.registryName = values.registryName;
+				registerData.prefix = values.prefix;
+			}
+			const res = await axios.post(`${API_URL}/auth/local/register?breeder=${registerData.isBuyer ? false : true}`, registerData);
+			if (!res) return;
+			setToken(res.data.jwt);
+			message.success('Successfully created an account.');
+			if (!registerData.isBuyer) {
+				navigate('/profile');
+			} else {
+				navigate('/');
+			}
+		} catch (err: any) {
+			const { error } = err.response.data;
+			if (error.message) {
+				message.error(error.message);
+			} else {
+				message.error(`Something wen't wrong in creating an account. `);
+			}
 		}
 	};
 
@@ -85,14 +117,17 @@ const Registerpage: React.FC = () => {
 
 								<Form.Item
 									name="username"
-									rules={[{ required: true, message: 'Please input your Username!' }]}
+									rules={[{ required: true, message: 'Please enter your Username!' }]}
 								>
-									<Input placeholder="Emaill Address" />
+									<Input type="email" placeholder="Emaill Address" />
 								</Form.Item>
 
 								<Form.Item
 									name="password"
-									rules={[{ required: true, message: 'Please input your Password!' }]}
+									rules={[
+										{ required: true, message: 'Please enter your Password!' },
+										{ min: 6, message: 'Password must be at least 6 characters.' }
+									]}
 								>
 									<Input.Password type="password" placeholder="Password" />
 								</Form.Item>
