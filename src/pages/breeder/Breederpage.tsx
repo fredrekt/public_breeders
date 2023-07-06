@@ -5,7 +5,7 @@ import { Avatar, Button, Card, Col, Empty, Image, Row, Typography, message } fro
 import { faker } from '@faker-js/faker';
 import BreederDocumentCard from '../../components/BreederDocumentCard/BreederDocumentCard';
 import PageTitle from '../../components/PageTitle/PageTitle';
-import BreederStorefront from '../../components/BreederStorefront/BreederStorefront';
+import BreederStorefront from '../../components/breederStorefront/BreederStorefront';
 import { useParams } from 'react-router-dom';
 import ContactBreederPopup from '../../popups/ContactBreeder/ContactBreederPopup';
 import { Model } from '../../models/model';
