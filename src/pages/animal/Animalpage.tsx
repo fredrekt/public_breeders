@@ -97,11 +97,19 @@ const Animalpage: React.FC = () => {
 			if (res.data) {
 				setAnimalData(res.data);
 				if (Array.isArray(res.data.images) && res.data.images.length) {
-					setImages(res.data.images.map((data: any) => ({
+					setImages(
+						res.data.images.map((data: any) => ({
+							thumbnailClass: 'thumbnailAnimalGallery',
+							original: data.url,
+							thumbnail: data.formats.thumbnail.url
+						}))
+					);
+				} else {
+					setImages([{
 						thumbnailClass: 'thumbnailAnimalGallery',
-						original: data.url,
-						thumbnail: data.formats.thumbnail.url
-					})))
+						original: require(`../../assets/images/vectors/${randomVector}.png`),
+						thumbnail: require(`../../assets/images/vectors/${randomVector}.png`)
+					}]);
 				}
 			}
 		} catch (error) {
@@ -134,7 +142,11 @@ const Animalpage: React.FC = () => {
 					<AnimalBreederInfo
 						breederId={animalData.breeder.id}
 						name={animalData.breeder.businessName}
-						avatarUrl={animalData.breeder.avatar ? animalData.breeder.avatar.url : require(`../../assets/images/vectors/${randomVector}.png`)}
+						avatarUrl={
+							animalData.breeder.avatar
+								? animalData.breeder.avatar.url
+								: require(`../../assets/images/vectors/${randomVector}.png`)
+						}
 						description={animalData.breeder.aboutBusiness}
 						address={animalData.breeder.businessAddress}
 						verified={animalData.breeder.isVerified}

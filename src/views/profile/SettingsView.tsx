@@ -173,18 +173,20 @@ const SettingsView: React.FC = () => {
 						onFinish={onUpdateBreederInformation}
 					>
 						<Form.Item label="">
-							<Avatar
-								size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-								src={
-									user.breeder.avatar
-										? user.breeder.avatar.url
-										: require(`../../assets/images/vectors/${randomVector}.png`)
-								}
-								shape="circle"
-							/>
-							<Upload {...breederUploadProps}>
-								<Button>Upload</Button>
-							</Upload>
+							<Space>
+								<Avatar
+									size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+									src={
+										user.breeder.avatar
+											? user.breeder.avatar.url
+											: require(`../../assets/images/vectors/${randomVector}.png`)
+									}
+									shape="circle"
+								/>
+								<Upload {...breederUploadProps}>
+									<Button>Upload</Button>
+								</Upload>
+							</Space>
 						</Form.Item>
 						<Form.Item name="businessName" label="Business Name">
 							<Input placeholder="Enter business name" />
