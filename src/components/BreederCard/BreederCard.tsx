@@ -104,9 +104,9 @@ const BreederCard: React.FC<BreederCardProps> = ({
 							{name}
 						</Typography.Title>
 					</Col>
-					<Col className="breederCardLikeCta" span={6}>
+					{user && <Col className="breederCardLikeCta" span={user.isBuyer ? 6 : 0}>
 						<i onClick={onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-lg`}></i>
-					</Col>
+					</Col>}
 					<Col span={24}>
 						<Row align={'middle'} justify={'space-between'}>
 							<Col onClick={viewBreeder} md={16} lg={16} xl={16} xxl={16}>
