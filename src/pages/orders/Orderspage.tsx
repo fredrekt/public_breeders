@@ -15,6 +15,7 @@ import { Model } from '../../models/model';
 import { useUserContext } from '../../context/UserContext';
 import statusColor from '../../utils/statusColors';
 import { randomVector } from '../../utils/randomVector';
+import { Api } from '../../models/api';
 
 const { confirm } = Modal;
 
@@ -23,6 +24,7 @@ const Orderspage: React.FC = () => {
 	const [orderStatus, setOrderStatus] = useState<string>('All');
 	const [openViewOrder, setOpenViewOrder] = useState<boolean>(false);
 	const [orderListing, setOrderListing] = useState<Model.Order[]>([]);
+	const [selectedOrder, setSelectedOrder] = useState<Api.Order.Res.OrderListing | null>(null);
 
 	const onChangeOrderStatus = (status: string) => setOrderStatus(status);
 
@@ -75,6 +77,8 @@ const Orderspage: React.FC = () => {
 					<i className="ri-close-circle-line"></i> Cancel
 				</Typography.Text>
 			),
+			disabled: true,
+			title: 'Stripe functionality should be finished in order for this to work',
 			onClick: () => onCancelOrder()
 		},
 		{
@@ -86,7 +90,8 @@ const Orderspage: React.FC = () => {
 			),
 			disabled: true,
 			className: 'deleteCta',
-			onClick: () => onDeleteOrder()
+			title: 'Stripe functionality should be finished in order for this to work',
+			onClick: () => onDeleteOrder(),
 		}
 	];
 
@@ -149,12 +154,14 @@ const Orderspage: React.FC = () => {
 		},
 		{
 			title: '',
+			dataIndex: '',
 			key: 'action',
-			render: (_, record) => (
+			render: (record) => (
 				<Dropdown
 					overlayClassName="ordersTableColCtaDropdown"
 					trigger={['click']}
 					menu={{ items }}
+					onOpenChange={() => setSelectedOrder(record)}
 					placement="bottom"
 					arrow={{ pointAtCenter: true }}
 				>
@@ -220,12 +227,13 @@ const Orderspage: React.FC = () => {
 			</Row>
 			<div className="ordersTableContainer">
 				<Table columns={columns} dataSource={orderListing} />
+				{selectedOrder && <ViewOrderDrawer
+					opened={openViewOrder}
+					order={selectedOrder}
+					onCancel={() => setOpenViewOrder(false)}
+					onForceCb={() => console.log('object')}
+				/>}
 			</div>
-			<ViewOrderDrawer
-				opened={openViewOrder}
-				onCancel={() => setOpenViewOrder(false)}
-				onForceCb={() => console.log('object')}
-			/>
 		</PrivateLayout>
 	);
 };

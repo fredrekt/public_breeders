@@ -104,7 +104,7 @@ const DatatablesView: React.FC<DatatablesViewProps> = ({ title, categoryId }) =>
 				return (
 					<div className="tableTitleContent">
 						<Image
-							src={require(`../../assets/images/vectors/${randomVector}.png`)}
+							src={Array.isArray(data.images) && data.images.length ? data.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)}
 						/>
 						<div className="tableTitleBreederContent">
 							<Typography.Text className="titleTxt">{data.name}</Typography.Text>

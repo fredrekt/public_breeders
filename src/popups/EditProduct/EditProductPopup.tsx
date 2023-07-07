@@ -3,12 +3,13 @@ import { PopupModel } from '../../models/PopupModel';
 import './EditProductPopup.scss';
 import { Button, Form, Input, Modal, Select, Space, Typography, message } from 'antd';
 import axios from 'axios';
-import { API_URL } from '../../utils/constant';
+import { API_URL, BEARER } from '../../utils/constant';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { Api } from '../../models/api';
+import { getToken } from '../../utils/authHelpers';
 
 interface EditProductPopupProps extends PopupModel {
 	animal: Api.Animal.Res.AnimalListing;
@@ -57,7 +58,14 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 		setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 	};
 
-	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
+	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList}) => {
+		setFileList(newFileList);
+		if (Array.isArray(newFileList) && newFileList.length) {
+			if (newFileList[0].status === 'done') {
+				message.success('Message uploaded successfully.')
+			}
+		}
+	}
 
 	const uploadButton = (
 		<div>
@@ -115,7 +123,17 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 				<Form.Item>
 					<Typography.Paragraph>Images</Typography.Paragraph>
 					<Upload
-						action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+						action={`${API_URL}/upload`}
+						method='POST'
+						name="files"
+						headers={{
+							Authorization: `${BEARER} ${getToken()}`
+						}}
+						data={{
+							field: 'images',
+							ref: 'api::animal.animal',
+							refId: animal && animal.id	
+						}}
 						listType="picture-card"
 						fileList={fileList}
 						onPreview={handlePreview}

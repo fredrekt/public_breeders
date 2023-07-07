@@ -15,15 +15,12 @@ interface BreederStorefrontProps {
 	breederId?: string;
 }
 
-type SortByTypes = 'asc' | 'desc' | 'createdDesc' | 'createdAsc' | '';
-
 const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 	const [listOfBreeders, setListOfBreeders] = useState<Api.Animal.Res.AnimalListing[]>([]);
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [openAdvancedFilter, setOpenAdvancedFiter] = useState<boolean>(false);
 	const [categories, setCategories] = useState<Model.Category[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<number>(0);
-	const [sortBy, setSortBy] = useState<SortByTypes>('');
 
 	const loadListOfBreeders = async () => {
 		try {
@@ -70,25 +67,6 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 			listOfBreedersData = listOfBreeders.filter((data) =>
 				data.name.toLowerCase().includes(searchValue.toLowerCase())
 			);
-		}
-
-		if (sortBy) {
-			switch (sortBy) {
-				case 'desc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => b['name'].localeCompare(a['name']));
-				break;
-				case 'asc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => a['name'].localeCompare(b['name']));
-					break;
-				case 'createdDesc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-					break;
-				case 'createdAsc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-					break;
-				default:
-					break;
-			}
 		}
 
 		return listOfBreedersData.map((data) => (
@@ -147,7 +125,6 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							className="sortBySelect"
 							suffixIcon={<i className="ri-sort-desc ri-xl"></i>}
 							size="large"
-							onChange={(e: any) => setSortBy(e)}
 						>
 							<Select.Option value="asc">(A - Z)</Select.Option>
 							<Select.Option value="desc">(Z - A)</Select.Option>

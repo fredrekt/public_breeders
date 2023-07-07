@@ -27,6 +27,7 @@ export declare namespace Model {
 		bio: string;
 		age: number;
 		images: Image[];
+		createdAt: Date;
 	}
 
 	export interface Favorites {

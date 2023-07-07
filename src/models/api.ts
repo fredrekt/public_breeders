@@ -56,5 +56,22 @@ export declare namespace Api {
 				
 			}
 		}
+		
+		export namespace Res {
+			export interface OrderListing extends Animal.Res.AnimalListing {
+				animal: Model.Animal;
+				isReceivedByUser: boolean;
+				isDeliveredByBreeder: boolean;
+				itemDescription: string;
+				paymentStatus: Model.PaymentStatus;
+				status: Model.OrderStatus;
+				addressLine1: string;
+				addressCity: string;
+				addressState: string;
+				addressUnitNumber: string;
+				addressPostalCode: string;
+				ordered_by: Model.User;
+			}
+		}
 	}
 }
