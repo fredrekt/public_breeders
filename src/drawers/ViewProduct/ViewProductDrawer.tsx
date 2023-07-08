@@ -28,9 +28,9 @@ const ViewProductDrawer: React.FC<ViewProductDrawerProps> = ({ opened, onCancel,
                     xxl={20}
                 >
 					<BreederCard
-						id={1}
+						id={animal.id}
 						name={animal.name}
-						previewUrl={''}
+						previewUrl={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : ''}
 						ownerId={user.breeder.id}
 						ownerName={user.breeder.businessName}
 						ownerProfileImageUrl={''}
