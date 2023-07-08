@@ -37,7 +37,21 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 			let createData: Api.Animal.Req.Create = {
 				...values
 			};
-			await axios.post(`${API_URL}/animals`, { data: createData });
+			const createProduct = await axios.post(`${API_URL}/animals`, { data: createData });
+			if ((createProduct.data && createProduct.data.id) && (Array.isArray(fileList) && fileList.length)) {
+				let imageIds: number[] = [];
+				for (let file of fileList) {
+					if (!file.response) continue;
+					imageIds.push(file.response[0].id);
+				}
+				if (Array.isArray(imageIds) && imageIds) {
+					await axios.put(`${API_URL}/animals/${createProduct.data.id}`, {
+						data: {
+							images: imageIds
+						}
+					});
+				}
+			}
 			message.success(`Successfully create a product.`);
 			onCancel();
 			onForceCb();
@@ -113,7 +127,7 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 				<Form.Item name="bio">
 					<Input.TextArea placeholder="Tell us about your listing" rows={5} />
 				</Form.Item>
-				<Form.Item>
+				<Form.Item name="images">
 					<Typography.Paragraph>Images</Typography.Paragraph>
 					<Upload
 						name='files'
@@ -121,13 +135,6 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 						headers={{
 							Authorization: `${BEARER} ${getToken()}`
 						}}
-						data={
-							{
-								field: 'images',
-								ref: 'api::animal.animal',
-								refId: user && user.breeder && user.breeder.id
-							}
-						}
 						action={`${API_URL}/upload`}
 						listType="picture-card"
 						fileList={fileList}
