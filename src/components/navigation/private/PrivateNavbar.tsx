@@ -71,13 +71,13 @@ const PrivateNavbar: React.FC = () => {
 					<i className={`ri-question-answer-line ri-xl`}></i>
 					<b>Messages</b>
 				</NavLink>
-				<NavLink
+				{user.isBuyer && <NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
 					to="/favorites"
 				>
 					<i className={`ri-heart-2-line ri-xl`}></i>
 					<b>Favorites</b>
-				</NavLink>
+				</NavLink>}
 				{!user.isBuyer && <NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
 					to="/dashboard"
