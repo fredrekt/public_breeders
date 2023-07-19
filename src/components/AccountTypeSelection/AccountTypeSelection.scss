@@ -1,6 +1,7 @@
 .accountTypeSelection {
 	cursor: pointer;
 	width: 50%;
+	background-color: #3C3A3B;
 	&.selected {
 		background: #97c66a;
 		.setupSelectionLabel {
@@ -16,6 +17,7 @@
 	.accountTypePreviewImg {
 		width: 100%;
 		height: 175px;
+		display: none;
 		img {
 			width: 100%;
 			object-fit: contain;
@@ -24,10 +26,10 @@
 		}
 	}
 	.setupSelectionLabel {
+		color: #ffffff;
 		text-align: center;
 		display: flex;
 		justify-content: center;
-		margin-top: 15px;
 		font-weight: 500;
 	}
 }

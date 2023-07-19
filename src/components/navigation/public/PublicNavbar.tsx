@@ -1,15 +1,15 @@
 import React from 'react';
 import './PublicNavbar.scss';
 import { Link, NavLink } from 'react-router-dom';
-import logoImg from '../../../assets/images/logo.png';
-import { Button } from 'antd';
+// import logoImg from '../../../assets/images/logo.png';
 
 const PublicNavbar: React.FC = () => {
 	return (
 		<div className="publicNavbar">
 			<div className="publicNavLogo">
 				<Link to="/">
-					<img className="publicNavLogoImg" src={logoImg} alt="site logo" />
+					MY BREEDERS STORE
+					{/* <img className="publicNavLogoImg" src={logoImg} alt="site logo" /> */}
 				</Link>
 			</div>
 			<div className="publicNavCenter">
@@ -53,10 +53,8 @@ const PublicNavbar: React.FC = () => {
 				<Link className="loginCta" to="/login">
 					Login
 				</Link>
-				<Link to="/register">
-					<Button className="signUpCta" type="primary">
-						Sign Up
-					</Button>
+				<Link className='signUpCta' to="/register">
+					Sign up
 				</Link>
 			</div>
 		</div>

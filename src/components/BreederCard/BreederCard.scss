@@ -1,6 +1,7 @@
 @import '../../variables';
 
 .breederCard {
+	border-radius: 25px;
 	.ant-card-cover {
 		width: 100%;
 		height: 400px;
@@ -9,10 +10,13 @@
 			object-fit: cover;
 			width: 100%;
 			object-position: center;
-			border-radius: 8px;
+			border-radius: 25px;
 		}
 		.ant-image {
 			height: 100%;
+			.ant-image-mask {
+				border-radius: 25px;
+			}
 		}
 	}
 	.ant-typography {

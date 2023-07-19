@@ -1,7 +1,8 @@
 @import '../../variables';
 
 .publicLayoutContainer {
-	height: 100%;
+	height: auto;
+    min-height: 100%;
 	position: relative;
 	background: $bgPrimaryColor;
 	.publicLayoutContentContainer {
@@ -10,5 +11,9 @@
 				text-align: center;
 			}
 		}
+	}
+	.publicMainFooter {
+		background-color: #3c3a3b;
+		margin-top: 65px;
 	}
 }

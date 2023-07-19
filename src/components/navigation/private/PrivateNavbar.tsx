@@ -5,7 +5,7 @@ import { Avatar, Dropdown, Typography, message } from 'antd';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getToken, removeToken } from '../../../utils/authHelpers';
 import { useUserContext } from '../../../context/UserContext';
-import logoImg from '../../../assets/images/logo.png';
+// import logoImg from '../../../assets/images/logo.png';
 import { randomVector } from '../../../utils/randomVector';
 
 const PrivateNavbar: React.FC = () => {
@@ -100,7 +100,8 @@ const PrivateNavbar: React.FC = () => {
 		<div className="privateNavigation">
 			<div className="navLogo">
 				<Link to="/">
-					<img className="navLogoImg" src={logoImg} alt="site logo" />
+					MY BREEDERS STORE
+					{/* <img className="navLogoImg" src={logoImg} alt="site logo" /> */}
 				</Link>
 			</div>
 			{renderNavigationItems()}

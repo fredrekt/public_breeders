@@ -26,13 +26,13 @@ const PrivateLayout: React.FC<PrivateLayoutProps> = ({ className, children }) =>
 	return (
 		<ProtectedRoute>
 			<Layout className="privateLayoutContainer">
-				<Header style={{ backgroundColor: `#ffffff` }}>
+				<Header style={{ backgroundColor: `#3c3a3b` }}>
 					<PrivateNavbar />
 				</Header>
 				<Content className={`privateLayoutContentContainer ${className}`}>
 					<Fade>{children}</Fade>
 				</Content>
-				<Footer>
+				<Footer className='mainFooter'>
 					<PrivateFooter />
 				</Footer>
 				<FloatButton

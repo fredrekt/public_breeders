@@ -8,20 +8,20 @@
 		display: flex;
 		gap: 10px;
 		align-items: center;
-		color: #262626;
+		color: #ffffff;
 		b {
 			font-weight: normal;
 		}
 		&.selected {
 			z-index: 1;
 			border-bottom: 2px solid $primaryColor;
-			color: #262626;
+			color: #ffffff;
 			b {
 				font-weight: 700;
-				color: #262626;
+				color: #ffffff;
 			}
 			i {
-				color: #262626;
+				color: #ffffff;
 			}
 		}
 	}
@@ -29,6 +29,10 @@
 		a {
 			display: flex;
 			align-items: center;
+			font-size: 25px;
+			font-family: impact;
+			letter-spacing: 2px;
+			color: #A1C575;
 			.publicNavLogoImg {
 				width: 45px;
 				height: 45px;
@@ -48,10 +52,15 @@
         align-items: center;
         gap: 35px;
 		.loginCta {
-            color: #262626;
+            color: #ffffff;
         }
         .signUpCta {
-
+			width: 100px;
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			color: #ffffff;
+			background: $primaryColor;
         }
 	}
 }
