@@ -1,14 +1,30 @@
 .loginPage {
-	position: absolute;
 	width: 100%;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	margin: auto;
+    margin-bottom: -70px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	.loginPageRow {
+		padding: 25px;
+		width: 100%;
+	}
+	.loginCard {
+		.ant-card-body {
+			padding: 34px;
+			height: 100%;
+			position: relative;
+		}
+		.loginHeaderTitle {
+			text-align: center;
+		}
+	}
+	.loginHero {
+		height: 750px;
+		border-radius: 25px;
+		width: 100%;
+		object-fit: cover;
+		object-position: bottom;
+	}
 	.loginForm {
 		margin-top: 15px;
 		.loginHelpersContainer {
