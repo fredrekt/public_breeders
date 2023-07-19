@@ -5,7 +5,7 @@ import { Result } from 'antd'
 
 const Demopage: React.FC = () => {
   return (
-    <PublicLayout navbar className='demoPage  absolute-centered'>
+    <PublicLayout navbar className='demoPage'>
 		<Result status="404" title="404" subTitle="Sorry, this is still in progress. Walkthrough will be provided." />
     </PublicLayout>
   )

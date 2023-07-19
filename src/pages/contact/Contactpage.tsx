@@ -5,7 +5,7 @@ import { Result } from 'antd';
 
 const Contactpage: React.FC = () => {
 	return (
-		<PublicLayout className="contactPage  absolute-centered" navbar>
+		<PublicLayout className="contactPage" navbar>
 			<Result status="404" title="404" subTitle="Sorry, this is still in progress. Forms is still generating." />
 		</PublicLayout>
 	);
