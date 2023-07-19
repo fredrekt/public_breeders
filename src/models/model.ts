@@ -28,6 +28,7 @@ export declare namespace Model {
 		age: number;
 		images: Image[];
 		createdAt: Date;
+		documents: Document[];
 	}
 
 	export interface Favorites {
@@ -67,6 +68,7 @@ export declare namespace Model {
 		receiver: ConversationReceiver;
 		messages: Message[];
 		createdAt: Date | string;
+		updatedAt: Date | string;
 	}
 
 	export interface ConversationReceiver extends User {
@@ -81,6 +83,18 @@ export declare namespace Model {
 	}
 
 	export interface Image {
+		url: string;
+	}
+
+	export interface Document {
+		id: number;
+		name: string;
+		fileUrl: FileUrl;
+	}
+
+	export interface FileUrl {
+		id: number;
+		name: string;
 		url: string;
 	}
 }
