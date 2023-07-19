@@ -5,7 +5,6 @@ import { Button, Col, Empty, Row, Typography, message } from 'antd';
 import BreederDocumentCard from '../../components/BreederDocumentCard/BreederDocumentCard';
 import ImageGallery from 'react-image-gallery';
 import './Animalpage.scss';
-import { faker } from '@faker-js/faker';
 import FormatMoney from '../../utils/FormatMoney';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
