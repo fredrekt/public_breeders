@@ -32,9 +32,7 @@ const Loginpage: React.FC = () => {
 				</Col>
 				<Col md={12} lg={10} xl={10} xxl={10}>
 					<Card className="loginCard">
-						<Typography.Title className="loginHeaderTitle" level={4}>
-							Sign In
-						</Typography.Title>
+						<Typography.Title className='loginHeaderTitle' level={4}>Sign In</Typography.Title>
 						<Form
 							name="normal_login"
 							className="loginForm"
