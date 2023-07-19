@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PopupModel } from '../../models/PopupModel';
 import './EditProductPopup.scss';
 import { Button, Form, Input, Modal, Select, Space, Typography, message } from 'antd';
@@ -28,17 +28,28 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
 	const [previewImage, setPreviewImage] = useState<string>('');
 	const [previewTitle, setPreviewTitle] = useState<string>('');
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [fileList, setFileList] = useState<any[]>([]);
+	const [fileListRemove, setFileListRemove] = useState<any[]>([]);
 
 	const onUpdate = async (values: any) => {
 		if (!animal) return;
 		try {
-			let createData = {
+			let imageIds: number[] = [];
+			for (let file of fileList) {
+				if (!file.response) continue;
+				imageIds.push(file.response[0].id);
+			}
+			for (let file of fileListRemove) {
+				if (!file.id) continue;
+				imageIds.push(file.id);
+			}
+			let updateData = {
 				data: {
-					...values
+					...values,
 				}
 			};
-			await axios.put(`${API_URL}/animals/${animal.id}`, createData);
+			updateData.data.images = imageIds;
+			await axios.put(`${API_URL}/animals/${animal.id}`, updateData);
 			message.success(`Animal successfully updated.`);
 			onCancel();
 			onForceCb();
@@ -67,6 +78,12 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 		}
 	}
 
+	const handleRemoveImage = async (file: any) => {
+		if (!Array.isArray(fileList) || !fileList.length) return;
+		let filteredImages = fileList.filter((data) => data.id !== file.id);
+		setFileListRemove(filteredImages);
+	}
+
 	const uploadButton = (
 		<div>
 			<PlusOutlined />
@@ -80,6 +97,15 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 		setPreviewTitle('');
 		setFileList([]);
 	};
+
+	useEffect(() => {
+		const loadInitValues = () => {
+			if (!animal) return;
+			if (!Array.isArray(animal.images) || !animal.images.length) return;
+			setFileList(animal.images);
+		}
+		loadInitValues();
+	}, [opened, animal]);
 
 	return (
 		<Modal
@@ -129,15 +155,11 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 						headers={{
 							Authorization: `${BEARER} ${getToken()}`
 						}}
-						data={{
-							field: 'images',
-							ref: 'api::animal.animal',
-							refId: animal && animal.id	
-						}}
 						listType="picture-card"
 						fileList={fileList}
 						onPreview={handlePreview}
 						onChange={handleChange}
+						onRemove={handleRemoveImage}
 					>
 						{fileList.length >= 8 ? null : uploadButton}
 					</Upload>

@@ -1,14 +1,43 @@
+@import '../../variables.scss';
 .registerPage {
-	position: absolute;
 	width: 100%;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	margin: auto;
+    margin-bottom: -70px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	.registerPageRow {
+		padding: 25px;
+		width: 100%;
+	}
+	.registerHero {
+		height: 750px;
+		border-radius: 25px;
+		width: 100%;
+		object-fit: cover;
+		object-position: bottom;
+	}
+	.registerCard {
+		&.fixedHeight {
+			height: 650px;
+		}
+		.ant-card-body {
+			padding: 34px;
+			height: 100%;
+			position: relative;
+		}
+		.registerHeaderTitle {
+			text-align: center;
+		}
+		.registerStepper {
+			width: 60%;
+			margin: auto;
+		}
+		.registrationFormHeader {
+			text-align: center;
+			display: block;
+			margin: 25px;
+		}
+	}
 	.registerForm {
 		margin-top: 15px;
 		.registerNameContainer {
@@ -31,6 +60,11 @@
 			width: 100%;
 			height: 50px;
 			border-color: red;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+			color: $textGray;
 		}
 	}
 	.registerCtaText {
@@ -47,6 +81,18 @@
 		}
 		button {
 			width: 100px;
+			position: absolute;
+			bottom: 50px;
+			right: 25px;
+			border-style: solid;
+			border-color: #3C3A3B;
+			font-weight: 600;
 		}
+	}
+	.registerSubTxt {
+		color: $textGray;
+		text-align: center;
+		margin: 10px;
+		font-size: 12px;
 	}
 }

@@ -29,7 +29,7 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
 	const [previewImage, setPreviewImage] = useState<string>('');
 	const [previewTitle, setPreviewTitle] = useState<string>('');
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [fileList, setFileList] = useState<any[]>([]);
 
 	const onCreate = async (values: any) => {
 		if (!user) return;
@@ -72,6 +72,12 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 	};
 
 	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
+
+	const handleRemoveImage = async (file: any) => {
+		if (!Array.isArray(fileList) || !fileList.length) return;
+		let filteredImages = fileList.filter((data) => data.id !== file.id);
+		setFileList(filteredImages);
+	}
 
 	const uploadButton = (
 		<div>
@@ -140,6 +146,7 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 						fileList={fileList}
 						onPreview={handlePreview}
 						onChange={handleChange}
+						onRemove={handleRemoveImage}
 					>
 						{fileList.length >= 8 ? null : uploadButton}
 					</Upload>
