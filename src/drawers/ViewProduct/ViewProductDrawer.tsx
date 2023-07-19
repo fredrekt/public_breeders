@@ -19,21 +19,14 @@ const ViewProductDrawer: React.FC<ViewProductDrawerProps> = ({ opened, onCancel,
 		if (!animal) return;
 		return (
 			<Row align={'middle'} justify={'center'}>
-				<Col 
-                    xs={24}
-                    sm={24}
-                    md={24}
-                    lg={20}
-                    xl={20}
-                    xxl={20}
-                >
+				<Col xs={24} sm={24} md={24} lg={20} xl={20} xxl={20}>
 					<BreederCard
 						id={animal.id}
 						name={animal.name}
 						previewUrl={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : ''}
 						ownerId={user.breeder.id}
 						ownerName={user.breeder.businessName}
-						ownerProfileImageUrl={''}
+						ownerProfileImageUrl={user.breeder.avatar ? user.breeder.avatar.url : ''}
 						pricing={animal.price}
 					/>
 				</Col>

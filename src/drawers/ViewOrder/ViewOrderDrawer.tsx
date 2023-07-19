@@ -25,7 +25,7 @@ const ViewOrderDrawer: React.FC<ViewOrderDrawerProps> = ({ opened, onCancel, ord
 				previewUrl={Array.isArray(order.animal.images) && order.animal.images.length ? order.animal.images[0].url : ''}
 				ownerId={order.breeder.id}
 				ownerName={order.breeder.businessName}
-				ownerProfileImageUrl={''}
+				ownerProfileImageUrl={order.breeder.avatar ? order.breeder.avatar.url : ''}
 				pricing={order.animal.price}
 			/>
 		);
