@@ -18,6 +18,8 @@ import Contactpage from './pages/contact/Contactpage';
 import Demopage from './pages/demo/Demopage';
 import AppStorepage from './pages/appStore/AppStorepage';
 import { message } from 'antd';
+import TermsAndConditionsPage from './pages/termsAndConditions/TermsAndConditionsPage';
+import PrivacyPolicypage from './pages/privacyPolicy/PrivacyPolicypage';
 
 message.config({
 	duration: 1,
@@ -36,6 +38,8 @@ const App: React.FC = () => {
 				<Route path="/contact" element={<Contactpage />} />
 				<Route path="/demo" element={<Demopage />} />
 				<Route path="/mobile" element={<AppStorepage />} />
+				<Route path="/terms-and-conditions" element={<TermsAndConditionsPage/>} />
+				<Route path="/privacy-policy" element={<PrivacyPolicypage/>} />
 				<Route
 					path="/breeder/:id"
 					element={
