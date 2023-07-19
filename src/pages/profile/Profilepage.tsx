@@ -75,6 +75,10 @@ const Profilepage: React.FC = () => {
 								return;
 							} else if (e.key === '2') {
 								navigate(`/orders`);
+							} else if (e.key === '4') {
+								navigate(`/privacy-policy`);
+							} else if (e.key === '5') {
+								navigate(`/terms-and-conditions`);
 							} else {
 								setSelectedView(e.key);
 							}

@@ -5,9 +5,10 @@ import './ViewDocumentDrawer.scss';
 
 interface ViewDocumentDrawerProps extends DrawerModel {
 	title: string;
+	file: string;
 }
 
-const ViewDocumentDrawer: React.FC<ViewDocumentDrawerProps> = ({ title, opened, onCancel }) => {
+const ViewDocumentDrawer: React.FC<ViewDocumentDrawerProps> = ({ title, opened, onCancel, file }) => {
 	return (
 		<Drawer
 			className="viewDocumentDrawer"
@@ -18,7 +19,7 @@ const ViewDocumentDrawer: React.FC<ViewDocumentDrawerProps> = ({ title, opened, 
 			width={`100%`}
 			height={`100%`}
 		>
-			<iframe title={title} src={require('../../assets/pdf/document_test.pdf')} height={`100%`} width={`100%`} />
+			<iframe title={title} src={file || require('../../assets/pdf/document_test.pdf')} height={`100%`} width={`100%`} />
 		</Drawer>
 	);
 };

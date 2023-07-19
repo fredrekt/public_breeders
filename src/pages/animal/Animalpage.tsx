@@ -37,30 +37,6 @@ const Animalpage: React.FC = () => {
 	const [animalData, setAnimalData] = useState<Api.Animal.Res.AnimalListing | null>(null);
 	const [images, setImages] = useState<any[]>([]);
 
-	// const images = [
-	// 	{
-	// 		thumbnailClass: 'thumbnailAnimalGallery',
-	// 		original:
-	// 			'https://images.pexels.com/photos/179221/pexels-photo-179221.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-	// 		thumbnail:
-	// 			'https://images.pexels.com/photos/179221/pexels-photo-179221.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-	// 	},
-	// 	{
-	// 		thumbnailClass: 'thumbnailAnimalGallery',
-	// 		original:
-	// 			'https://images.pexels.com/photos/3487734/pexels-photo-3487734.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-	// 		thumbnail:
-	// 			'https://images.pexels.com/photos/3487734/pexels-photo-3487734.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-	// 	},
-	// 	{
-	// 		thumbnailClass: 'thumbnailAnimalGallery',
-	// 		original:
-	// 			'https://images.pexels.com/photos/12424394/pexels-photo-12424394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-	// 		thumbnail:
-	// 			'https://images.pexels.com/photos/12424394/pexels-photo-12424394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-	// 	}
-	// ];
-
 	const imageGalleryProps = {
 		showNav: false,
 		showPlayButton: false,
@@ -72,8 +48,22 @@ const Animalpage: React.FC = () => {
 	};
 
 	const onSave = async () => {
-		message.success('Successfully added to favorites.');
-		setSaved(!saved);
+		if (!id) return;
+		if (!user) return;
+		try {
+			const saveAnimal = await axios.post(`${API_URL}/favorites`, {
+				data: {
+					animal: id,
+					user: user.id
+				}
+			});
+			if (saveAnimal) {
+				message.success('Successfully added to favorites.');
+				setSaved(!saved);
+			}
+		} catch (error) {
+			message.error(`Failed to add to saved list.`);
+		}
 	};
 
 	const onContactBreeder = () => {
@@ -105,11 +95,13 @@ const Animalpage: React.FC = () => {
 						}))
 					);
 				} else {
-					setImages([{
-						thumbnailClass: 'thumbnailAnimalGallery',
-						original: require(`../../assets/images/vectors/${randomVector}.png`),
-						thumbnail: require(`../../assets/images/vectors/${randomVector}.png`)
-					}]);
+					setImages([
+						{
+							thumbnailClass: 'thumbnailAnimalGallery',
+							original: require(`../../assets/images/vectors/${randomVector}.png`),
+							thumbnail: require(`../../assets/images/vectors/${randomVector}.png`)
+						}
+					]);
 				}
 			}
 		} catch (error) {
@@ -122,9 +114,20 @@ const Animalpage: React.FC = () => {
 		// eslint-disable-next-line
 	}, [id]);
 
+	useEffect(() => {
+		const loadInitValues = () => {
+			const cleanedId: any = id;
+			if (!user) return;
+			if (!Array.isArray(user.favorites) || !user.favorites.length) return;
+			setSaved(user.favorites.some((e) => e.animal.id === parseInt(cleanedId)));
+		};
+		loadInitValues();
+		// eslint-disable-next-line
+	}, [user, id]);
+
 	const renderAnimalDetails = () => {
 		let categoryName: string = '';
-		if (!animalData) return <Empty />;
+		if (!animalData || !user) return <Empty />;
 		if (Array.isArray(animalData.categories) && animalData.categories.length) {
 			categoryName = animalData.categories[0].name;
 		}
@@ -157,22 +160,14 @@ const Animalpage: React.FC = () => {
 				key: '3',
 				label: `Documents`,
 				children: (
-					<Row className="breederDocuments" justify={'center'} gutter={[24, 24]}>
-						<Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-							<BreederDocumentCard animalPage title="Pedigree Paper of Sire" primary />
-						</Col>
-						<Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-							<BreederDocumentCard animalPage title="Pedigree Paper of Damn" primary />
-						</Col>
-						<Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-							<BreederDocumentCard animalPage title="Vaccination Records" />
-						</Col>
-						<Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-							<BreederDocumentCard animalPage title="Vet Checks" />
-						</Col>
-						<Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-							<BreederDocumentCard animalPage title="Video" primary />
-						</Col>
+					<Row className="breederDocuments" align={'middle'} justify={!animalData.documents.length || !Array.isArray(animalData.documents) ? 'center' : 'start'} gutter={[24, 24]}>
+						{Array.isArray(animalData.documents) &&
+							animalData.documents.length ?
+							animalData.documents.map((data, index) => (
+								<Col key={data.id} xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
+									<BreederDocumentCard url={data.fileUrl.url} animalPage title={data.name} primary={index + 1 & 1 ? true : false} />
+								</Col>
+							)): <Empty/>}
 					</Row>
 				)
 			},
@@ -225,7 +220,9 @@ const Animalpage: React.FC = () => {
 					<div className="animalNameHeader">
 						<div className="animalTitle">
 							<PageTitle className="animalName" title={animalData.name} />
-							<i onClick={onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-xl`}></i>
+							{user.isBuyer && (
+								<i onClick={onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-xl`}></i>
+							)}
 						</div>
 						<Typography.Title className="animalPricing" level={2}>
 							{FormatMoney(animalData.price)}

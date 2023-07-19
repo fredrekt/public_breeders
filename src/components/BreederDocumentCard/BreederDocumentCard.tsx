@@ -5,11 +5,12 @@ import ViewDocumentDrawer from '../../drawers/ViewDocument/ViewDocumentDrawer';
 
 interface BreederDocumentCardProps {
 	title: string;
+	url: string;
 	primary?: boolean;
 	animalPage?: boolean;
 }
 
-const BreederDocumentCard: React.FC<BreederDocumentCardProps> = ({ title, primary, animalPage }) => {
+const BreederDocumentCard: React.FC<BreederDocumentCardProps> = ({ title, primary, animalPage, url }) => {
 	const [openViewDocument, setOpenViewDocument] = useState<boolean>(false);
 	return (
 		<Card className={`breederDocumentCard ${primary ? 'primaryColor' : 'tertiaryColor'}`}>
@@ -23,6 +24,7 @@ const BreederDocumentCard: React.FC<BreederDocumentCardProps> = ({ title, primar
 			</div>
 			<ViewDocumentDrawer
 				title={title}
+				file={url}
 				opened={openViewDocument}
 				onCancel={() => setOpenViewDocument(false)}
 				onForceCb={() => console.log('object')}

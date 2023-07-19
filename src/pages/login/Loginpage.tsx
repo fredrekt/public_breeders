@@ -24,7 +24,7 @@ const Loginpage: React.FC = () => {
 	};
 
 	return (
-		<PublicLayout className="loginPage">
+		<PublicLayout noFooter className="loginPage">
 			<Row align={'middle'} justify={'center'}>
 				<Col md={12} lg={6} xl={6} xxl={6}>
 					<Typography.Title level={4}>Login</Typography.Title>

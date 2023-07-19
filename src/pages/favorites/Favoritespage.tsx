@@ -34,7 +34,7 @@ const Favoritespage: React.FC = () => {
 		return favorites.map((data) => (
 			<Col key={data.id} xs={12} sm={12} md={8} lg={6} xl={6} xxl={6}>
 				<BreederCard
-					id={data.id}
+					id={data.animal.id}
 					name={data.animal.name}
 					previewUrl={Array.isArray(data.animal.images) && data.animal.images.length ? data.animal.images[0].url : ''}
 					favorite
