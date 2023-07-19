@@ -32,11 +32,6 @@ const Inboxpage: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		loadConversation();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedConversationId, forceUpdate]);
-
-	useEffect(() => {
 		loadInbox();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user, forceUpdate]);
@@ -63,13 +58,6 @@ const Inboxpage: React.FC = () => {
 		} catch (error) {
 			message.error(`Something wen't wrong in getting conversations.`);
 		}
-	};
-
-	const loadConversation = async () => {
-		if (!selectedConversationId) return;
-		// setSelectedConversation(selectedConversationId);
-		// message.success(`Successfully loaded conversation: ${selectedConversationId}`);
-		// console.log(selectedConversation);
 	};
 
 	const loadSocketMessages = async () => {
