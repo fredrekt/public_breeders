@@ -192,7 +192,7 @@ const Animalpage: React.FC = () => {
 			{
 				key: '5',
 				label: `Additional Details`,
-				children: faker.lorem.paragraphs(10)
+				children: <Empty/>
 			}
 		];
 
