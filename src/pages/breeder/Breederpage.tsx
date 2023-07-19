@@ -86,11 +86,11 @@ const Breederpage: React.FC = () => {
 							Documents
 						</Typography.Title>
 						<div className="breederCardDocumentList">
-							<BreederDocumentCard title="Pedigree Paper of Sire" primary />
-							<BreederDocumentCard title="Pedigree Paper of Damn" primary />
-							<BreederDocumentCard title="Vaccination Records" />
-							<BreederDocumentCard title="Vet Checks" />
-							<BreederDocumentCard title="Video" primary />
+							<BreederDocumentCard url="" title="Pedigree Paper of Sire" primary />
+							<BreederDocumentCard url="" title="Pedigree Paper of Damn" primary />
+							<BreederDocumentCard url="" title="Vaccination Records" />
+							<BreederDocumentCard url="" title="Vet Checks" />
+							<BreederDocumentCard url="" title="Video" primary />
 						</div>
 					</Card>
 				</Col>
