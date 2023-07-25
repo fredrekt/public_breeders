@@ -18,9 +18,9 @@ const SettingsView: React.FC = () => {
 	const onUpdateInformation = async (values: any) => {
 		if (!user.id || !user) return;
 		try {
-			const update = await axios.put(`${API_URL}/users/${user.id}`, values);
+			const update = await axios.put(`${API_URL}/users/${user.id}?populate=avatar`, values);
 			if (update.data) {
-				setUser(update.data);
+				setUser({...user, ...update.data});
 				message.success(`Successfully updated personal details.`);
 			}
 		} catch (error) {
