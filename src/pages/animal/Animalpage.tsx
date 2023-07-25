@@ -35,6 +35,7 @@ const Animalpage: React.FC = () => {
 	const [openCheckout, setOpenCheckout] = useState<boolean>(false);
 	const [animalData, setAnimalData] = useState<Api.Animal.Res.AnimalListing | null>(null);
 	const [images, setImages] = useState<any[]>([]);
+	const [favoriteIdHook, setFavoriteIdHook] = useState<number>(0);
 
 	const imageGalleryProps = {
 		showNav: false,
@@ -64,6 +65,20 @@ const Animalpage: React.FC = () => {
 			message.error(`Failed to add to saved list.`);
 		}
 	};
+
+	const onUnsave = async () => {
+		if (!id || !favoriteIdHook) return;
+		if (!user) return;
+		try {
+			const unFavoriteAnimal = await axios.delete(`${API_URL}/favorites/${favoriteIdHook}`);
+			if (unFavoriteAnimal) {
+				message.success('Successfully removed to favorites.');
+				setSaved(!saved);
+			}
+		} catch (error) {
+			message.error(`Failed to remove to saved list.`)
+		}
+	}
 
 	const onContactBreeder = () => {
 		setOpenContactBreeder(true);
@@ -119,6 +134,9 @@ const Animalpage: React.FC = () => {
 			if (!user) return;
 			if (!Array.isArray(user.favorites) || !user.favorites.length) return;
 			setSaved(user.favorites.some((e) => e.animal.id === parseInt(cleanedId)));
+			let filteredFavorite = user.favorites.filter(e => e.animal.id.toString()  === id);
+			if (!Array.isArray(filteredFavorite) || !filteredFavorite.length) return;
+			setFavoriteIdHook(filteredFavorite[0].id);
 		};
 		loadInitValues();
 		// eslint-disable-next-line
@@ -220,7 +238,7 @@ const Animalpage: React.FC = () => {
 						<div className="animalTitle">
 							<PageTitle className="animalName" title={animalData.name} />
 							{user.isBuyer && (
-								<i onClick={onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-xl`}></i>
+								<i onClick={saved ? onUnsave : onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-xl`}></i>
 							)}
 						</div>
 						<Typography.Title className="animalPricing" level={2}>
