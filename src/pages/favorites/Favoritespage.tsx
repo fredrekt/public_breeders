@@ -12,6 +12,7 @@ import { useUserContext } from '../../context/UserContext';
 const Favoritespage: React.FC = () => {
 	const { user } = useUserContext();
 	const [favorites, setFavorites] = useState<Api.Favorite.Res.FavoriteListing[]>([]);
+	const [forceUpdate, setForceUpdate] = useState<boolean>(false);
 
 	const loadFavorites = async () => {
 		if (!user) return;
@@ -27,7 +28,7 @@ const Favoritespage: React.FC = () => {
 	useEffect(() => {
 		loadFavorites();
 		// eslint-disable-next-line
-	}, [user]);
+	}, [user, forceUpdate]);
 
 	const renderFavoritesListing = () => {
 		if (!Array.isArray(favorites) || !favorites.length) return <Empty/>;
@@ -37,8 +38,9 @@ const Favoritespage: React.FC = () => {
 					id={data.animal.id}
 					name={data.animal.name}
 					previewUrl={Array.isArray(data.animal.images) && data.animal.images.length ? data.animal.images[0].url : ''}
-					favorite
-					ownerName={data.animal.breeder.businessName}
+					favorite favoriteId={data.id} onForceCb={() => setForceUpdate(!forceUpdate)}
+					ownerId={data.animal.breeder.id}
+					ownerName={data.animal.breeder.businessName} 
 					ownerProfileImageUrl={data.animal.breeder.avatar ? data.animal.breeder.avatar.url : ''}
 					pricing={data.animal.price}
 				/>

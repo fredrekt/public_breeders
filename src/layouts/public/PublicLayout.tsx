@@ -3,9 +3,10 @@ import './PublicLayout.scss';
 import { Avatar, Col, Layout, Row } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import logoImg from '../../assets/images/logo.png';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PublicNavbar from '../../components/navigation/public/PublicNavbar';
 import PrivateFooter from '../../components/navigation/private/PrivateFooter';
+import { getToken } from '../../utils/authHelpers';
 
 interface PublicLayoutProps {
 	className: string;
@@ -15,10 +16,17 @@ interface PublicLayoutProps {
 }
 
 const PublicLayout: React.FC<PublicLayoutProps> = ({ className, children, navbar, noFooter }) => {
+	const navigate = useNavigate();
 	const { pathname } = useLocation();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
+		if (pathname.includes('login') || pathname.includes('register')) {
+			if (getToken() !== '') {
+				navigate('/');
+			}
+		}
+		// eslint-disable-next-line
 	}, [pathname]);
 
 	return (

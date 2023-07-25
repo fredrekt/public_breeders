@@ -19,6 +19,8 @@ interface BreederCardProps {
 	ownerProfileImageUrl: string;
 	pricing: number;
 	favorite?: boolean;
+	favoriteId?: number;
+	onForceCb?: () => void;
 }
 
 const BreederCard: React.FC<BreederCardProps> = ({
@@ -29,12 +31,15 @@ const BreederCard: React.FC<BreederCardProps> = ({
 	ownerName,
 	ownerProfileImageUrl,
 	pricing,
-	favorite
+	favorite,
+	favoriteId,
+	onForceCb
 }) => {
 	const { user } = useUserContext();
 	const [saved, setSaved] = useState<boolean>(favorite || false);
 	const [auth] = useState<boolean>(getToken() !== '' ? true : false);
 	const [openRegisterWall, setOpenRegisterWall] = useState<boolean>(false);
+	const [favoriteIdHook, setFavoriteIdHook] = useState<number>(favoriteId || 0);
 	const navigate = useNavigate();
 
 	// generate random images
@@ -47,7 +52,10 @@ const BreederCard: React.FC<BreederCardProps> = ({
 		const loadInitValues = () => {
 			if (!user || favorite) return;
 			if (!Array.isArray(user.favorites) || !user.favorites.length) return;
-			setSaved(user.favorites.some(e => e.animal.id  === id))
+			setSaved(user.favorites.some(e => e.animal.id  === id));
+			let filteredFavorite = user.favorites.filter(e => e.animal.id  === id);
+			if (!Array.isArray(filteredFavorite) || !filteredFavorite.length) return;
+			setFavoriteIdHook(filteredFavorite[0].id);
 		}
 		loadInitValues()
 		// eslint-disable-next-line
@@ -90,6 +98,23 @@ const BreederCard: React.FC<BreederCardProps> = ({
 		}
 	};
 
+	const onUnsave = async () => {
+		if (!id || !favoriteIdHook) return;
+		if (!user) return;
+		try {
+			const unFavoriteAnimal = await axios.delete(`${API_URL}/favorites/${favoriteIdHook}`);
+			if (unFavoriteAnimal) {
+				message.success('Successfully removed to favorites.');
+				setSaved(!saved);
+				if (onForceCb) {
+					onForceCb();
+				}
+			}
+		} catch (error) {
+			message.error(`Failed to remove to saved list.`)
+		}
+	}
+
 	return (
 		<Card
 			className="breederCard"
@@ -105,7 +130,7 @@ const BreederCard: React.FC<BreederCardProps> = ({
 						</Typography.Title>
 					</Col>
 					{user && <Col className="breederCardLikeCta" span={user.isBuyer ? 6 : 0}>
-						<i onClick={onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-lg`}></i>
+						<i onClick={saved ? onUnsave : onSave} className={`ri-heart-${saved ? `fill saved` : `line`} ri-lg`}></i>
 					</Col>}
 					<Col span={24}>
 						<Row align={'middle'} justify={'space-between'}>

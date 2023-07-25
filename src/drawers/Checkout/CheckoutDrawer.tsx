@@ -30,6 +30,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		addressUnitNumber: '',
 		addressPostalCode: '',
 	});
+	const [errorAddressFields, setErrorAddressFields] = useState<boolean>(false);
 
 	const onChangeContactFields = (e: any) => setContactFields({ ...contactFields, [e.target.name]: e.target.value });
 	const onChangeAddressFields = (e: any) => setAddressFields({ ...addressFields, [e.target.name]: e.target.value });
@@ -75,7 +76,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 							<Input name="lastName" value={lastName} onChange={onChangeContactFields} size="large" placeholder="Last Name" />
 						</Space>
 						<Input name="email" value={email} onChange={onChangeContactFields} size="large" type="email" placeholder="Emaill Address" />
-						<Input name="phoneNumber" value={phoneNumber} onChange={onChangeContactFields} size="large" type="phone" placeholder="Phone Number" />
+						<Input name="phoneNumber" value={phoneNumber} onChange={onChangeContactFields} size="large" type="phone" placeholder="Phone Number (optional)" />
 					</div>
 				);
 			}
@@ -85,11 +86,11 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			content: () => {
 				return (
 					<div className='checkoutOrderForm'>
-						<Input name="addressUnitNumber" value={addressUnitNumber} onChange={onChangeAddressFields} size="large" placeholder="Unit / Apartment / House Number" />
-						<Input name="addressLine1" value={addressLine1} onChange={onChangeAddressFields} size="large" placeholder="Address Line 1" />
-						<Input name="addressCity" value={addressCity} onChange={onChangeAddressFields} size="large" placeholder="City" />
-						<Input name="addressState" value={addressState} onChange={onChangeAddressFields} size="large" placeholder="State" />
-						<Input name="addressPostalCode" value={addressPostalCode} onChange={onChangeAddressFields} size="large" placeholder="Postal Code" />
+						<Input status={errorAddressFields && !addressUnitNumber ? 'error' : ''} name="addressUnitNumber" value={addressUnitNumber} onChange={onChangeAddressFields} size="large" placeholder="Unit / Apartment / House Number" />
+						<Input status={errorAddressFields && !addressLine1 ? 'error' : ''} name="addressLine1" value={addressLine1} onChange={onChangeAddressFields} size="large" placeholder="Address Line 1" />
+						<Input status={errorAddressFields && !addressCity ? 'error' : ''} name="addressCity" value={addressCity} onChange={onChangeAddressFields} size="large" placeholder="City" />
+						<Input status={errorAddressFields && !addressState ? 'error' : ''} name="addressState" value={addressState} onChange={onChangeAddressFields} size="large" placeholder="State" />
+						<Input status={errorAddressFields && !addressPostalCode ? 'error' : ''} name="addressPostalCode" value={addressPostalCode} onChange={onChangeAddressFields} size="large" placeholder="Postal Code" />
 					</div>
 				);
 			}
@@ -112,7 +113,20 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 
 	const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
+	const validateShippingFields = () => {
+		if (addressLine1 && addressCity && addressState && addressUnitNumber && addressPostalCode) {
+			setErrorAddressFields(false);
+			return true;
+		}
+		setErrorAddressFields(true);
+		message.error(`Must fill up required fields`);
+		return false;
+	}
+
 	const next = () => {
+		if (current === 1 && !validateShippingFields()) {
+			return
+		}
 		setCurrent(current + 1);
 	};
 

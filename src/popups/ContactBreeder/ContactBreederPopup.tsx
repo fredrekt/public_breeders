@@ -14,9 +14,14 @@ interface ContactBreederPopupProps extends PopupModel {
 
 const ContactBreederPopup: React.FC<ContactBreederPopupProps> = ({ opened, onCancel, onForceCb, breeder }) => {
 	const [messageInput, setMessageInput] = useState<string>('');
+	const [errorMsg, setErrorMsg] = useState<string>('');
 
 	const onSendMessage = async () => {
 		if (!breeder) return;
+		if (!messageInput) {
+			setErrorMsg(`Please input your message.`);
+			return;
+		}
 		try {
 			const res = await axios.post(`${API_URL}/conversations`, {
 				breederId: breeder.id,
@@ -34,6 +39,7 @@ const ContactBreederPopup: React.FC<ContactBreederPopupProps> = ({ opened, onCan
 
 	const onReset = () => {
 		setMessageInput('');
+		setErrorMsg('');
 	}
 
 	return (
@@ -62,7 +68,8 @@ const ContactBreederPopup: React.FC<ContactBreederPopupProps> = ({ opened, onCan
 				<Typography.Title className="contactBreederInputTxt" level={5}>
 					Message
 				</Typography.Title>
-				<Input.TextArea value={messageInput} onChange={(e: any) => setMessageInput(e.target.value)} rows={5} />
+				<Input.TextArea status={errorMsg ? 'error' : ''} value={messageInput} onChange={(e: any) => setMessageInput(e.target.value)} rows={5} />
+				{errorMsg ? <small className="errorMsg">{errorMsg}</small> : null}
 			</div>
 		</Modal>
 	);

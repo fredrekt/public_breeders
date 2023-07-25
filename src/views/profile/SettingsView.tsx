@@ -54,6 +54,7 @@ const SettingsView: React.FC = () => {
 			refId: user && user.id
 		},
 		method: 'POST',
+		accept: 'image/*',
 		headers: {
 			Authorization: `${BEARER} ${getToken()}`
 		},
@@ -83,6 +84,7 @@ const SettingsView: React.FC = () => {
 			ref: 'api::breeder.breeder',
 			refId: user && user.breeder && user.breeder.id
 		},
+		accept: 'image/*',
 		method: 'POST',
 		headers: {
 			Authorization: `${BEARER} ${getToken()}`
@@ -150,7 +152,7 @@ const SettingsView: React.FC = () => {
 						</Form.Item>
 					</Space>
 					<Form.Item name="email" label="Email">
-						<Input placeholder="Enter email address" />
+						<Input disabled placeholder="Enter email address" />
 					</Form.Item>
 					<Form.Item>
 						<Button htmlType="submit" type="primary">

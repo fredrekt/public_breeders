@@ -120,6 +120,11 @@ const Inboxpage: React.FC = () => {
 					rows={5}
 					value={messageInput}
 					onChange={(e: any) => setMessageInput(e.target.value)}
+					onKeyDown={(e: any) => {
+						if (e.key === 'Enter') {
+							onSendMessage();
+						}
+					}}
 				/>
 				<Button
 					className="inboxConversationSend"
@@ -162,6 +167,10 @@ const Inboxpage: React.FC = () => {
 
 	const onSendMessage = async () => {
 		if (!selectedConversation || !user) return;
+		if (!messageInput) {
+			message.error(`Please enter your message.`);
+			return;
+		}
 		try {
 			socket.emit(
 				'sendMessage',

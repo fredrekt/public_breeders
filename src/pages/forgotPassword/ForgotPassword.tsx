@@ -9,14 +9,19 @@ const ForgotPassword: React.FC = () => {
 	};
 
 	return (
-		<PublicLayout className="forgotPasswordPage">
+		<PublicLayout navbar className="forgotPasswordPage">
 			<Row align={'middle'} justify={'center'}>
 				<Col md={12} lg={6} xl={6} xxl={6}>
 					<Typography.Title level={4}>Reset password</Typography.Title>
 					<Typography.Paragraph>Send a reset link to your email.</Typography.Paragraph>
 					<Form className="forgotPasswordForm" size="large" onFinish={onSendResetLink}>
-						<Form.Item name="identifier">
-							<Input placeholder="Emaill Address" />
+						<Form.Item rules={[
+							{
+								required: true,
+								message: 'Please enter email.'
+							}
+						]} name="identifier">
+							<Input type='email' placeholder="Emaill Address" />
 						</Form.Item>
 						<Form.Item>
 							<Button type="primary" htmlType="submit" className="forgotPasswordCta">
