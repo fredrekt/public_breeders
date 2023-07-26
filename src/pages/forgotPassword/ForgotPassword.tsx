@@ -2,10 +2,17 @@ import React from 'react';
 import './ForgotPassword.scss';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { Button, Col, Form, Input, Row, Typography, message } from 'antd';
+import axios from 'axios';
+import { API_URL } from '../../utils/constant';
 
 const ForgotPassword: React.FC = () => {
 	const onSendResetLink = async (values: any) => {
-		message.success(`Successfully sent a reset link.`);
+		try {
+			await axios.post(`${API_URL}/auth/forgot-password`, values)
+			message.success(`Successfully sent a reset link.`);
+		} catch (error) {
+			message.error(`Something wen't wrong in sending forgot password email.`);
+		}
 	};
 
 	return (
@@ -20,7 +27,7 @@ const ForgotPassword: React.FC = () => {
 								required: true,
 								message: 'Please enter email.'
 							}
-						]} name="identifier">
+						]} name="email">
 							<Input type='email' placeholder="Emaill Address" />
 						</Form.Item>
 						<Form.Item>

@@ -62,6 +62,8 @@ export declare namespace Model {
 
 	export type PaymentStatus = 'PENDING' | 'COMPLETED'
 
+	export type NotificationType = 'account' | 'order' | 'message'
+
 	export interface Conversation {
 		id: number;
 		sender: Model.User;
@@ -96,5 +98,13 @@ export declare namespace Model {
 		id: number;
 		name: string;
 		url: string;
+	}
+
+	export interface Notification {
+		id: number;
+		message: string;
+		type: NotificationType;
+		isRead: boolean;
+		user?: Model.User;
 	}
 }

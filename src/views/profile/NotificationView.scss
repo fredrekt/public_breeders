@@ -1,0 +1,21 @@
+@import '../../variables.scss';
+.notificationCard {
+    .ant-card-body {
+        padding: 0;
+    }
+    .ant-list-item-meta-title {
+        text-transform: capitalize;
+    }
+    i {
+        cursor: pointer;
+    }
+    .notificationItem {
+        padding: 24px;
+        &.read {
+            background-color: $textGray;
+            .ant-list-item-meta-title, i, .ant-list-item-meta-description {
+                color: #ffffff;
+            }
+        }
+    }
+}
