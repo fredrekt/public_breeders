@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CheckoutDrawer.scss';
 import { DrawerModel } from '../../models/DrawerModel';
-import { Button, Card, Drawer, Input, Result, Space, Steps, Typography, message } from 'antd';
+import { Button, Card, Drawer, Input, Result, Space, Steps, Typography, message, Modal } from 'antd';
 import dogImg from '../../assets/images/register.png';
 import { Api } from '../../models/api';
 import { randomVector } from '../../utils/randomVector';
@@ -13,6 +13,8 @@ import { API_URL } from '../../utils/constant';
 interface CheckoutDrawerProps extends DrawerModel {
 	animal: Api.Animal.Res.AnimalListing | null;
 }
+
+const { confirm } = Modal;
 
 const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onForceCb, animal }) => {
 	const { user } = useUserContext();
@@ -28,27 +30,17 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		addressCity: '',
 		addressState: '',
 		addressUnitNumber: '',
-		addressPostalCode: '',
+		addressPostalCode: ''
 	});
 	const [errorAddressFields, setErrorAddressFields] = useState<boolean>(false);
+	const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
 
 	const onChangeContactFields = (e: any) => setContactFields({ ...contactFields, [e.target.name]: e.target.value });
 	const onChangeAddressFields = (e: any) => setAddressFields({ ...addressFields, [e.target.name]: e.target.value });
-	
-	const {
-		email,
-		firstName,
-		lastName,
-		phoneNumber
-	} = contactFields;
 
-	const {
-		addressLine1,
-		addressCity,
-		addressState,
-		addressUnitNumber,
-		addressPostalCode,
-	} = addressFields;
+	const { email, firstName, lastName, phoneNumber } = contactFields;
+
+	const { addressLine1, addressCity, addressState, addressUnitNumber, addressPostalCode } = addressFields;
 
 	const renderAnimalDetails = () => {
 		if (!animal) return;
@@ -70,13 +62,39 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			title: 'Contact Details',
 			content: () => {
 				return (
-					<div className='checkoutOrderForm'>
-						<Space className='checkoutOrderFormItemCol'>
-							<Input name="firstName" value={firstName} onChange={onChangeContactFields} size="large" placeholder="First Name" />
-							<Input name="lastName" value={lastName} onChange={onChangeContactFields} size="large" placeholder="Last Name" />
+					<div className="checkoutOrderForm">
+						<Space className="checkoutOrderFormItemCol">
+							<Input
+								name="firstName"
+								value={firstName}
+								onChange={onChangeContactFields}
+								size="large"
+								placeholder="First Name"
+							/>
+							<Input
+								name="lastName"
+								value={lastName}
+								onChange={onChangeContactFields}
+								size="large"
+								placeholder="Last Name"
+							/>
 						</Space>
-						<Input name="email" value={email} onChange={onChangeContactFields} size="large" type="email" placeholder="Emaill Address" />
-						<Input name="phoneNumber" value={phoneNumber} onChange={onChangeContactFields} size="large" type="phone" placeholder="Phone Number (optional)" />
+						<Input
+							name="email"
+							value={email}
+							onChange={onChangeContactFields}
+							size="large"
+							type="email"
+							placeholder="Emaill Address"
+						/>
+						<Input
+							name="phoneNumber"
+							value={phoneNumber}
+							onChange={onChangeContactFields}
+							size="large"
+							type="phone"
+							placeholder="Phone Number (optional)"
+						/>
 					</div>
 				);
 			}
@@ -85,12 +103,47 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			title: 'Shipping Details',
 			content: () => {
 				return (
-					<div className='checkoutOrderForm'>
-						<Input status={errorAddressFields && !addressUnitNumber ? 'error' : ''} name="addressUnitNumber" value={addressUnitNumber} onChange={onChangeAddressFields} size="large" placeholder="Unit / Apartment / House Number" />
-						<Input status={errorAddressFields && !addressLine1 ? 'error' : ''} name="addressLine1" value={addressLine1} onChange={onChangeAddressFields} size="large" placeholder="Address Line 1" />
-						<Input status={errorAddressFields && !addressCity ? 'error' : ''} name="addressCity" value={addressCity} onChange={onChangeAddressFields} size="large" placeholder="City" />
-						<Input status={errorAddressFields && !addressState ? 'error' : ''} name="addressState" value={addressState} onChange={onChangeAddressFields} size="large" placeholder="State" />
-						<Input status={errorAddressFields && !addressPostalCode ? 'error' : ''} name="addressPostalCode" value={addressPostalCode} onChange={onChangeAddressFields} size="large" placeholder="Postal Code" />
+					<div className="checkoutOrderForm">
+						<Input
+							status={errorAddressFields && !addressUnitNumber ? 'error' : ''}
+							name="addressUnitNumber"
+							value={addressUnitNumber}
+							onChange={onChangeAddressFields}
+							size="large"
+							placeholder="Unit / Apartment / House Number"
+						/>
+						<Input
+							status={errorAddressFields && !addressLine1 ? 'error' : ''}
+							name="addressLine1"
+							value={addressLine1}
+							onChange={onChangeAddressFields}
+							size="large"
+							placeholder="Address Line 1"
+						/>
+						<Input
+							status={errorAddressFields && !addressCity ? 'error' : ''}
+							name="addressCity"
+							value={addressCity}
+							onChange={onChangeAddressFields}
+							size="large"
+							placeholder="City"
+						/>
+						<Input
+							status={errorAddressFields && !addressState ? 'error' : ''}
+							name="addressState"
+							value={addressState}
+							onChange={onChangeAddressFields}
+							size="large"
+							placeholder="State"
+						/>
+						<Input
+							status={errorAddressFields && !addressPostalCode ? 'error' : ''}
+							name="addressPostalCode"
+							value={addressPostalCode}
+							onChange={onChangeAddressFields}
+							size="large"
+							placeholder="Postal Code"
+						/>
 					</div>
 				);
 			}
@@ -101,9 +154,9 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 				return (
 					<>
 						<Result
-							icon={<img src={dogImg} alt="missing" />}
-							title="In progress"
-							subTitle="Stripe checkout functionality is still in progress."
+							icon={<img src={dogImg} alt="stripe checkout" />}
+							title="Stripe Payment"
+							subTitle="Please enter payment details to place order."
 						/>
 					</>
 				);
@@ -121,11 +174,11 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		setErrorAddressFields(true);
 		message.error(`Must fill up required fields`);
 		return false;
-	}
+	};
 
 	const next = () => {
 		if (current === 1 && !validateShippingFields()) {
-			return
+			return;
 		}
 		setCurrent(current + 1);
 	};
@@ -134,7 +187,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		setCurrent(current - 1);
 	};
 
-	const resetFields = () =>{
+	const resetFields = () => {
 		setCurrent(0);
 		setContactFields({
 			email: '',
@@ -147,12 +200,18 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			addressCity: '',
 			addressState: '',
 			addressUnitNumber: '',
-			addressPostalCode: '',
+			addressPostalCode: ''
 		});
-	}
- 
+		setPaymentProcessing(false);
+	};
+
 	const onCreateOrder = async () => {
 		if (!animal || !user) return;
+		setPaymentProcessing(true);
+		if (animal.stripePaymentLink) {
+			window.open(animal.stripePaymentLink, '_blank');
+			return;
+		}
 		try {
 			const createOrder = await axios.post(`${API_URL}/orders`, {
 				data: {
@@ -160,7 +219,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 					breeder: animal.breeder.id,
 					animal: animal.id,
 					...addressFields,
-
+					phoneNumber
 				}
 			});
 			if (createOrder) {
@@ -174,6 +233,22 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		}
 	};
 
+	const onCancelPayment = () => {
+		confirm({
+			title: 'Are you sure you want to abandon this transaction?',
+			content: 'Closing this popup before the transaction is complete is not reversible.',
+			centered: true,
+			onOk() {
+				onCancel();
+				resetFields();
+				console.log('OK');
+			},
+			onCancel() {
+				console.log('Cancel');
+			}
+		});
+	};
+
 	const loadInitValues = () => {
 		if (!user) return;
 		setContactFields({
@@ -181,8 +256,8 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			firstName: user.firstName,
 			lastName: user.lastName,
 			phoneNumber: ''
-		})
-	}
+		});
+	};
 
 	useEffect(() => {
 		loadInitValues();
@@ -194,18 +269,19 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			className="checkoutDrawer"
 			title={`Checkout`}
 			open={opened}
-			onClose={onCancel}
+			onClose={paymentProcessing ? onCancelPayment : onCancel}
 			placement="right"
 			width={625}
+			closable={paymentProcessing}
 		>
 			{renderAnimalDetails()}
 			<div className="checkoutFormContainer">
-				<Steps className='checkoutFormStepper' current={current} items={items} />
+				<Steps className="checkoutFormStepper" current={current} items={items} />
 				{steps[current].content()}
 			</div>
 			<div className="checkoutCta">
-				{current > 0 && (
-					<Button htmlType="button" onClick={() => prev()}>
+				{current > 0 && !paymentProcessing && (
+					<Button disabled={paymentProcessing} htmlType="button" onClick={() => prev()}>
 						Previous
 					</Button>
 				)}
@@ -215,8 +291,8 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 					</Button>
 				)}
 				{current === steps.length - 1 && (
-					<Button onClick={onCreateOrder} htmlType="submit" type="primary">
-						Checkout
+					<Button loading={paymentProcessing} disabled={paymentProcessing} onClick={onCreateOrder} htmlType="submit" type="primary">
+						{paymentProcessing ? `Processing` : `Checkout`}
 					</Button>
 				)}
 			</div>

@@ -66,6 +66,7 @@ const SettingsView: React.FC = () => {
 				const { response } = info.file;
 				if (!response) return;
 				let ImageRes: Model.Image = {
+					id: response[0].id,
 					url: response[0].url
 				};
 				setUser({ ...user, avatar: ImageRes });
@@ -97,6 +98,7 @@ const SettingsView: React.FC = () => {
 				const { response } = info.file;
 				if (!response) return;
 				let ImageRes: Model.Image = {
+					id: response[0].id,
 					url: response[0].url
 				};
 				setUser({ ...user, breeder: {

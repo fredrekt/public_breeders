@@ -105,7 +105,7 @@ const Animalpage: React.FC = () => {
 						res.data.images.map((data: any) => ({
 							thumbnailClass: 'thumbnailAnimalGallery',
 							original: data.url,
-							thumbnail: data.formats.thumbnail.url
+							thumbnail: data.formats ? data.formats.thumbnail.url : data.url
 						}))
 					);
 				} else {

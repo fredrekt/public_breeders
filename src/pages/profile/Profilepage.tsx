@@ -90,18 +90,21 @@ const Profilepage: React.FC = () => {
 	};
 
 	const loadSocketNotifications = async () => {
+		if (!user) return;
 		socket.on('newNotification', async (data: any, error) => {
-			setListOfNotifications((prev: any) => {
-				const isExisting = prev && prev.some((obj: any) => parseInt(obj.id) === parseInt(data.id));
-				if (!isExisting) {
-					const updatedMessages = prev ? [...prev, data] : [data];
-					if (!data.isRead) {
-						setNotificationCount(prev.filter((data: Model.Notification) => !data.isRead).length + 1);
+			if (data.user.id === user.id) {
+				setListOfNotifications((prev: any) => {
+					const isExisting = prev && prev.some((obj: any) => parseInt(obj.id) === parseInt(data.id));
+					if (!isExisting) {
+						const updatedMessages = prev ? [...prev, data] : [data];
+						if (!data.isRead) {
+							setNotificationCount(prev.filter((data: Model.Notification) => !data.isRead).length + 1);
+						}
+						return updatedMessages;
 					}
-					return updatedMessages;
-				}
-				return prev;
-			});
+					return prev;
+				});
+			}
 		});
 
 		return () => {
@@ -111,7 +114,8 @@ const Profilepage: React.FC = () => {
 
 	useEffect(() => {
 		loadSocketNotifications();
-	}, []);
+		// eslint-disable-next-line
+	}, [user]);
 
 	useEffect(() => {
 		loadNotification()

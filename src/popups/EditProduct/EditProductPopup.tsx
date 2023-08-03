@@ -36,8 +36,11 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 		try {
 			let imageIds: number[] = [];
 			for (let file of fileList) {
-				if (!file.response) continue;
-				imageIds.push(file.response[0].id);
+				if (file.response) {
+					imageIds.push(file.response[0].id);
+				} else if (file.hasOwnProperty('url') && file.hasOwnProperty('id')) {
+					imageIds.push(file.id);
+				}
 			}
 			for (let file of fileListRemove) {
 				if (!file.id) continue;
