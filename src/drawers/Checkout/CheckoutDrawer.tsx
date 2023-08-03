@@ -47,7 +47,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		return (
 			<Card className="checkoutAnimalCard">
 				<div className="checkoutAnimalInfoContainer">
-					<img src={require(`../../assets/images/vectors/${randomVector}.png`)} alt="animal preview" />
+					<img src={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)} alt="animal preview" />
 					<div className="orderTitleBreederContent">
 						<Typography.Text className="orderTitleTxt">{animal.name}</Typography.Text>
 						<Typography.Text className="orderTitleOwnerTxt">{FormatMoney(animal.price)}</Typography.Text>
