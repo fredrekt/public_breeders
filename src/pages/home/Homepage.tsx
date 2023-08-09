@@ -4,7 +4,6 @@ import BreederStorefront from '../../components/breederStorefront/BreederStorefr
 import { Typography } from 'antd';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { getToken } from '../../utils/authHelpers';
-import ProtectedRoute from '../../utils/ProtectedRoute';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
 
 const Homepage: React.FC = () => {
