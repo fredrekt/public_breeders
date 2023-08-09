@@ -16,7 +16,6 @@ interface CheckoutDrawerProps extends DrawerModel {
 }
 
 const { confirm } = Modal;
-const socket = io(API_BASE_URL); //Connecting to Socket.io backend
 
 const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onForceCb, animal }) => {
 	const { user } = useUserContext();
@@ -209,26 +208,39 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	};
 
 	const loadSocketNotifications = async () => {
-		socket.on('checkoutSuccessful', async (data: any, error) => {
+		const socket = io(API_BASE_URL); //Connecting to Socket.io backend
+
+		socket.on("connect", () => {
+			console.log('connected');
+		});
+
+		socket.on("useCheckoutStripeSuccess", (data) => {
+			console.log("Received useCheckoutStripeSuccess event:", data);
+			// Process the received data and display a notification to the user
 			setPaymentProcessing(false);
 			setPaymentCompleted(true);
 		});
-		
+
 		return () => {
 			socket.disconnect();
 		};
 	};
-
-	useEffect(() => {
-		loadSocketNotifications();
-	}, []);
 
 	const onCreateOrder = async () => {
 		if (!animal || !user) return;
 		if (!paymentCompleted) {
 			setPaymentProcessing(true);
 			if (animal.stripePaymentLink) {
-				window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
+				const newWindow = window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
+				const checkClosedInterval = setInterval(() => {
+					if (newWindow && newWindow.closed) {
+					  clearInterval(checkClosedInterval);
+					  // Perform actions when the window is closed
+					  console.log('Child window has been closed');
+					  setPaymentProcessing(false);
+					  setPaymentCompleted(true);
+					}
+				}, 1000); // Check every 1 second
 				return;
 			}
 		}
@@ -283,6 +295,10 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		loadInitValues();
 		// eslint-disable-next-line
 	}, [user]);
+
+	useEffect(() => {
+		loadSocketNotifications();
+	}, []);
 
 	return (
 		<Drawer
