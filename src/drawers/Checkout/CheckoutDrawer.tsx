@@ -8,13 +8,15 @@ import { randomVector } from '../../utils/randomVector';
 import FormatMoney from '../../utils/FormatMoney';
 import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
-import { API_URL } from '../../utils/constant';
+import { API_BASE_URL, API_URL } from '../../utils/constant';
+import io from 'socket.io-client';
 
 interface CheckoutDrawerProps extends DrawerModel {
 	animal: Api.Animal.Res.AnimalListing | null;
 }
 
 const { confirm } = Modal;
+const socket = io(API_BASE_URL); //Connecting to Socket.io backend
 
 const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onForceCb, animal }) => {
 	const { user } = useUserContext();
@@ -34,6 +36,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	});
 	const [errorAddressFields, setErrorAddressFields] = useState<boolean>(false);
 	const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
+	const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
 
 	const onChangeContactFields = (e: any) => setContactFields({ ...contactFields, [e.target.name]: e.target.value });
 	const onChangeAddressFields = (e: any) => setAddressFields({ ...addressFields, [e.target.name]: e.target.value });
@@ -205,11 +208,26 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		setPaymentProcessing(false);
 	};
 
+	const loadSocketNotifications = async () => {
+		socket.on('checkoutSuccessful', eventData => {
+			setPaymentProcessing(false);
+			setPaymentCompleted(true);
+		});
+		
+		return () => {
+			socket.disconnect();
+		};
+	};
+
+	useEffect(() => {
+		loadSocketNotifications();
+	}, []);
+
 	const onCreateOrder = async () => {
 		if (!animal || !user) return;
 		setPaymentProcessing(true);
 		if (animal.stripePaymentLink) {
-			window.open(animal.stripePaymentLink, '_blank');
+			window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
 			return;
 		}
 		try {
@@ -292,7 +310,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 				)}
 				{current === steps.length - 1 && (
 					<Button loading={paymentProcessing} disabled={paymentProcessing} onClick={onCreateOrder} htmlType="submit" type="primary">
-						{paymentProcessing ? `Processing` : `Checkout`}
+						{(!paymentProcessing && paymentCompleted) ? 'Close' : (paymentProcessing && !paymentCompleted) ? `Processing` : `Checkout`}
 					</Button>
 				)}
 			</div>

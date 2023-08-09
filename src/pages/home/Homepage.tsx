@@ -29,11 +29,7 @@ const Homepage: React.FC = () => {
 			</>
 		);
 		if (loggedIn) {
-			return (
-				<ProtectedRoute>
-					<PrivateLayout className="homepage">{neutralStoreFront}</PrivateLayout>
-				</ProtectedRoute>
-			);
+			return <PrivateLayout className="homepage">{neutralStoreFront}</PrivateLayout>;
 		} else {
 			return (
 				<PublicLayout navbar className="homepage">

@@ -6,6 +6,7 @@ import { message } from 'antd';
 import axios from 'axios';
 import { AuthContext } from '../context/UserContext';
 import { Api } from '../models/api';
+import PaywallPopup from '../popups/PaywallPopup/PaywallPopup';
 
 interface ProtectedRouteInterface {
 	children: JSX.Element;
@@ -17,6 +18,7 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 	const authToken = getToken();
 	const [userData, setUserData] = useState<Api.User.Res.LoggedInUser | undefined>();
 	const [isLoading, setIsLoading] = useState(false);
+	const [openPaywall, setOpenPaywall] = useState<boolean>(false);
 
 	const verifyUserToken = async (token: string) => {
 		setIsLoading(true);
@@ -40,6 +42,14 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 		}
 	};
 
+	const breederRestrictions = async () => {
+		if (!authToken) return;
+		if (!userData) return;
+		if (!userData.isBuyer && !userData.isSubscribed) {
+			setOpenPaywall(true)
+		}
+	}
+
 	const checkUser = async () => {
 		if (!authToken) {
 			setIsLoggedIn(false);
@@ -52,14 +62,29 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 		setUserData(user);
 	};
 
+	const handleOnClosePaywall = () => {
+		if (!userData) return;
+		if (!userData.isSubscribed) {
+			setOpenPaywall(true);
+		} else {
+			setOpenPaywall(false);
+		}
+	}
+
 	useEffect(() => {
 		checkUser();
 		// eslint-disable-next-line
 	}, [authToken]);
 
+	useEffect(() => {
+		breederRestrictions();
+		// eslint-disable-next-line
+	}, [userData, authToken]);
+
 	return isLoggedIn ? (
 		<AuthContext.Provider value={{ user: userData, setUser: handleUser, isLoading }}>
 			{props.children}
+			<PaywallPopup opened={openPaywall} onCancel={handleOnClosePaywall} onForceCb={() => console.log('object')} />
 		</AuthContext.Provider>
 	) : (
 		<Navigate to="/login" replace />

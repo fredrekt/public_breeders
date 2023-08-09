@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PopupModel } from '../../models/PopupModel';
 import './EditProductPopup.scss';
-import { Button, Form, Input, Modal, Select, Space, Typography, message } from 'antd';
+import { Button, Form, Input, InputNumber, Modal, Select, Space, Typography, message } from 'antd';
 import axios from 'axios';
 import { API_URL, BEARER } from '../../utils/constant';
 import { PlusOutlined } from '@ant-design/icons';
@@ -141,7 +141,7 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 					/>
 				</Form.Item>
 				<Form.Item name="price">
-					<Input placeholder="Price" />
+					<InputNumber className='productPricing' precision={2} placeholder="Price" />
 				</Form.Item>
 				<Form.Item name="age">
 					<Input placeholder="Age" />

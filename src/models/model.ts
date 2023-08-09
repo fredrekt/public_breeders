@@ -7,6 +7,7 @@ export declare namespace Model {
 		lastName: string;
 		isBuyer: boolean;
 		avatar: Image;
+		isSubscribed: boolean;
 	}
 
 	export interface Breeder {

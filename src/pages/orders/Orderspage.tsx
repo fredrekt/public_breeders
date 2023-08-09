@@ -104,7 +104,7 @@ const Orderspage: React.FC = () => {
 				return (
 					<div className="orderTitleContent">
 						<Image
-							src={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)}
+							src={(Array.isArray(animal.images) && animal.images.length) ? animal.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)}
 						/>
 						<div className="orderTitleBreederContent">
 							<Typography.Text className="orderTitleTxt">{animal.name}</Typography.Text>
