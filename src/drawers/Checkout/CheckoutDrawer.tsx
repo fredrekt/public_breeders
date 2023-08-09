@@ -158,8 +158,8 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 					<>
 						<Result
 							icon={<img src={dogImg} alt="stripe checkout" />}
-							title="Stripe Payment"
-							subTitle="Please enter payment details to place order."
+							title={paymentCompleted ? `Payment Verified` : "Stripe Payment"}
+							subTitle={paymentCompleted ? `Your order has been placed & breeder has been notified.` : "Please enter payment details to place order."}
 						/>
 					</>
 				);
@@ -209,7 +209,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	};
 
 	const loadSocketNotifications = async () => {
-		socket.on('checkoutSuccessful', eventData => {
+		socket.on('checkoutSuccessful', async (data: any, error) => {
 			setPaymentProcessing(false);
 			setPaymentCompleted(true);
 		});
@@ -225,10 +225,12 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 
 	const onCreateOrder = async () => {
 		if (!animal || !user) return;
-		setPaymentProcessing(true);
-		if (animal.stripePaymentLink) {
-			window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
-			return;
+		if (!paymentCompleted) {
+			setPaymentProcessing(true);
+			if (animal.stripePaymentLink) {
+				window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
+				return;
+			}
 		}
 		try {
 			const createOrder = await axios.post(`${API_URL}/orders`, {
@@ -298,7 +300,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 				{steps[current].content()}
 			</div>
 			<div className="checkoutCta">
-				{current > 0 && !paymentProcessing && (
+				{current > 0 && !paymentProcessing && !paymentCompleted && (
 					<Button disabled={paymentProcessing} htmlType="button" onClick={() => prev()}>
 						Previous
 					</Button>
