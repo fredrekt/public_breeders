@@ -215,6 +215,9 @@ const Animalpage: React.FC = () => {
 
 		const renderAnimalCta = () => {
 			if (!user || !user.isBuyer) return;
+			if (!animalData) return;
+			if (animalData.isDeleted) return;
+
 			return (
 				<div className="animalCta">
 					<Button onClick={onBuy} className="" size="large" type="primary">

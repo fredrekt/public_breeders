@@ -48,6 +48,10 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 		if (!userData.isBuyer && !userData.isSubscribed) {
 			setOpenPaywall(true)
 		}
+		if (!userData.isBuyer && userData.isSubscribed && !userData.stripeAccountId && !userData.stripeAccountLink) {
+			// redirect to breeder onboarding payout setup page
+			navigate(`/breeder/onboarding`);
+		}
 	}
 
 	const checkUser = async () => {

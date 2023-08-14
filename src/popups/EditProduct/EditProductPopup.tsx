@@ -141,7 +141,7 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 					/>
 				</Form.Item>
 				<Form.Item name="price">
-					<InputNumber className='productPricing' precision={2} placeholder="Price" />
+					<InputNumber disabled className='productPricing' precision={2} placeholder="Price" />
 				</Form.Item>
 				<Form.Item name="age">
 					<Input placeholder="Age" />

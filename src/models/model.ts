@@ -8,6 +8,8 @@ export declare namespace Model {
 		isBuyer: boolean;
 		avatar: Image;
 		isSubscribed: boolean;
+		stripeAccountId: string;
+		stripeAccountLink: string;
 	}
 
 	export interface Breeder {
@@ -34,6 +36,8 @@ export declare namespace Model {
 		stripePaymentLink: string;
 		stripeProductJSON: StripeProduct;
 		stripePaymentLinkJSON: StripePaymentLink;
+		stripePaymentLinkId: string;
+		isDeleted: boolean;
 	}
 
 	export interface Favorites {
@@ -61,6 +65,7 @@ export declare namespace Model {
 		addressPostalCode: string;
 		animal: Model.Animal;
 		breeder: Model.Breeder;
+		stripePaymentIntentId: string;
 	}
 
 	export type OrderStatus = 'PENDING' | 'CANCELLED' | 'IN_TRANSIT' | 'DELIVERED';

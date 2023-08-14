@@ -30,9 +30,11 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 	const [previewImage, setPreviewImage] = useState<string>('');
 	const [previewTitle, setPreviewTitle] = useState<string>('');
 	const [fileList, setFileList] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const onCreate = async (values: any) => {
 		if (!user) return;
+		setIsLoading(true);
 		try {
 			let createData: Api.Animal.Req.Create = {
 				...values
@@ -53,9 +55,11 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 				}
 			}
 			message.success(`Successfully create a product.`);
+			setIsLoading(false);
 			onCancel();
 			onForceCb();
 		} catch (error) {
+			setIsLoading(false);
 			message.error(`Something wen't wrong in creating a product.`);
 		}
 	};
@@ -153,9 +157,9 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 				</Form.Item>
 				<Form.Item className="createProductCta">
 					<Space className="createProductCtaSpace" align="center">
-						<Button onClick={onCancel}>Cancel</Button>
-						<Button type="primary" htmlType="submit">
-							Create Product
+						{!isLoading && <Button onClick={onCancel}>Cancel</Button>}
+						<Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
+							{isLoading ? `Creating Product...` : `Create Product`}
 						</Button>
 					</Space>
 				</Form.Item>

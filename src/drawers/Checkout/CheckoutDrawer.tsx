@@ -16,6 +16,7 @@ interface CheckoutDrawerProps extends DrawerModel {
 }
 
 const { confirm } = Modal;
+const socket = io(API_BASE_URL); //Connecting to Socket.io backend
 
 const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onForceCb, animal }) => {
 	const { user } = useUserContext();
@@ -36,6 +37,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	const [errorAddressFields, setErrorAddressFields] = useState<boolean>(false);
 	const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
 	const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
+	const [isTabActive, setIsTabActive] = useState(true);
 
 	const onChangeContactFields = (e: any) => setContactFields({ ...contactFields, [e.target.name]: e.target.value });
 	const onChangeAddressFields = (e: any) => setAddressFields({ ...addressFields, [e.target.name]: e.target.value });
@@ -49,7 +51,14 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		return (
 			<Card className="checkoutAnimalCard">
 				<div className="checkoutAnimalInfoContainer">
-					<img src={Array.isArray(animal.images) && animal.images.length ? animal.images[0].url : require(`../../assets/images/vectors/${randomVector}.png`)} alt="animal preview" />
+					<img
+						src={
+							Array.isArray(animal.images) && animal.images.length
+								? animal.images[0].url
+								: require(`../../assets/images/vectors/${randomVector}.png`)
+						}
+						alt="animal preview"
+					/>
 					<div className="orderTitleBreederContent">
 						<Typography.Text className="orderTitleTxt">{animal.name}</Typography.Text>
 						<Typography.Text className="orderTitleOwnerTxt">{FormatMoney(animal.price)}</Typography.Text>
@@ -157,8 +166,12 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 					<>
 						<Result
 							icon={<img src={dogImg} alt="stripe checkout" />}
-							title={paymentCompleted ? `Payment Verified` : "Stripe Payment"}
-							subTitle={paymentCompleted ? `Your order has been placed & breeder has been notified.` : "Please enter payment details to place order."}
+							title={paymentCompleted ? `Payment Verified` : 'Stripe Payment'}
+							subTitle={
+								paymentCompleted
+									? `Your order has been placed & breeder has been notified.`
+									: 'Please enter payment details to place order.'
+							}
 						/>
 					</>
 				);
@@ -208,14 +221,8 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	};
 
 	const loadSocketNotifications = async () => {
-		const socket = io(API_BASE_URL); //Connecting to Socket.io backend
-
-		socket.on("connect", () => {
-			console.log('connected');
-		});
-
-		socket.on("useCheckoutStripeSuccess", (data) => {
-			console.log("Received useCheckoutStripeSuccess event:", data);
+		socket.on('useCheckoutStripeSuccess', (data) => {
+			console.log('Received useCheckoutStripeSuccess event:', data);
 			// Process the received data and display a notification to the user
 			setPaymentProcessing(false);
 			setPaymentCompleted(true);
@@ -231,37 +238,13 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		if (!paymentCompleted) {
 			setPaymentProcessing(true);
 			if (animal.stripePaymentLink) {
-				const newWindow = window.open(`${animal.stripePaymentLink}?prefilled_email=${user.email}`, '_blank', `width=600,height=600,left=${(window.innerWidth - 600) /2},top=${(window.innerHeight - 600) / 2}`);
-				const checkClosedInterval = setInterval(() => {
-					if (newWindow && newWindow.closed) {
-					  clearInterval(checkClosedInterval);
-					  // Perform actions when the window is closed
-					  console.log('Child window has been closed');
-					  setPaymentProcessing(false);
-					  setPaymentCompleted(true);
-					}
-				}, 1000); // Check every 1 second
+				window.open(
+					`${animal.stripePaymentLink}?prefilled_email=${user.email}`,
+					'_blank',
+					'noopener,noreferrer'
+				);
 				return;
 			}
-		}
-		try {
-			const createOrder = await axios.post(`${API_URL}/orders`, {
-				data: {
-					ordered_by: user.id,
-					breeder: animal.breeder.id,
-					animal: animal.id,
-					...addressFields,
-					phoneNumber
-				}
-			});
-			if (createOrder) {
-				message.success('Successfully placed order.');
-				onForceCb();
-				onCancel();
-				resetFields();
-			}
-		} catch (error) {
-			message.error(`Something wen't wrong in `);
 		}
 	};
 
@@ -291,6 +274,30 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 		});
 	};
 
+	const refreshContext = async () => {
+		if (!animal || !animal.stripePaymentLinkId) return;
+		try {
+			const res = (await axios.post(`${API_URL}/payment-log/verify`, {
+				data: {
+					stripePaymentLinkId: animal.stripePaymentLinkId,
+					breeder: animal.breeder.id,
+					animal: animal.id,
+					...addressFields,
+					phoneNumber,
+					paymentStatus: 'COMPLETED'
+				}
+			})).data;
+			if (res) {
+				message.success('Successfully placed order.');
+				onForceCb();
+				onCancel();
+				resetFields();
+			}
+		} catch (error) {
+			message.error(`Something wen't wrong in verifying order payment.`)
+		}
+	}
+
 	useEffect(() => {
 		loadInitValues();
 		// eslint-disable-next-line
@@ -299,6 +306,24 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 	useEffect(() => {
 		loadSocketNotifications();
 	}, []);
+
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			setIsTabActive(document.visibilityState === 'visible');
+		};
+
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!opened) return;
+		refreshContext();
+		// eslint-disable-next-line
+	}, [isTabActive, opened]);
 
 	return (
 		<Drawer
@@ -327,8 +352,18 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 					</Button>
 				)}
 				{current === steps.length - 1 && (
-					<Button loading={paymentProcessing} disabled={paymentProcessing} onClick={onCreateOrder} htmlType="submit" type="primary">
-						{(!paymentProcessing && paymentCompleted) ? 'Close' : (paymentProcessing && !paymentCompleted) ? `Processing` : `Checkout`}
+					<Button
+						loading={paymentProcessing}
+						disabled={paymentProcessing}
+						onClick={onCreateOrder}
+						htmlType="submit"
+						type="primary"
+					>
+						{!paymentProcessing && paymentCompleted
+							? 'Close'
+							: paymentProcessing && !paymentCompleted
+							? `Processing`
+							: `Checkout`}
 					</Button>
 				)}
 			</div>

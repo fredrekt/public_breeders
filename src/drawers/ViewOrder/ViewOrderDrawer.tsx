@@ -8,6 +8,7 @@ import { useUserContext } from '../../context/UserContext';
 import AnimalBreederInfo from '../../components/AnimalBreederInfo/AnimalBreederInfo';
 import { randomVector } from '../../utils/randomVector';
 import statusColor from '../../utils/statusColors';
+import statusText from '../../utils/statusText';
 
 interface ViewOrderDrawerProps extends DrawerModel {
 	order: Api.Order.Res.OrderListing | null;
@@ -56,7 +57,7 @@ const ViewOrderDrawer: React.FC<ViewOrderDrawerProps> = ({ opened, onCancel, ord
 							<Descriptions.Item label="User">{order.ordered_by.firstName} {order.ordered_by.lastName}</Descriptions.Item>
 							<Descriptions.Item label="Email">{order.ordered_by.email}</Descriptions.Item>
 							<Descriptions.Item label="Received by user">{!order.isReceivedByUser ? 'No' : 'Yes'}</Descriptions.Item>
-							<Descriptions.Item label="Status"><Tag className='viewOrderStatusTag' color={statusColor(order.status)}>{order.status.toLowerCase()}</Tag></Descriptions.Item>
+							<Descriptions.Item label="Status"><Tag className='viewOrderStatusTag' color={statusColor(order.status)}>{statusText(order.status)}</Tag></Descriptions.Item>
 							<Descriptions.Item label="Address">
 								{order.addressLine1}
 							</Descriptions.Item>

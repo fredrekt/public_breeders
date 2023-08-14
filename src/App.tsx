@@ -20,6 +20,7 @@ import AppStorepage from './pages/appStore/AppStorepage';
 import { message } from 'antd';
 import TermsAndConditionsPage from './pages/termsAndConditions/TermsAndConditionsPage';
 import PrivacyPolicypage from './pages/privacyPolicy/PrivacyPolicypage';
+import BreederOnboardingPayoutpage from './pages/breederOnboardingPayout/BreederOnboardingPayoutpage';
 
 message.config({
 	duration: 1,
@@ -93,6 +94,14 @@ const App: React.FC = () => {
 					element={
 						<ProtectedRoute>
 							<Dashboardpage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/breeder/onboarding"
+					element={
+						<ProtectedRoute>
+							<BreederOnboardingPayoutpage />
 						</ProtectedRoute>
 					}
 				/>

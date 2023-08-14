@@ -16,6 +16,7 @@ import { useUserContext } from '../../context/UserContext';
 import statusColor from '../../utils/statusColors';
 import { randomVector } from '../../utils/randomVector';
 import { Api } from '../../models/api';
+import statusText from '../../utils/statusText';
 
 const { confirm } = Modal;
 
@@ -25,6 +26,7 @@ const Orderspage: React.FC = () => {
 	const [openViewOrder, setOpenViewOrder] = useState<boolean>(false);
 	const [orderListing, setOrderListing] = useState<Model.Order[]>([]);
 	const [selectedOrder, setSelectedOrder] = useState<Api.Order.Res.OrderListing | null>(null);
+	const [forceUpdate, setForceUpdate] = useState<boolean>(false);
 
 	const onChangeOrderStatus = (status: string) => setOrderStatus(status);
 
@@ -32,13 +34,56 @@ const Orderspage: React.FC = () => {
 		setOpenViewOrder(true);
 	};
 
-	const onCancelOrder = () => {
+	const onReceivedOrder = async () => {
+		if (!selectedOrder) return;
 		confirm({
-			title: 'Confirm Txt',
+			title: 'Order Received',
+			content: 'Are you sure to mark this order as received?',
+			centered: true,
+			okText: 'Yes, i received it',
+			async onOk() {
+				try {
+					const res = await axios.put(`${API_URL}/orders/${selectedOrder.id}`, {
+						data: {
+							status: 'DELIVERED',
+							isReceivedByUser: true,
+							isDeliveredByBreeder: true
+						}
+					});
+					if (res) {
+						setForceUpdate(!forceUpdate);
+						message.success(`Order marked as received.`);
+					}
+				} catch (error) {
+					message.error(`Something wen't wrong in marking order as received.`)
+				}
+			},
+			onCancel() {
+				console.log('Cancel');
+			}
+		});
+	}
+
+	const onCancelOrder = async () => {
+		if (!selectedOrder) return;
+		confirm({
+			title: 'Cancel Order',
 			content: 'Are you sure you want to cancel this order?',
 			centered: true,
-			onOk() {
-				console.log('OK');
+			async onOk() {
+				try {
+					const res = await axios.put(`${API_URL}/orders/${selectedOrder.id}`, {
+						data: {
+							status: 'CANCELLED'
+						}
+					});
+					if (res) {
+						setForceUpdate(!forceUpdate);
+						message.success(`Order successfully cancelled and will refund buyer.`);
+					}
+				} catch (error) {
+					message.error(`Something wen't wrong in cancelling order.`)
+				}
 			},
 			onCancel() {
 				console.log('Cancel');
@@ -46,54 +91,32 @@ const Orderspage: React.FC = () => {
 		});
 	};
 
-	const onDeleteOrder = () => {
+	const onMarkSent = async () => {
+		if (!selectedOrder) return;
 		confirm({
-			title: 'Confirm Txt',
-			content: 'Are you sure you want to delete this order?',
+			title: 'Dispatch Order',
+			content: 'Is the ordered product on its way?',
 			centered: true,
-			onOk() {
-				console.log('OK');
+			async onOk() {
+				try {
+					const res = await axios.put(`${API_URL}/orders/${selectedOrder.id}`, {
+						data: {
+							status: 'IN_TRANSIT'
+						}
+					});
+					if (res) {
+						setForceUpdate(!forceUpdate);
+						message.success(`Order successfully marked sent & its on the way.`);
+					}
+				} catch (error) {
+					message.error(`Something wen't wrong in marking the order in transit.`)
+				}
 			},
 			onCancel() {
 				console.log('Cancel');
 			}
 		});
-	};
-
-	const items: MenuProps['items'] = [
-		{
-			key: '1',
-			label: (
-				<Typography.Text className="orderTableColCta">
-					<i className="ri-eye-line"></i> View
-				</Typography.Text>
-			),
-			onClick: () => onViewOrder()
-		},
-		{
-			key: '2',
-			label: (
-				<Typography.Text className="orderTableColCta">
-					<i className="ri-close-circle-line"></i> Cancel
-				</Typography.Text>
-			),
-			disabled: true,
-			title: 'Stripe functionality should be finished in order for this to work',
-			onClick: () => onCancelOrder()
-		},
-		{
-			key: '3',
-			label: (
-				<Typography.Text className="orderTableColCta">
-					<i className="ri-delete-bin-line"></i> Delete
-				</Typography.Text>
-			),
-			disabled: true,
-			className: 'deleteCta',
-			title: 'Stripe functionality should be finished in order for this to work',
-			onClick: () => onDeleteOrder(),
-		}
-	];
+	}
 
 	const columns: ColumnsType<Model.Order> = [
 		{
@@ -128,7 +151,7 @@ const Orderspage: React.FC = () => {
 			dataIndex: 'status',
 			render: (status) => (
 				<Tag className="orderStatusTag" color={statusColor(status)} key={`id-${status}`}>
-					{status.toLowerCase()}
+					{statusText(status)}
 				</Tag>
 			)
 		},
@@ -156,20 +179,76 @@ const Orderspage: React.FC = () => {
 			title: '',
 			dataIndex: '',
 			key: 'action',
-			render: (record) => (
-				<Dropdown
-					overlayClassName="ordersTableColCtaDropdown"
-					trigger={['click']}
-					menu={{ items }}
-					onOpenChange={() => setSelectedOrder(record)}
-					placement="bottom"
-					arrow={{ pointAtCenter: true }}
-				>
-					<Button size="small">
-						<i className="ri-more-2-line"></i>
-					</Button>
-				</Dropdown>
-			)
+			render: (record) => {
+				if (!user) return;
+				let items: MenuProps['items'] = [
+					{
+						key: '1',
+						label: (
+							<Typography.Text className="orderTableColCta">
+								<i className="ri-eye-line"></i> View
+							</Typography.Text>
+						),
+						onClick: () => onViewOrder()
+					},
+					{
+						key: '2',
+						label: (
+							<Typography.Text className="orderTableColCta">
+								<i className="ri-award-line"></i> Received
+							</Typography.Text>
+						),
+						disabled: record.status === 'DELIVERED' || record.isReceivedByUser ? true : false,
+						className: 'receivedCta',
+						onClick: () => onReceivedOrder()
+					},
+					{
+						key: '3',
+						label: (
+							<Typography.Text className="orderTableColCta">
+								<i className="ri-checkbox-circle-line"></i> Mark sent
+							</Typography.Text>
+						),
+						disabled: record.status === 'IN_TRANSIT' ? true : false,
+						className: 'receivedCta',
+						title: 'Stripe functionality should be finished in order for this to work',
+						onClick: () => onMarkSent()
+					},
+					{
+						key: '4',
+						label: (
+							<Typography.Text className="orderTableColCta" title='Cannot cancel order if order is in transit.'>
+								<i className="ri-close-circle-line"></i> Cancel
+							</Typography.Text>
+						),
+						disabled: record.status === 'IN_TRANSIT' || record.status === 'DELIVERED' ? true : false,
+						className: 'deleteCta',
+						title: 'Stripe functionality should be finished in order for this to work',
+						onClick: () => onCancelOrder(),
+					}
+				];
+				if (user.isBuyer) {
+					items = items.slice(0, -2);
+				} else {
+					items = items.filter((item: any) => item.key !== '2');
+				}
+				return (
+					<>
+					<Dropdown
+						overlayClassName="ordersTableColCtaDropdown"
+						trigger={['click']}
+						menu={{ items }}
+						onOpenChange={() => setSelectedOrder(record)}
+						placement="bottom"
+						arrow={{ pointAtCenter: true }}
+					>
+						<Button size="small">
+							<i className="ri-more-2-line"></i>
+						</Button>
+					</Dropdown>
+					</>
+				)
+			}
 		}
 	];
 
@@ -190,7 +269,7 @@ const Orderspage: React.FC = () => {
 	useEffect(() => {
 		loadListOfOrders();
 		// eslint-disable-next-line
-	}, [orderStatus, user]);
+	}, [orderStatus, user, forceUpdate]);
 
 	return (
 		<PrivateLayout className="ordersPage customLayoutWidth">
@@ -209,6 +288,12 @@ const Orderspage: React.FC = () => {
 							type={orderStatus === 'PENDING' ? 'primary' : 'default'}
 						>
 							Pending
+						</Button>
+						<Button
+							onClick={() => onChangeOrderStatus('IN_TRANSIT')}
+							type={orderStatus === 'IN_TRANSIT' ? 'primary' : 'default'}
+						>
+							In Transit
 						</Button>
 						<Button
 							onClick={() => onChangeOrderStatus('DELIVERED')}

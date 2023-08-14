@@ -53,9 +53,20 @@
 .ordersTableColCtaDropdown {
 	.orderTableColCta {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		gap: 5px;
+	}
+	.receivedCta {
+		.orderTableColCta {
+			color: #98b76b;
+		}
+		&:hover {
+			background-color: #98b76b !important;
+			.orderTableColCta {
+				color: #ffffff;
+			}
+		}
 	}
 	.deleteCta {
 		.orderTableColCta {

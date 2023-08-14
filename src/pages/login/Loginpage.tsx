@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Loginpage.scss';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { Card, Col, Row, Space, Typography, message } from 'antd';
@@ -10,16 +10,20 @@ import { setToken } from '../../utils/authHelpers';
 import registerImg from '../../assets/images/onboarding_hero.png';
 
 const Loginpage: React.FC = () => {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	const onLogin = async (values: any) => {
+		setIsLoading(true);
 		try {
 			const res = await axios.post(`${API_URL}/auth/local`, values);
 			if (!res) return;
+			setIsLoading(false);
 			setToken(res.data.jwt);
 			message.success(`Successfully logged in.`);
 			navigate('/');
 		} catch (error) {
+			setIsLoading(false);
 			message.error(`Wrong password/username.`);
 		}
 	};
@@ -56,7 +60,7 @@ const Loginpage: React.FC = () => {
 							</Form.Item>
 
 							<Form.Item>
-								<Button type="primary" htmlType="submit" className="loginCta">
+								<Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit" className="loginCta">
 									Login
 								</Button>
 							</Form.Item>

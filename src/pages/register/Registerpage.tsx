@@ -18,10 +18,12 @@ const Registerpage: React.FC = () => {
 	const navigate = useNavigate();
 	const [registrationStep, setRegistrationStep] = useState<number>(1);
 	const [accountType, setAccountType] = useState<number>(1);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const onRegister = async (values: any) => {
 		if (!values) return;
 		try {
+			setIsLoading(true);
 			let registerData: Api.User.Req.Create = {
 				isBuyer: accountType === 1 ? true : false,
 				firstName: values.firstName,
@@ -41,12 +43,14 @@ const Registerpage: React.FC = () => {
 			if (!res) return;
 			setToken(res.data.jwt);
 			message.success('Successfully created an account.');
+			setIsLoading(false);
 			if (!registerData.isBuyer) {
 				navigate('/profile');
 			} else {
 				navigate('/');
 			}
 		} catch (err: any) {
+			setIsLoading(false);
 			const { error } = err.response.data;
 			if (error.message) {
 				message.error(error.message);
@@ -202,7 +206,7 @@ const Registerpage: React.FC = () => {
 									)}
 
 									<Form.Item>
-										<Button type="primary" htmlType="submit" className="registerCta">
+										<Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit" className="registerCta">
 											Sign Up
 										</Button>
 									</Form.Item>
