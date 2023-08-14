@@ -21,6 +21,8 @@ import { message } from 'antd';
 import TermsAndConditionsPage from './pages/termsAndConditions/TermsAndConditionsPage';
 import PrivacyPolicypage from './pages/privacyPolicy/PrivacyPolicypage';
 import BreederOnboardingPayoutpage from './pages/breederOnboardingPayout/BreederOnboardingPayoutpage';
+import SuccessPage from './pages/stripe/SuccessPage';
+import MissingPage from './pages/missing/MissingPage';
 
 message.config({
 	duration: 1,
@@ -35,12 +37,14 @@ const App: React.FC = () => {
 				<Route path="/login" element={<Loginpage />} />
 				<Route path="/register" element={<Registerpage />} />
 				<Route path="/forgot-password" element={<ForgotPassword />} />
+				<Route path="/forgot-password/:id" element={<ForgotPassword />} />
 				<Route path="/about" element={<Aboutpage />} />
 				<Route path="/contact" element={<Contactpage />} />
 				<Route path="/demo" element={<Demopage />} />
 				<Route path="/mobile" element={<AppStorepage />} />
 				<Route path="/terms-and-conditions" element={<TermsAndConditionsPage/>} />
 				<Route path="/privacy-policy" element={<PrivacyPolicypage/>} />
+				<Route path="/stripe/success" element={<SuccessPage />} />
 				<Route
 					path="/breeder/:id"
 					element={
@@ -105,6 +109,7 @@ const App: React.FC = () => {
 						</ProtectedRoute>
 					}
 				/>
+				<Route path="*" element={<MissingPage />} />
 			</Routes>
 		</>
 	);
