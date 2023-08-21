@@ -1,16 +1,63 @@
-.privateTermsAndConditionsPage, .publicTermsAndConditionsPage {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    max-width: 1600px;
-    width: 100%;
-    box-sizing: border-box;
-    margin: auto;
-    padding: 50px 0;
-    .richtextContent {
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-    }
+.privateTermsAndConditionsPage,
+.publicTermsAndConditionsPage {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	max-width: 1600px;
+	width: 100%;
+	box-sizing: border-box;
+	margin: auto;
+	padding: 50px 0;
+	.richtextContent {
+		height: 700px;
+		background-color: rgba(187, 186, 187, 0.2); /* Background color with opacity */
+		padding: 15px;
+		overflow-y: scroll;
+		margin-bottom: 25px;
+		margin-left: 50px;
+		margin-right: 50px;
+		h1 {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+	}
+
+	@media all and (max-width: 480px) {
+		padding: 25px;
+		.ant-card-body {
+			padding: 24px 0 24px 0;
+		}
+		.richtextContent {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
+.pageHeaderLegal {
+	text-align: center;
+	.legalImgIcon {
+		width: 75px;
+	}
+	.legalPageTitle {
+		margin-top: 0;
+	}
 }

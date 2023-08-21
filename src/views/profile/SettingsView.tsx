@@ -135,30 +135,31 @@ const SettingsView: React.FC = () => {
 					</Col>
 					<Col className="settingsHeaderCta" lg={4}>
 						<Upload {...userUploadProps}>
-							<Button>Upload</Button>
+							<Button>Select Image</Button>
 						</Upload>
 					</Col>
 				</Row>
 			</Card>
 			<Card className="settingsPersonalInfoCard">
 				<Typography.Title className="settingsPersonalInfoHeaderTxt" level={4}>
-					Personal Information
+					{user.isBuyer ? 'Buyer' : 'Breeder'} Personal Information
 				</Typography.Title>
-				<Form initialValues={user} size="large" layout={'vertical'} onFinish={onUpdateInformation}>
-					<Space className="twoFormCol" align="baseline">
-						<Form.Item name={'firstName'}>
-							<Input placeholder="First Name" />
-						</Form.Item>
-						<Form.Item name={'lastName'}>
-							<Input placeholder="Last Name" />
-						</Form.Item>
-					</Space>
+				<Form initialValues={user} size="large" layout={'horizontal'} onFinish={onUpdateInformation}>
+					<Form.Item name="username" label="Username">
+						<Input readOnly />
+					</Form.Item>
+					<Form.Item name={'firstName'} label="First name">
+						<Input placeholder="First Name" />
+					</Form.Item>
+					<Form.Item name={'lastName'} label="Last name">
+						<Input placeholder="Last Name" />
+					</Form.Item>
 					<Form.Item name="email" label="Email">
-						<Input disabled placeholder="Enter email address" />
+						<Input readOnly />
 					</Form.Item>
 					<Form.Item>
 						<Button htmlType="submit" type="primary">
-							Update Information
+							Save Information
 						</Button>
 					</Form.Item>
 				</Form>
@@ -172,7 +173,7 @@ const SettingsView: React.FC = () => {
 					<Form
 						initialValues={user.breeder}
 						size="large"
-						layout={'vertical'}
+						layout={'horizontal'}
 						form={form}
 						onFinish={onUpdateBreederInformation}
 					>
@@ -188,7 +189,7 @@ const SettingsView: React.FC = () => {
 									shape="circle"
 								/>
 								<Upload {...breederUploadProps}>
-									<Button>Upload</Button>
+									<Button>Select Business Image</Button>
 								</Upload>
 							</Space>
 						</Form.Item>

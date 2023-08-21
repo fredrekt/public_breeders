@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PublicNavbar.scss';
 import { Link, NavLink } from 'react-router-dom';
+import MobileMenuDrawer from '../../../drawers/MobileMenu/MobileMenuDrawer';
 // import logoImg from '../../../assets/images/logo.png';
 
 const PublicNavbar: React.FC = () => {
+	const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 	return (
 		<div className="publicNavbar">
 			<div className="publicNavLogo">
@@ -57,6 +59,14 @@ const PublicNavbar: React.FC = () => {
 					Sign up
 				</Link>
 			</div>
+			<div onClick={() => setOpenMobileMenu(true)} className="publicMobileNavItem">
+				<i className="ri-menu-line ri-2x"></i>
+			</div>
+			<MobileMenuDrawer
+				opened={openMobileMenu}
+				onCancel={() => setOpenMobileMenu(false)}
+				onForceCb={() => console.log('')}
+			/>
 		</div>
 	);
 };

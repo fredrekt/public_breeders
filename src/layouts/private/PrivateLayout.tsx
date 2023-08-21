@@ -39,7 +39,6 @@ const PrivateLayout: React.FC<PrivateLayoutProps> = ({ className, children }) =>
 					onClick={() => window.scrollTo(0, 0)}
 					icon={<i className="ri-skip-up-line"></i>}
 					type="primary"
-					style={{ right: 50 }}
 				/>
 				{/* <FloatButton
 					onClick={() => setOpenCartDrawer(true)}

@@ -29,7 +29,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, className, level }) => {
 				</title>
 				<meta name="description" content={description} />
 			</Helmet>
-			<Typography.Title className={className} level={level}>
+			<Typography.Title className={`pageTitle ${className}`} level={level}>
 				{title}
 			</Typography.Title>
 		</>

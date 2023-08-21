@@ -1,0 +1,33 @@
+@import '../../variables';
+.mobileMenuDrawer {
+    .ant-drawer-header {
+        padding: 0;
+        border: none;
+        .ant-drawer-close {
+            color: #ffffff;
+            padding: 20px;
+            font-size: 25px;
+            background-color: $primaryColorLight;
+        }
+    }
+    .ant-drawer-body {
+        padding: 0;
+    }
+    .ant-drawer-wrapper-body {
+        background: rgba(60, 58, 59, 0.80);;
+    }
+    .mobileMenuNavItems {
+        display: flex;
+        flex-direction: column;
+        margin-top: 25px;
+        .mobileMenuItem {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 400;
+            padding: 25px 50px;
+            &.cta {
+                background-color: $primaryColorLight;
+            }
+        }
+    }
+}

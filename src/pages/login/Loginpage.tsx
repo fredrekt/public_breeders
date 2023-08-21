@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import './Loginpage.scss';
 import PublicLayout from '../../layouts/public/PublicLayout';
-import { Card, Col, Row, Space, Typography, message } from 'antd';
+import { Col, Row, Space, Typography, message } from 'antd';
 import { Button, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../../utils/constant';
 import { setToken } from '../../utils/authHelpers';
-import registerImg from '../../assets/images/onboarding_hero.png';
+import registerImg from '../../assets/images/mainHero.png';
+import loginImg from '../../assets/images/login.svg';
 
 const Loginpage: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,12 +32,13 @@ const Loginpage: React.FC = () => {
 	return (
 		<PublicLayout navbar className="loginPage">
 			<Row gutter={[32, 32]} className="loginPageRow" align={'middle'}>
-				<Col md={12} lg={12} xl={12} xxl={12}>
+				<Col className="loginHero" xs={0} sm={0} md={10} lg={10} xl={10} xxl={10}>
 					<img src={registerImg} alt="login hero" className="loginHero" />
 				</Col>
-				<Col md={12} lg={10} xl={10} xxl={10}>
-					<Card className="loginCard">
-						<Typography.Title className='loginHeaderTitle' level={4}>Sign In</Typography.Title>
+				<Col className='loginRightCol' xs={24} sm={24} md={14} lg={14} xl={14} xxl={14}>
+					<div className="loginCard">
+						<img className='loginIcon' src={loginImg} alt="login icon" />
+						<Typography.Title className='loginHeaderTitle' level={4}>Log In</Typography.Title>
 						<Form
 							name="normal_login"
 							className="loginForm"
@@ -69,7 +71,10 @@ const Loginpage: React.FC = () => {
 							Don't have an account?
 							<Link to="/register"> Register</Link>
 						</Typography>
-					</Card>
+					</div>
+					<Typography.Paragraph className="registerSubTxt">
+						It is free to sign up as a buyer, there is a fee of $129 to activate your breeders account
+					</Typography.Paragraph>
 				</Col>
 			</Row>
 		</PublicLayout>

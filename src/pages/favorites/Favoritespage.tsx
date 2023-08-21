@@ -33,7 +33,7 @@ const Favoritespage: React.FC = () => {
 	const renderFavoritesListing = () => {
 		if (!Array.isArray(favorites) || !favorites.length) return <Empty/>;
 		return favorites.map((data) => (
-			<Col key={data.id} xs={12} sm={12} md={8} lg={6} xl={6} xxl={6}>
+			<Col key={data.id} xs={24} sm={24} md={8} lg={6} xl={6} xxl={6}>
 				<BreederCard
 					id={data.animal.id}
 					name={data.animal.name}

@@ -21,6 +21,7 @@ export declare namespace Model {
 		prefix: string;
 		isVerified: boolean;
 		avatar: Image;
+		coverPhoto: Image;
 	}
 
 	export interface Animal {
@@ -49,6 +50,7 @@ export declare namespace Model {
 	export interface Category {
 		id: number;
 		name: string;
+		icon: string;
 	}
 
 	export interface Order {

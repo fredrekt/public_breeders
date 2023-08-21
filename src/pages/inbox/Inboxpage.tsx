@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Inboxpage.scss';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
 import PageTitle from '../../components/PageTitle/PageTitle';
-import { Avatar, Button, Col, ConfigProvider, Empty, Input, List, Result, Row, Typography, message } from 'antd';
+import { Avatar, Badge, Button, Col, ConfigProvider, Empty, Input, List, Result, Row, Typography, message } from 'antd';
 import Moment from 'react-moment';
 import { useLocalStorage } from 'usehooks-ts';
 import io from 'socket.io-client';
@@ -16,6 +16,16 @@ import { randomVector } from '../../utils/randomVector';
 
 const socket = io(API_BASE_URL); //Connecting to Socket.io backend
 
+const debounce = <F extends (...args: any[]) => void>(func: F, delay: number) => {
+	let timeoutId: NodeJS.Timeout;
+	return (...args: Parameters<F>) => {
+		clearTimeout(timeoutId);
+		timeoutId = setTimeout(() => {
+			func(...args);
+		}, delay);
+	};
+};
+
 const Inboxpage: React.FC = () => {
 	const { user } = useUserContext();
 	const [selectedConversationId, setSelectedConversationId] = useLocalStorage<number>('selectedConversationId', 0);
@@ -25,6 +35,34 @@ const Inboxpage: React.FC = () => {
 	const [searchInboxTxt, setSearchInboxTxt] = useState<string>('');
 	const [forceUpdate, setForceUpdate] = useState<boolean>(false);
 	const dialogueContainer = useRef<HTMLDivElement>(null);
+	const [currentViewportDate, setCurrentViewportDate] = useState<string | null>(null);
+
+	const handleViewportChange = () => {
+		if (!dialogueContainer.current) return;
+
+		const visibleMessages = dialogueContainer.current.querySelectorAll('.messageBlock');
+		const visibleMessageBlocks = [];
+
+		for (let i = 0; i < visibleMessages.length; i++) {
+			const messageBlock = visibleMessages[i] as HTMLElement;
+			const rect = messageBlock.getBoundingClientRect();
+
+			// Check if the message block is within the viewport
+			if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+				visibleMessageBlocks.push(messageBlock);
+			}
+		}
+
+		if (visibleMessageBlocks.length > 0) {
+			const lastVisibleMessageBlock = visibleMessageBlocks[visibleMessageBlocks.length - 1];
+			const messageDate: any = lastVisibleMessageBlock.dataset.messageDate;
+			setCurrentViewportDate(messageDate);
+		} else {
+			setCurrentViewportDate(null);
+		}
+	};
+
+	const debouncedHandleViewportChange = debounce(handleViewportChange, 100); // Debounce scroll events
 
 	useEffect(() => {
 		loadSocketMessages();
@@ -104,6 +142,16 @@ const Inboxpage: React.FC = () => {
 				{user.isBuyer && (
 					<Typography.Paragraph>{selectedConversation.receiver.breeder.aboutBusiness}</Typography.Paragraph>
 				)}
+				<div className="conversationStatusContainer">
+					<Badge
+						dot
+						className="conversationStatusColor"
+						status={selectedConversation.id ? 'success' : 'default'}
+					/>
+					<Typography.Text className="conversationStatusTxt">
+						{selectedConversation.id ? `Active Now` : 'Offline'}
+					</Typography.Text>
+				</div>
 			</div>
 		);
 	};
@@ -116,7 +164,7 @@ const Inboxpage: React.FC = () => {
 					className="inboxConversationInput"
 					bordered={false}
 					style={{ resize: 'none' }}
-					placeholder="Enter message"
+					placeholder="Write a message..."
 					rows={5}
 					value={messageInput}
 					onChange={(e: any) => setMessageInput(e.target.value)}
@@ -227,14 +275,16 @@ const Inboxpage: React.FC = () => {
 
 		return (
 			<ConfigProvider renderEmpty={() => <Empty description="No messages" />}>
-				<Input
-					value={searchInboxTxt}
-					onChange={(e: any) => setSearchInboxTxt(e.target.value)}
-					size="large"
-					className="inboxSearch"
-					placeholder="Search messages"
-					prefix={<i className="ri-search-line"></i>}
-				/>
+				<div className="inboxSearchContainer">
+					<Input
+						value={searchInboxTxt}
+						onChange={(e: any) => setSearchInboxTxt(e.target.value)}
+						size="large"
+						className="inboxSearch"
+						placeholder="Search messages"
+						prefix={<i className="ri-search-line"></i>}
+					/>
+				</div>
 				<List
 					itemLayout="horizontal"
 					dataSource={inboxDataList}
@@ -246,6 +296,7 @@ const Inboxpage: React.FC = () => {
 							<List.Item.Meta
 								avatar={
 									<Avatar
+										size={64}
 										src={
 											user.isBuyer
 												? item.receiver.breeder.avatar?.url
@@ -278,35 +329,68 @@ const Inboxpage: React.FC = () => {
 	};
 
 	const renderSelectedConversation = () => {
-		if (!selectedConversationId || !selectedConversation || !user) return;
-		if (!Array.isArray(selectedConversation.messages) || !selectedConversation.messages.length) return;
-		const dialogue = [];
-		for (let message of selectedConversation.messages) {
-			if (message.sender.id === user.id) {
-				dialogue.push(<MessageBlock right message={message} />);
-			} else {
-				dialogue.push(<MessageBlock message={message} />);
-			}
+		if (!selectedConversationId || !selectedConversation || !user) return null;
+		if (!Array.isArray(selectedConversation.messages) || !selectedConversation.messages.length) return null;
+
+		return selectedConversation.messages.map((message) => (
+			<MessageBlock key={message.id} right={message.sender.id === user.id} message={message} />
+		));
+	};
+
+	useEffect(() => {
+		const currentContainer = dialogueContainer.current;
+		if (currentContainer) {
+			currentContainer.addEventListener('scroll', debouncedHandleViewportChange);
 		}
-		return dialogue;
+
+		return () => {
+			if (currentContainer) {
+				currentContainer.removeEventListener('scroll', debouncedHandleViewportChange);
+			}
+		};
+	}, [selectedConversationId, selectedConversation, debouncedHandleViewportChange]);
+
+	const renderSelectedViewDate = () => {
+		if (!currentViewportDate) return null;
+
+		const currentDate = new Date();
+		const viewportDate = new Date(currentViewportDate);
+
+		if (
+			currentDate.getFullYear() === viewportDate.getFullYear() &&
+			currentDate.getMonth() === viewportDate.getMonth() &&
+			currentDate.getDate() === viewportDate.getDate()
+		) {
+			return <div className="selectedViewingDate">Today</div>;
+		}
+
+		return (
+			<div className="selectedViewingDate">
+				<Moment format="MMMM DD, YYYY" fromNow>
+					{currentViewportDate}
+				</Moment>
+			</div>
+		);
 	};
 
 	return (
 		<PrivateLayout className="inboxPage customLayoutWidth">
 			<PageTitle title="Inbox" />
 			<Row className="inboxContent">
-				<Col className="inboxList" lg={6}>
+				<Col xs={24} sm={24} md={9} className="inboxList" lg={6} xl={6} xxl={6}>
 					{renderInbox()}
 				</Col>
-				<Col lg={18}>
+				<Col xs={24} sm={24} md={15} lg={18} xl={18} xxl={18}>
 					<div className="inboxConversation">
 						{renderInboxHeader()}
 						<div
+							onScroll={handleViewportChange}
 							ref={dialogueContainer}
 							className={`inboxConversationContent ${
 								selectedConversation ? 'conversationContent' : 'emptyConversation'
 							}`}
 						>
+							{renderSelectedViewDate()}
 							{renderSelectedConversation()}
 							{renderEmptyConversation()}
 						</div>

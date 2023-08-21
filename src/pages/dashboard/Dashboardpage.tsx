@@ -90,7 +90,7 @@ const Dashboardpage: React.FC = () => {
 					<PageTitle level={2} className="dashboardHeaderTxt" title={menuHeaderLabels[selectedView]} />
 				</Header>
 				<Content className="dashboardContent">
-					<div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
+					<div style={{ padding: 24, minHeight: 360, background: colorBgContainer, borderRadius: `10px`, boxShadow: `0px 4px 4px 0px rgba(0, 0, 0, 0.06)` }}>
 						<Row>
 							<Col span={24}>{listOfViews[selectedView]}</Col>
 						</Row>

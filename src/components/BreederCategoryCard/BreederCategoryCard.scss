@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .breederCategoryCard {
 	cursor: pointer;
 	transition: 0.4s, background-position 0s;
@@ -24,10 +26,52 @@
 		text-align: center;
 		text-transform: capitalize;
 	}
-	i {
-		margin: auto;
-		text-align: center;
+	.categoryIconContainer {
+		background-color: $primaryColorLight;
+		width: 50px;
+		border-radius: 50px;
+		height: 50px;
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 10px;
+		i {
+			margin: auto;
+			text-align: center;
+			display: flex;
+			justify-content: center;
+		}
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+	}
+
+	@media all and (max-width: 480px) {
+		.breederCategoryName {
+			display: none;
+		}
+		.ant-card-body {
+			padding: 15px;
+		}
+		.categoryIconContainer {
+			margin-bottom: 0;
+		}
 	}
 }

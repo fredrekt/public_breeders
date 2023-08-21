@@ -14,6 +14,7 @@
             }
             .messageBlockMsg {
                 border-radius: 10px 0 10px 10px;
+                background-color: $primaryColorLighter;
             }
         }
     }
@@ -28,9 +29,9 @@
             .messageBlockUser {
                 font-size: 15px;
             }
-            .messageBlockDate {
-                color: $textGray;
-            }
+        }
+        .messageBlockDate {
+            color: $darkGray;
         }
         .messageBlockMsg {
             background: #f0f0f0;

@@ -1,10 +1,10 @@
 import React from 'react';
 import './Homepage.scss';
-import BreederStorefront from '../../components/breederStorefront/BreederStorefront';
 import { Typography } from 'antd';
 import PublicLayout from '../../layouts/public/PublicLayout';
 import { getToken } from '../../utils/authHelpers';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
+import BreederStorefront from '../../components/BreederShopfront/BreederStorefront';
 
 const Homepage: React.FC = () => {
 	const loggedIn: boolean = getToken() !== '';

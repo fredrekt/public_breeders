@@ -4,7 +4,7 @@ import StatsCard from '../../components/StatsCard/StatsCard';
 import './StatsView.scss';
 import axios from 'axios';
 import { API_URL } from '../../utils/constant';
-import dogImg from '../../assets/images/register.png';
+import dogImg from '../../assets/images/dashboard.jpg';
 
 const StatsView: React.FC = () => {
 	const [count, setCount] = useState({
@@ -64,6 +64,7 @@ const StatsView: React.FC = () => {
 				</Col>
 			</Row>
 			<Result
+				className='dashboardFeatureInProgress'
 				icon={<img src={dogImg} alt="missing" />}
 				title="Upcoming Chart"
 				subTitle="This functionality will be in the next release."

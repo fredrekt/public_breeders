@@ -7,10 +7,12 @@ import { getToken, removeToken } from '../../../utils/authHelpers';
 import { useUserContext } from '../../../context/UserContext';
 // import logoImg from '../../../assets/images/logo.png';
 import { randomVector } from '../../../utils/randomVector';
+import MobileMenuDrawer from '../../../drawers/MobileMenu/MobileMenuDrawer';
 
 const PrivateNavbar: React.FC = () => {
 	const { user } = useUserContext();
 	const [profileItems, setProfileItems] = useState<MenuProps['items']>([]);
+	const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	const loadDynamicNavItems = () => {
@@ -113,6 +115,14 @@ const PrivateNavbar: React.FC = () => {
 					</span>
 				</Dropdown>
 			</div>}
+			<div onClick={() => setOpenMobileMenu(true)} className="privateMobileNavItem">
+				<i className="ri-menu-line ri-2x"></i>
+			</div>
+			<MobileMenuDrawer
+				opened={openMobileMenu}
+				onCancel={() => setOpenMobileMenu(false)}
+				onForceCb={() => console.log('')}
+			/>
 		</div>
 	);
 };

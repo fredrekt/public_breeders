@@ -1,23 +1,22 @@
-import { Button, Result } from 'antd';
+import { Typography } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import PublicLayout from '../../layouts/public/PublicLayout';
+import missingImg from '../../assets/images/missing.png';
+import './MissingPage.scss'
 
 const MissingPage: React.FC = () => {
-	const navigate = useNavigate();
 	return (
-		<div className="missingPage absolute-centered">
-			<Result
-				className="missingPageResult"
-                status="404"
-                title="404"
-                subTitle="Sorry, the page you visited does not exist."
-				extra={[
-					<Button onClick={() => navigate('/')} type="primary" key="console">
-						Go Home
-					</Button>
-				]}
-			/>
-		</div>
+		<PublicLayout navbar className="missingPage">
+			<div className="missingContent">
+				<img src={missingImg} alt="404" className="missingImg" />
+				<Typography.Title className='missingHeaderTxt' level={4}>
+					404
+				</Typography.Title>
+				<Typography.Paragraph className='missingSubTxt'>
+				Sorry, this is still in progress. Content is still populating.
+				</Typography.Paragraph>
+			</div>
+		</PublicLayout>
 	);
 };
 

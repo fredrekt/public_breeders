@@ -1,14 +1,27 @@
 .loginPage {
 	width: 100%;
-    margin-bottom: -70px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	.loginPageRow {
-		padding: 25px;
 		width: 100%;
+		background-color: #fafafa;
 	}
 	.loginCard {
+		width: 50%;
+		margin: auto;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 125px;
+		.loginIcon {
+			text-align: center;
+			justify-content: center;
+			display: flex;
+			align-items: center;
+			margin: auto;
+			width: 90px;
+		}
 		.ant-card-body {
 			padding: 34px;
 			height: 100%;
@@ -20,7 +33,6 @@
 	}
 	.loginHero {
 		height: 750px;
-		border-radius: 25px;
 		width: 100%;
 		object-fit: cover;
 		object-position: bottom;
@@ -41,7 +53,81 @@
 			width: 100%;
 		}
 	}
+	.loginRightCol {
+		height: 750px;
+		position: relative;
+	}
 	.loginRegisterCta {
 		text-align: center;
+	}
+	.registerSubTxt {
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.loginCard {
+			width: 85%;
+		}
+		.registerSubTxt {
+			width: 85%;
+			width: 85%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.loginCard {
+			width: 85%;
+		}
+		.registerSubTxt {
+			width: 85%;
+			width: 85%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.loginCard {
+			width: 85%;
+		}
+		.registerSubTxt {
+			width: 85%;
+			width: 85%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.loginCard {
+			width: 85%;
+		}
+		.registerSubTxt {
+			width: 85%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.loginPageRow  {
+			margin: 0!important;
+		}
+		.registerSubTxt {
+			margin-left: 25px;
+			margin-right: 25px;
+		}
 	}
 }

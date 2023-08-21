@@ -7,6 +7,7 @@
 		position: relative;
 		overflow-y: hidden;
 		border: 1px solid #d9d9d9;
+		border-radius: 20px;
 		.inboxConversation {
 			position: relative;
 			height: 100%;
@@ -17,6 +18,15 @@
 				box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
 				.inboxConversationHeaderTxt {
 					margin: 0;
+				}
+				.conversationStatusContainer {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+					.conversationStatusColor {
+					}
+					.conversationStatusTxt {
+					}
 				}
 			}
 			.inboxConversationContent {
@@ -34,6 +44,14 @@
 					gap: 40px;
 					max-height: 553px;
 					overflow: auto;
+				}
+				.selectedViewingDate {
+					position: sticky;
+					top: 0;
+					left: 0;
+					right: 0;
+					margin: auto;
+					text-align: center;
 				}
 			}
 			.inboxConversationCta {
@@ -56,14 +74,18 @@
 }
 
 .inboxList {
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 100%;
 	border-right: 1px solid #d9d9d9;
-	.inboxSearch {
-		border: none;
-		box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
-		border-radius: 0;
-		margin-bottom: 2px;
+	background-color: $darkeGrayLight;
+	.inboxSearchContainer {
+		padding: 35px 25px;
+		.inboxSearch {
+			border: none;
+			box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+			border-radius: 50px;
+			margin-bottom: 2px;
+		}
 	}
 	.inboxListItem {
 		background: #ffffff;

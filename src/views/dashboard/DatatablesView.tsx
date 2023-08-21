@@ -119,7 +119,7 @@ const DatatablesView: React.FC<DatatablesViewProps> = ({ title, categoryId }) =>
 			dataIndex: 'price',
 			key: 'price',
 			render: (age) => {
-				return FormatMoney(age);
+				return <Typography.Text className='tablePricing'>{FormatMoney(age)}</Typography.Text>;
 			},
 		},
 		{

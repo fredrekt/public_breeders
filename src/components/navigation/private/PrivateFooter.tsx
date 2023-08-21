@@ -8,12 +8,12 @@ const PrivateFooter: React.FC = () => {
 	return (
 		<footer className="privateFooter">
 			<Row align={'middle'} className="privateFooterRow">
-				<Col lg={6}>
+				<Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
 					<Link to="/">
 						<img className="footerLogo" src={footerLogo} alt="footer logo" />
 					</Link>
 				</Col>
-				<Col className='footerLinks' lg={4}>
+				<Col xs={24} sm={24} md={8} className='footerLinks' lg={4} xl={4} xxl={4}>
 					<b>Explore</b>
 					<ul>
 						<li><Link to="/">Pups for sale</Link></li>
@@ -21,7 +21,7 @@ const PrivateFooter: React.FC = () => {
 						<li><Link to="/">Stud Profiles</Link></li>
 					</ul>
 				</Col>
-				<Col className='footerLinks' lg={4}>
+				<Col xs={24} sm={24} md={8} className='footerLinks' lg={4} xl={4} xxl={4}>
 					<b>Legal</b>
 					<ul>
 						<li><Link to="/terms-and-conditions">Terms of service</Link></li>
@@ -29,7 +29,7 @@ const PrivateFooter: React.FC = () => {
 						<li><Link to="/terms-and-conditions">Terms of use</Link></li>
 					</ul>
 				</Col>
-				<Col className='footerLinks' lg={10}>
+				<Col xs={24} sm={24} md={8} className='footerLinks' lg={10} xl={10} xxl={10}>
 					<b>Account</b>
 					<ul>
 						<li><Link to="/profile">Profile</Link></li>

@@ -5,7 +5,6 @@ import { Avatar, Button, Card, Col, Empty, Image, Row, Typography, message } fro
 import { faker } from '@faker-js/faker';
 import BreederDocumentCard from '../../components/BreederDocumentCard/BreederDocumentCard';
 import PageTitle from '../../components/PageTitle/PageTitle';
-import BreederStorefront from '../../components/breederStorefront/BreederStorefront';
 import { useParams } from 'react-router-dom';
 import ContactBreederPopup from '../../popups/ContactBreeder/ContactBreederPopup';
 import { Model } from '../../models/model';
@@ -13,6 +12,7 @@ import axios from 'axios';
 import { API_URL } from '../../utils/constant';
 import { useUserContext } from '../../context/UserContext';
 import { randomVector } from '../../utils/randomVector';
+import BreederStorefront from '../../components/BreederShopfront/BreederStorefront';
 
 const Breederpage: React.FC = () => {
 	const { user } = useUserContext();
@@ -60,7 +60,11 @@ const Breederpage: React.FC = () => {
 						<Avatar
 							size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
 							shape={'circle'}
-							src={breederData.avatar ? breederData.avatar.url : require(`../../assets/images/vectors/${randomVector}.png`)}
+							src={
+								breederData.avatar
+									? breederData.avatar.url
+									: require(`../../assets/images/vectors/${randomVector}.png`)
+							}
 						/>
 						<PageTitle className="breederName" title={breederData.businessName} level={2} />
 						<Typography.Paragraph className="breederLocation">
@@ -107,16 +111,28 @@ const Breederpage: React.FC = () => {
 		);
 	};
 
-	return (
-		<PrivateLayout className="breederPage">
+	const renderCoverPhoto = () => {
+		if (!breederData) return;
+		return (
 			<div className="breederCoverPhoto">
 				<Image
+					preview={false}
 					src={
-						'https://images.pexels.com/photos/2774140/pexels-photo-2774140.jpeg?auto=compress&cs=tinysrgb&w=1600'
+						breederData.coverPhoto
+							? breederData.coverPhoto.url
+							: 'https://images.pexels.com/photos/2774140/pexels-photo-2774140.jpeg?auto=compress&cs=tinysrgb&w=1600'
 					}
 				/>
 			</div>
-			{renderBreederDetails()}
+		);
+	};
+
+	return (
+		<PrivateLayout className="breederPage">
+			<div className="">
+				{renderCoverPhoto()}
+				{renderBreederDetails()}
+			</div>
 		</PrivateLayout>
 	);
 };

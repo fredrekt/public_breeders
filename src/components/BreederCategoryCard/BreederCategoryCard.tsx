@@ -12,8 +12,13 @@ interface BreederCategoryCardProps {
 
 const BreederCategoryCard: React.FC<BreederCategoryCardProps> = ({ id, name, icon, onClick, selectedCategoryId }) => {
 	return (
-		<Card onClick={() => onClick(id)} className={`breederCategoryCard ${selectedCategoryId === id ? 'selected' : ''}`}>
-			<i className={`ri-${icon} ri-3x`}></i>
+		<Card
+			onClick={() => onClick(id)}
+			className={`breederCategoryCard ${selectedCategoryId === id ? 'selected' : ''}`}
+		>
+			<div className="categoryIconContainer">
+				<i className={`${icon} ri-lg`}></i>
+			</div>
 			<Typography.Title className="breederCategoryName" level={5}>
 				{name}
 			</Typography.Title>

@@ -1,24 +1,80 @@
 @import '../../variables.scss';
 .registerPage {
 	width: 100%;
-    margin-bottom: -70px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	.registerPageRow {
-		padding: 25px;
 		width: 100%;
+		background-color: #fafafa;
+	}
+	.registerHeroCol {
+		height: 750px;
 	}
 	.registerHero {
 		height: 750px;
-		border-radius: 25px;
 		width: 100%;
 		object-fit: cover;
 		object-position: bottom;
 	}
+	.breederPhotoInputContainer {
+		.ant-form-item-control-input {
+			margin-bottom: 35px;
+		}
+		.ant-form-item-control-input-content {
+			position: relative;
+		}
+		.ant-space {
+			width: 100%;
+			.ant-space-item {
+				width: 100%;
+
+				&:nth-child(2) {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: auto;
+					text-align: center;
+					bottom: -35px;
+				}
+			}
+		}
+		.ant-upload-select {
+			width: 100%;
+		}
+		button {
+			background-color: #eaeaea;
+			width: 100%;
+			height: 125px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: #808080;
+			z-index: 1;
+			&.hasImg {
+				padding: 0;
+			}
+			.breederCoverPhotoImg {
+				width: 100%;
+				object-fit: cover;
+				height: 100%;
+				border-radius: 8px;
+				object-position: center;
+			}
+		}
+		.ant-avatar {
+			z-index: 1;
+			background: #eaeaea;
+			i {
+				color: #808080;
+			}
+		}
+	}
 	.registerCard {
+		width: 50%;
+		margin: auto;
 		&.fixedHeight {
-			height: 650px;
+			height: 550px;
 		}
 		.ant-card-body {
 			padding: 34px;
@@ -80,12 +136,10 @@
 			margin-bottom: 15px;
 		}
 		button {
-			width: 100px;
-			position: absolute;
-			bottom: 50px;
-			right: 25px;
+			width: 100%;
+			color: $primaryColorLight;
 			border-style: solid;
-			border-color: #3C3A3B;
+			border-color: $primaryColorLight;
 			font-weight: 600;
 		}
 	}
@@ -94,5 +148,42 @@
 		text-align: center;
 		margin: 10px;
 		font-size: 12px;
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.registerCard {
+			width: 85%;
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.registerCard {
+			width: 85%;
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.registerCard {
+			width: 85%;
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.registerCard {
+			width: 90%;
+			padding-top: 40px;
+		}
+		.registerPageRow {
+			margin: 0!important;
+		}
 	}
 }

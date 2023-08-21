@@ -1,7 +1,7 @@
 @import '../../../variables.scss';
 .publicNavbar {
 	display: flex;
-    justify-content: space-between;
+	justify-content: space-between;
 	align-items: center;
 	height: 64px;
 	.navLink {
@@ -32,7 +32,7 @@
 			font-size: 25px;
 			font-family: impact;
 			letter-spacing: 2px;
-			color: #A1C575;
+			color: #a1c575;
 			.publicNavLogoImg {
 				width: 45px;
 				height: 45px;
@@ -48,19 +48,76 @@
 		margin-left: auto;
 	}
 	.publicNavProfile {
-        display: flex;
-        align-items: center;
-        gap: 35px;
+		display: flex;
+		align-items: center;
+		gap: 35px;
 		.loginCta {
-            color: #ffffff;
-        }
-        .signUpCta {
+			color: #ffffff;
+		}
+		.signUpCta {
 			width: 100px;
 			display: flex;
 			justify-content: center;
 			text-align: center;
 			color: #ffffff;
 			background: $primaryColor;
-        }
+		}
+	}
+	.publicMobileNavItem {
+		display: none;
+		background: $primaryColorLight;
+		padding: 0 15px;
+		cursor: pointer;
+		i {
+			color: #ffffff;
+		}
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.navLink {
+			b {
+				display: none;
+			}
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.navLink {
+			b {
+				display: none;
+			}
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.navLink {
+			b {
+				display: none;
+			}
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.publicMobileNavItem {
+			display: flex;
+		}
+		.publicNavLogo {
+			padding-left: 25px;
+		}
+		.publicNavCenter {
+			display: none;
+		}
+		.publicNavProfile {
+			display: none;
+		}
 	}
 }

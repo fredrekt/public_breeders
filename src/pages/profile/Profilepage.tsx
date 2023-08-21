@@ -124,7 +124,7 @@ const Profilepage: React.FC = () => {
 
 	return (
 		<PrivateLayout className="profilePage customLayoutWidth">
-			<PageTitle title="Profile" />
+			<PageTitle title="My Profile" />
 			<Row className="profileViewRow" gutter={[24, 24]}>
 				<Col lg={4}>
 					<Menu
