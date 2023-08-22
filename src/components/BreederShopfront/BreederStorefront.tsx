@@ -65,7 +65,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 
 	const renderListOfBreeders = () => {
 		if (!Array.isArray(listOfBreeders) || !listOfBreeders.length) return;
-		let listOfBreedersData = listOfBreeders;
+		let listOfBreedersData = listOfBreeders.filter((data) => !data.isDeleted);
 
 		if (searchValue) {
 			listOfBreedersData = listOfBreeders.filter((data) =>
