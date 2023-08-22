@@ -4,6 +4,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import ReactGA from "react-ga4";
+
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID || 'G-FQBJWG3LKH');
+ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
