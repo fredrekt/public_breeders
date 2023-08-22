@@ -13,7 +13,7 @@ const AdvancedBreederStorefrontFilterDrawer: React.FC<AdvancedBreederStorefrontF
 }) => {
 	return (
 		<Drawer
-			className="advancedBreedersFilterDrawer"
+			rootClassName='advancedBreedersFilterDrawer'
 			title={`Advanced Filters`}
 			open={opened}
 			onClose={onCancel}

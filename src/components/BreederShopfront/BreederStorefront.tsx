@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BreederStorefront.scss';
 import BreederCard from '../BreederCard/BreederCard';
-import { Button, Col, Input, Row, Select, message } from 'antd';
+import { Button, Col, Input, Row, Select, Typography, message } from 'antd';
 import BreederCategoryCard from '../BreederCategoryCard/BreederCategoryCard';
 import AdvancedBreederStorefrontFilterDrawer from '../../drawers/AdvancedBreederStorefrontFilter/AdvancedBreederStorefrontFilterDrawer';
 import axios from 'axios';
@@ -31,11 +31,11 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 			let qry = `?populate=deep,3&filters[isDeleted][$eq]=false`;
 			if (breederId) {
 				// eslint-disable-next-line
-				qry += `&filters[breeder\][id][$eq]=${breederId}`	
+				qry += `&filters[breeder\][id][$eq]=${breederId}`;
 			}
 			if (selectedCategory) {
 				// eslint-disable-next-line
-				qry += `&filters[categories\][id][$eq]=${selectedCategory}`
+				qry += `&filters[categories\][id][$eq]=${selectedCategory}`;
 			}
 			const res = (await axios.get(`${API_URL}/animals${qry}`)).data;
 			setListOfBreeders(res.data);
@@ -49,14 +49,14 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 			const res = (await axios.get(`${API_URL}/categories`)).data;
 			setCategories(res.data);
 		} catch (error) {
-			message.error(`Something wen't wrong in loading categories.`)
+			message.error(`Something wen't wrong in loading categories.`);
 		}
-	}
+	};
 
 	useEffect(() => {
 		loadListOfCategories();
 		// eslint-disable-next-line
-	}, [])
+	}, []);
 
 	useEffect(() => {
 		loadListOfBreeders();
@@ -77,15 +77,19 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 			switch (sortBy) {
 				case 'desc':
 					listOfBreedersData = listOfBreeders.sort((a, b) => b['name'].localeCompare(a['name']));
-				break;
+					break;
 				case 'asc':
 					listOfBreedersData = listOfBreeders.sort((a, b) => a['name'].localeCompare(b['name']));
 					break;
 				case 'createdDesc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+					listOfBreedersData = listOfBreeders.sort(
+						(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+					);
 					break;
 				case 'createdAsc':
-					listOfBreedersData = listOfBreeders.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+					listOfBreedersData = listOfBreeders.sort(
+						(a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+					);
 					break;
 				default:
 					break;
@@ -122,32 +126,39 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 		if (!getToken()) return;
 		return categories.map((category) => (
 			<Col key={category.id} xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-				<BreederCategoryCard selectedCategoryId={selectedCategory} onClick={(categoryId: number) => setSelectedCategory(categoryId)} id={category.id} name={category.name} icon={category.icon} />
+				<BreederCategoryCard
+					selectedCategoryId={selectedCategory}
+					onClick={(categoryId: number) => setSelectedCategory(categoryId)}
+					id={category.id}
+					name={category.name}
+					icon={category.icon}
+				/>
 			</Col>
-		))
-	}
+		));
+	};
 
 	return (
 		<div className="breederStorefront customLayoutWidth">
 			<div className="breederStoreContent">
-				<Row className="breederStoreFilterCategory" justify={'center'} gutter={[24, 24]}>
+				<Row className={`breederStoreFilterCategory ${!breederId && getToken() ? 'relativePos' : ''}`} justify={'center'} gutter={[24, 24]}>
 					{renderCategories()}
 				</Row>
 				<Row className="breederStorefrontFilters" gutter={[24, 24]}>
-					<Col xs={20} sm={20} lg={breederId ? 15 : 16}>
+					<Col xs={20} sm={20} lg={20}>
 						<Input
-							prefix={<i className="ri-search-line"></i>}
+							className='searchFilter'
+							prefix={<i className="ri-search-line ri-lg primary-color-icon"></i>}
 							size="large"
 							value={searchValue}
 							placeholder="Find breeders here"
 							onChange={(e: any) => setSearchValue(e.target.value)}
 						/>
 					</Col>
-					<Col xs={0} sm={0} lg={7}>
+					<Col xs={0} sm={0} lg={2}>
 						<Select
 							placeholder="A-Z"
 							className="sortBySelect"
-							suffixIcon={<i className="ri-sort-desc ri-xl"></i>}
+							suffixIcon={<i className="ri-sort-desc ri-2x primary-color-icon"></i>}
 							size="large"
 							onChange={(e: any) => setSortBy(e)}
 						>
@@ -157,9 +168,10 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							<Select.Option value="createdAsc">Oldest</Select.Option>
 						</Select>
 					</Col>
-					<Col xs={4} sm={4} className="sortFilterCta" lg={breederId ? 2 : 1}>
+					<Col xs={4} sm={4} className="sortFilterCta" lg={2}>
 						<Button onClick={() => setOpenAdvancedFiter(true)} size="large">
-							<i className="ri-equalizer-line ri-lg"></i>
+							<i className="ri-equalizer-line ri-lg primary-color-icon"></i>
+							<Typography.Text className='sortFilterCtaTxt'>Filter</Typography.Text>
 						</Button>
 					</Col>
 				</Row>

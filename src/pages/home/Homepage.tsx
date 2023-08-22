@@ -22,7 +22,7 @@ const Homepage: React.FC = () => {
 						/>
 					</div>
 					<Typography.Title className="homepageBannerTitle" level={1}>
-						My Breeders Store
+						My Breeder's Store
 					</Typography.Title>
 				</div>
 				<BreederStorefront />

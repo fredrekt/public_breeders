@@ -29,6 +29,10 @@ const debounce = <F extends (...args: any[]) => void>(func: F, delay: number) =>
 const Inboxpage: React.FC = () => {
 	const { user } = useUserContext();
 	const [selectedConversationId, setSelectedConversationId] = useLocalStorage<number>('selectedConversationId', 0);
+	const [selectedConversationMobileId, setSelectedConversationMobileId] = useLocalStorage<number>(
+		'selectedConversationMobileId',
+		0
+	);
 	const [selectedConversation, setSelectedConversation] = useState<Model.Conversation | null>(null);
 	const [inboxData, setInboxData] = useState<Model.Conversation[]>([]);
 	const [messageInput, setMessageInput] = useState<string>('');
@@ -210,6 +214,7 @@ const Inboxpage: React.FC = () => {
 
 	const onChangeConversation = (conversation: Model.Conversation) => {
 		setSelectedConversationId(conversation.id);
+		setSelectedConversationMobileId(conversation.id);
 		setSelectedConversation(conversation);
 	};
 
@@ -376,11 +381,32 @@ const Inboxpage: React.FC = () => {
 	return (
 		<PrivateLayout className="inboxPage customLayoutWidth">
 			<PageTitle title="Inbox" />
+			{selectedConversationMobileId ? (
+				<a href="#back" className="messageBackBtn" onClick={() => setSelectedConversationMobileId(0)}>
+					<i className="ri-arrow-left-s-line"></i>
+					Back
+				</a>
+			) : <></>}
 			<Row className="inboxContent">
-				<Col xs={24} sm={24} md={9} className="inboxList" lg={6} xl={6} xxl={6}>
+				<Col
+					xs={selectedConversationMobileId ? 0 : 24}
+					sm={selectedConversationMobileId ? 0 : 24}
+					md={9}
+					className="inboxList"
+					lg={6}
+					xl={6}
+					xxl={6}
+				>
 					{renderInbox()}
 				</Col>
-				<Col xs={24} sm={24} md={15} lg={18} xl={18} xxl={18}>
+				<Col
+					xs={selectedConversationMobileId ? 24 : 0}
+					sm={selectedConversationMobileId ? 24 : 0}
+					md={15}
+					lg={18}
+					xl={18}
+					xxl={18}
+				>
 					<div className="inboxConversation">
 						{renderInboxHeader()}
 						<div
