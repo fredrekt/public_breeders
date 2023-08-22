@@ -119,7 +119,7 @@ const BreederCard: React.FC<BreederCardProps> = ({
 		<Card
 			className="breederCard"
 			bordered={false}
-			cover={<Image className="breederCardImg" alt="breeder preview" src={previewUrl ? previewUrl : defaultPreviewImage} />}
+			cover={<Image onClick={viewAnimal} preview={false} className="breederCardImg" alt="breeder preview" src={previewUrl ? previewUrl : defaultPreviewImage} />}
 			hoverable
 		>
 			<div className="breederCardContent">

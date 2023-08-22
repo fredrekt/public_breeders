@@ -50,7 +50,7 @@ const Favoritespage: React.FC = () => {
 
 	return (
 		<PrivateLayout className="favoritesPage customLayoutWidth">
-			<PageTitle title="Favorites" />
+			<PageTitle title="My Favorites" />
 			<div className="favoritesContent">
 				<Row className="breederStoreFilterCategory" justify={'center'} gutter={[24, 24]}>
 					{renderFavoritesListing()}

@@ -19,10 +19,12 @@ export const PageHeaderLegal: React.FC<PageHeaderLegalProps> = ({ title, img }) 
 	return (
 		<div className="pageHeaderLegal">
 			<img src={img} alt="page legal icon" className="legalImgIcon" />
-			<Typography.Title level={2} className='legalPageTitle'>{title}</Typography.Title>
+			<Typography.Title level={2} className="legalPageTitle">
+				{title}
+			</Typography.Title>
 		</div>
-	)
-}
+	);
+};
 
 const TermsAndConditionsPage: React.FC = () => {
 	const loggedIn: boolean = getToken() !== '';
@@ -48,7 +50,7 @@ const TermsAndConditionsPage: React.FC = () => {
 					<PrivateLayout className="privateTermsAndConditionsPage">
 						<Card>
 							<PageHeaderLegal title="MY BREEDERS STORE PLATFORM TERMS AND CONDITIONS" img={legalImg} />
-							<ReactMarkdown className='richtextContent'>{content}</ReactMarkdown>
+							<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
 						</Card>
 					</PrivateLayout>
 				</ProtectedRoute>
@@ -58,7 +60,7 @@ const TermsAndConditionsPage: React.FC = () => {
 				<PublicLayout navbar className="publicTermsAndConditionsPage">
 					<Card>
 						<PageHeaderLegal title="MY BREEDERS STORE PLATFORM TERMS AND CONDITIONS" img={legalImg} />
-						<ReactMarkdown className='richtextContent'>{content}</ReactMarkdown>
+						<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
 					</Card>
 				</PublicLayout>
 			);

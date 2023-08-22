@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './PrivacyPolicypage.scss';
 import axios from 'axios';
 import { API_URL } from '../../utils/constant';
-import { Card, message } from 'antd';
+import { message } from 'antd';
 import { getToken } from '../../utils/authHelpers';
 import ProtectedRoute from '../../utils/ProtectedRoute';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
@@ -33,20 +33,16 @@ const PrivacyPolicypage: React.FC = () => {
 			return (
 				<ProtectedRoute>
 					<PrivateLayout className="privateTermsAndConditionsPage">
-						<Card>
-							<PageHeaderLegal title="Privacy Policy" img={legalImg} />
-							<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
-						</Card>
+						<PageHeaderLegal title="Privacy Policy" img={legalImg} />
+						<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
 					</PrivateLayout>
 				</ProtectedRoute>
 			);
 		} else {
 			return (
 				<PublicLayout navbar className="publicTermsAndConditionsPage">
-					<Card>
-						<PageHeaderLegal title="Privacy Policy" img={legalImg} />
-						<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
-					</Card>
+					<PageHeaderLegal title="Privacy Policy" img={legalImg} />
+					<ReactMarkdown className="richtextContent">{content}</ReactMarkdown>
 				</PublicLayout>
 			);
 		}

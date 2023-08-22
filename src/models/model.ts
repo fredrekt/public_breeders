@@ -10,6 +10,8 @@ export declare namespace Model {
 		isSubscribed: boolean;
 		stripeAccountId: string;
 		stripeAccountLink: string;
+		stripeCustomerId: string;
+		stripeSubscriptionId: string;
 	}
 
 	export interface Breeder {

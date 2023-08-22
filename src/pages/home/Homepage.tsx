@@ -5,6 +5,7 @@ import PublicLayout from '../../layouts/public/PublicLayout';
 import { getToken } from '../../utils/authHelpers';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
 import BreederStorefront from '../../components/BreederShopfront/BreederStorefront';
+import ProtectedRoute from '../../utils/ProtectedRoute';
 
 const Homepage: React.FC = () => {
 	const loggedIn: boolean = getToken() !== '';
@@ -28,7 +29,7 @@ const Homepage: React.FC = () => {
 			</>
 		);
 		if (loggedIn) {
-			return <PrivateLayout className="homepage">{neutralStoreFront}</PrivateLayout>;
+			return <ProtectedRoute><PrivateLayout className="homepage">{neutralStoreFront}</PrivateLayout></ProtectedRoute>;
 		} else {
 			return (
 				<PublicLayout navbar className="homepage">

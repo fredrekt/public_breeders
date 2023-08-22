@@ -19,6 +19,7 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 	const [userData, setUserData] = useState<Api.User.Res.LoggedInUser | undefined>();
 	const [isLoading, setIsLoading] = useState(false);
 	const [openPaywall, setOpenPaywall] = useState<boolean>(false);
+	const [forceUpdate, setForceUpdate] = useState<boolean>(false);
 
 	const verifyUserToken = async (token: string) => {
 		setIsLoading(true);
@@ -66,15 +67,6 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 		setUserData(user);
 	};
 
-	const handleOnClosePaywall = () => {
-		if (!userData) return;
-		if (!userData.isSubscribed) {
-			setOpenPaywall(true);
-		} else {
-			setOpenPaywall(false);
-		}
-	}
-
 	useEffect(() => {
 		checkUser();
 		// eslint-disable-next-line
@@ -83,12 +75,12 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 	useEffect(() => {
 		breederRestrictions();
 		// eslint-disable-next-line
-	}, [userData, authToken]);
+	}, [userData, authToken, forceUpdate]);
 
 	return isLoggedIn ? (
 		<AuthContext.Provider value={{ user: userData, setUser: handleUser, isLoading }}>
 			{props.children}
-			<PaywallPopup opened={openPaywall} onCancel={handleOnClosePaywall} onForceCb={() => console.log('object')} />
+			<PaywallPopup opened={openPaywall} onCancel={() => setOpenPaywall(false)} onForceCb={() => setForceUpdate(!forceUpdate)} />
 		</AuthContext.Provider>
 	) : (
 		<Navigate to="/login" replace />
