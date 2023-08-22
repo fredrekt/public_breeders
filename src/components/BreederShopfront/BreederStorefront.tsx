@@ -28,7 +28,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 
 	const loadListOfBreeders = async () => {
 		try {
-			let qry = `?populate=deep,3`;
+			let qry = `?populate=deep,3&filters[isDeleted][$eq]=false`;
 			if (breederId) {
 				// eslint-disable-next-line
 				qry += `&filters[breeder\][id][$eq]=${breederId}`	
