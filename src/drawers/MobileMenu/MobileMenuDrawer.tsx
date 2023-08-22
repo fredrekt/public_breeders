@@ -1,9 +1,9 @@
 import React from 'react';
 import './MobileMenuDrawer.scss';
 import { DrawerModel } from '../../models/DrawerModel';
-import { Drawer } from 'antd';
+import { Drawer, message } from 'antd';
 import { Link } from 'react-router-dom';
-import { getToken } from '../../utils/authHelpers';
+import { getToken, removeToken } from '../../utils/authHelpers';
 
 interface MobileMenuDrawerProps extends DrawerModel {
 	auth?: boolean;
@@ -34,8 +34,14 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ opened, onCancel, o
                         <Link className="mobileMenuItem" to="/orders">
 							Orders
 						</Link>
-                        <Link className="mobileMenuItem cta" to="/profile">
+						<Link className="mobileMenuItem" to="/profile">
 							Profile
+						</Link>
+                        <Link className="mobileMenuItem cta" onClick={() => {
+							removeToken();
+							message.success('Successfully logged out.');
+						}} to="/login">
+							Sign Out
 						</Link>
 					</>
 				) : (
