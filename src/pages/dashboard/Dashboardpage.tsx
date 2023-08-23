@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Dashboardpage.scss';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import { Avatar, Col, Layout, Menu, Row, message, theme } from 'antd';
-import logoImg from '../../assets/images/logo.png';
+import logoImg from '../../assets/images/footer_logo.png';
 import StatsView from '../../views/dashboard/StatsView';
 import DatatablesView from '../../views/dashboard/DatatablesView';
 import { Link, useNavigate } from 'react-router-dom';

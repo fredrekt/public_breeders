@@ -21,9 +21,9 @@ const Homepage: React.FC = () => {
 							alt="hero banner"
 						/>
 					</div>
-					<Typography.Title className="homepageBannerTitle" level={1}>
+					{loggedIn ? <Typography.Title className="homepageBannerTitle" level={1}>
 						My Breeder's Store
-					</Typography.Title>
+					</Typography.Title> : null}
 				</div>
 				<BreederStorefront />
 			</>

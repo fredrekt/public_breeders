@@ -30,9 +30,11 @@ const PaywallPopup: React.FC<PaywallPopupProps> = ({ opened, onCancel, onForceCb
 	const onCancelPayment = () => {
 		if (!user) return;
 		confirm({
-			title: `Decline Subscription`,
-			content: `Are you sure you don't want to use my breeders store?`,
+			title: `Not interested in signing up?`,
+			content: `Did you know you can try it for 30 days before you are charged. `,
 			centered: true,
+			okText: 'Exit',
+			cancelText: 'Back to payment',
 			onOk() {
 				onCancel();
 				removeToken();

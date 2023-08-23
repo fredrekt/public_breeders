@@ -16,40 +16,37 @@ const PublicNavbar: React.FC = () => {
 			</div>
 			<div className="publicNavCenter">
 				<NavLink
-					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
+					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
 					to="/"
 				>
-					<i className={`ri-store-2-line ri-xl`}></i>
-					<b>Marketplace</b>
+					<b>Pups for sale</b>
 				</NavLink>
 				<NavLink
-					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
-					to="/about"
+					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
+					to="/"
 				>
-					<i className={`ri-information-line ri-xl`}></i>
-					<b>About</b>
+					<b>Upcoming Litters</b>
 				</NavLink>
 				<NavLink
-					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
-					to="/contact"
+					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
+					to="/"
 				>
-					<i className={`ri-contacts-book-2-line ri-xl`}></i>
-					<b>Contact</b>
+					<b>Stud Profiles</b>
 				</NavLink>
-				<NavLink
+				{/* <NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
 					to="/demo"
 				>
 					<i className={`ri-play-circle-line ri-xl`}></i>
 					<b>Demo</b>
-				</NavLink>
-				<NavLink
+				</NavLink> */}
+				{/* <NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'selected navLink' : 'navLink')}
 					to="/mobile"
 				>
 					<i className={`ri-google-play-line ri-xl`}></i>
 					<b>Mobile Application</b>
-				</NavLink>
+				</NavLink> */}
 			</div>
 			<div className="publicNavProfile">
 				<Link className="loginCta" to="/login">
