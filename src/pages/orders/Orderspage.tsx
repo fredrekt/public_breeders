@@ -79,7 +79,7 @@ const Orderspage: React.FC = () => {
 					});
 					if (res) {
 						setForceUpdate(!forceUpdate);
-						message.success(`Order successfully cancelled and will refund buyer.`);
+						message.success(`Order successfully cancelled and will refund user.`);
 					}
 				} catch (error) {
 					message.error(`Something wen't wrong in cancelling order.`)

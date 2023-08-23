@@ -84,7 +84,7 @@ const Registerpage: React.FC = () => {
 					<AccountTypeSelection
 						activeSetup={accountType}
 						currentSetup={1}
-						label={'Buyer'}
+						label={'User'}
 						imgSrc={buyerAccountType}
 						onClick={(setup: number) => setAccountType(setup)}
 					/>
@@ -237,7 +237,7 @@ const Registerpage: React.FC = () => {
 						{renderFirstRegistrationStep()}
 						{registrationStep !== 0 && (
 							<b className="registrationFormHeader">
-								{accountType === 1 ? 'Buyer' : 'Breeder'} Registration
+								{accountType === 1 ? 'User' : 'Breeder'} Registration
 							</b>
 						)}
 						{registrationStep === 1 && (
@@ -385,7 +385,7 @@ const Registerpage: React.FC = () => {
 						)}
 					</div>
 					<Typography.Paragraph className="registerSubTxt">
-						It is free to sign up as a buyer, there is a fee of $129 to activate your breeders account
+						It is free to sign up as a user, there is a fee of $129 to activate your breeders account
 					</Typography.Paragraph>
 				</Col>
 			</Row>

@@ -199,7 +199,7 @@ const Inboxpage: React.FC = () => {
 				subTitle="You don't have any conversations & messages yet."
 				extra={
 					<Link to="/">
-						<Button type="primary">Find {user.isBuyer ? `breeders` : 'buyers'}</Button>
+						<Button type="primary">Find {user.isBuyer ? `breeders` : 'users'}</Button>
 					</Link>
 				}
 			/>

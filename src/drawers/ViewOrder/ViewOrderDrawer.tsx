@@ -53,7 +53,7 @@ const ViewOrderDrawer: React.FC<ViewOrderDrawerProps> = ({ opened, onCancel, ord
 					/>
 				) : (
 					<>
-						<Descriptions layout='vertical' title="Buyer Details">
+						<Descriptions layout='vertical' title="User Details">
 							<Descriptions.Item label="User">{order.ordered_by.firstName} {order.ordered_by.lastName}</Descriptions.Item>
 							<Descriptions.Item label="Email">{order.ordered_by.email}</Descriptions.Item>
 							<Descriptions.Item label="Received by user">{!order.isReceivedByUser ? 'No' : 'Yes'}</Descriptions.Item>

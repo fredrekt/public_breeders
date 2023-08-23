@@ -130,7 +130,7 @@ const SettingsView: React.FC = () => {
 							<Typography.Title level={4}>{`${user.firstName ? user.firstName : 'First'} ${
 								user.lastName ? user.lastName : 'Last'
 							}`}</Typography.Title>
-							<Typography.Paragraph>{user.isBuyer ? `Buyer` : `Breeder`}</Typography.Paragraph>
+							<Typography.Paragraph>{user.isBuyer ? `User` : `Breeder`}</Typography.Paragraph>
 						</div>
 					</Col>
 					<Col className="settingsHeaderCta" lg={4}>
@@ -142,7 +142,7 @@ const SettingsView: React.FC = () => {
 			</Card>
 			<Card className="settingsPersonalInfoCard">
 				<Typography.Title className="settingsPersonalInfoHeaderTxt" level={4}>
-					{user.isBuyer ? 'Buyer' : 'Breeder'} Personal Information
+					{user.isBuyer ? 'User' : 'Breeder'} Personal Information
 				</Typography.Title>
 				<Form initialValues={user} size="large" layout={'horizontal'} onFinish={onUpdateInformation}>
 					<Form.Item name="username" label="Username">

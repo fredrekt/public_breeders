@@ -16,7 +16,7 @@ const RegisterWallPopup: React.FC<RegisterWallPopupProps> = ({ opened, onCancel,
 					Let's get started!
 				</Typography.Title>
 				<Typography.Paragraph className="registerWallSubTxt">
-					Explore breeders, connect with buyers and grow your family. You will need to create your account.
+					Explore breeders, connect with users and grow your family. You will need to create your account.
 				</Typography.Paragraph>
 				<Link className="registerWallPopupCta" to="/register">
 					<Button type="primary">Get started</Button>

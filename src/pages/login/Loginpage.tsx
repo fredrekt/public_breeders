@@ -73,7 +73,7 @@ const Loginpage: React.FC = () => {
 						</Typography>
 					</div>
 					<Typography.Paragraph className="registerSubTxt">
-						It is free to sign up as a buyer, there is a fee of $129 to activate your breeders account
+						It is free to sign up as a user, there is a fee of $129 to activate your breeders account
 					</Typography.Paragraph>
 				</Col>
 			</Row>
