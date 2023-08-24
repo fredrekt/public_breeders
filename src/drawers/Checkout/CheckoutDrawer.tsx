@@ -256,7 +256,6 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 			onOk() {
 				onCancel();
 				resetFields();
-				console.log('OK');
 			},
 			onCancel() {
 				console.log('Cancel');
