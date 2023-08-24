@@ -232,10 +232,10 @@ const Animalpage: React.FC = () => {
 
 		return (
 			<Row gutter={[24, 24]} className="animalContentRow">
-				<Col className="animalPreviewContainer" lg={12}>
+				<Col className="animalPreviewContainer" xs={24} sm={24} md={10} lg={12}>
 					<ImageGallery {...imageGalleryProps} items={images} />
 				</Col>
-				<Col className="animalInfoContainer" lg={12}>
+				<Col className="animalInfoContainer" xs={24} sm={24} md={14} lg={12}>
 					<Typography.Text className="animalCategory">{categoryName}</Typography.Text>
 					<div className="animalNameHeader">
 						<div className="animalTitle">

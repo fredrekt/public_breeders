@@ -2,6 +2,7 @@
 
 .animalPage {
 	.animalContentRow {
+		width: 100%;
 		.animalPreviewContainer {
 			.thumbnailAnimalGallery {
 				height: 100px;
@@ -93,6 +94,43 @@
 					font-weight: bold;
 				}
 			}
+		}
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.animalContentRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.animalContentRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.animalContentRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.animalContentRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
 		}
 	}
 }

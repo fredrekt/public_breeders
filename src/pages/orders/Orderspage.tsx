@@ -142,7 +142,7 @@ const Orderspage: React.FC = () => {
 			dataIndex: 'animal',
 			key: 'age',
 			render: (animal: Model.Animal) => {
-				return FormatMoney(animal.price);
+				return <Typography.Text className='orderPricing'>{FormatMoney(animal.price)}</Typography.Text>
 			}
 		},
 		{
@@ -274,8 +274,8 @@ const Orderspage: React.FC = () => {
 	return (
 		<PrivateLayout className="ordersPage customLayoutWidth">
 			<PageTitle title="Orders" />
-			<Row className="ordersFilterContainer">
-				<Col lg={24}>
+			<Row className="ordersFilterContainer" gutter={[24, 24]}>
+				<Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
 					<ButtonGroup>
 						<Button
 							onClick={() => onChangeOrderStatus('All')}

@@ -2,10 +2,10 @@ const statusColor = (status: string): string => {
 	let color: string = '';
 	switch (status) {
 		case 'PENDING':
-			color = 'volcano';
+			color = 'warning';
 			break;
 		case 'IN_TRANSIT':
-			color = 'gold';
+			color = 'processing';
 			break;
 		case 'DELIVERED':
 			color = 'green';

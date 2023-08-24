@@ -101,7 +101,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 				key={data.id}
 				xs={24}
 				sm={24}
-				md={8}
+				md={breederId ? 12 : 8}
 				lg={breederId ? 8 : 6}
 				xl={breederId ? 8 : 6}
 				xxl={breederId ? 8 : 6}

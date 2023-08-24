@@ -52,7 +52,7 @@ const Favoritespage: React.FC = () => {
 		<PrivateLayout className="favoritesPage customLayoutWidth">
 			<PageTitle title="My Favorites" />
 			<div className="favoritesContent">
-				<Row className="breederStoreFilterCategory" justify={'center'} gutter={[24, 24]}>
+				<Row className="breederStoreFilterCategory" justify={!Array.isArray(favorites) || !favorites.length ? 'center': 'start'} gutter={[24, 24]}>
 					{renderFavoritesListing()}
 				</Row>
 			</div>

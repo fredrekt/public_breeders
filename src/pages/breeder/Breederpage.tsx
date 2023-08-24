@@ -55,7 +55,7 @@ const Breederpage: React.FC = () => {
 		if (!breederData) return <Empty />;
 		return (
 			<Row className="breederContent" gutter={[24, 24]}>
-				<Col lg={6}>
+				<Col xs={24} sm={24} md={10} lg={6} xl={6} xxl={6}>
 					<Card className="breederCardProfile">
 						<Avatar
 							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 80, xxl: 100 }}
@@ -98,7 +98,7 @@ const Breederpage: React.FC = () => {
 						</div>
 					</Card>
 				</Col>
-				<Col lg={18}>
+				<Col xs={24} sm={24} md={14} lg={18} xl={18} xxl={18}>
 					<BreederStorefront breederId={id} />
 				</Col>
 				<ContactBreederPopup

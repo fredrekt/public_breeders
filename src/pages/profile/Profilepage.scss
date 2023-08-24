@@ -1,8 +1,58 @@
 .profilePage {
 	.profileViewRow {
 		margin: 25px 0;
+		width: 100%;
 		.notificationCountBadge {
 			margin-left: 5px;
+		}
+	}
+	/**
+	* Basic CSS Media Query Template
+	* ------------------------------------------
+	*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+	*   1280-1024   - desktop (default grid)
+	*   1024-768    - tablet landscape
+	*   768-480     - tablet 
+	*   480-less    - phone landscape & smaller
+	* --------------------------------------------
+	*/
+	@media all and (min-width: 1024px) and (max-width: 1280px) {
+		.profileViewRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+			.ant-menu {
+				width: 100%!important;
+			}
+		}
+	}
+
+	@media all and (min-width: 768px) and (max-width: 1024px) {
+		.profileViewRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+			.ant-menu {
+				width: 100%!important;
+			}
+		}
+	}
+
+	@media all and (min-width: 480px) and (max-width: 768px) {
+		.profileViewRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+			.ant-menu {
+				width: 100%!important;
+			}
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		.profileViewRow {
+			margin-left: 0!important;
+			margin-right: 0!important;
+			.ant-menu {
+				width: 100%!important;
+			}
 		}
 	}
 }

@@ -168,12 +168,18 @@
 	@media all and (min-width: 768px) and (max-width: 1024px) {
 		.registerCard {
 			width: 85%;
+			.registerStepper {
+				width: 90%;
+			}
 		}
 	}
 
 	@media all and (min-width: 480px) and (max-width: 768px) {
 		.registerCard {
 			width: 85%;
+			.registerStepper {
+				width: 90%;
+			}
 		}
 	}
 
@@ -181,6 +187,9 @@
 		.registerCard {
 			width: 90%;
 			padding-top: 40px;
+			.registerStepper {
+				width: 90%;
+			}
 		}
 		.registerPageRow {
 			margin: 0!important;

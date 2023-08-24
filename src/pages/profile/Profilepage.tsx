@@ -126,7 +126,7 @@ const Profilepage: React.FC = () => {
 		<PrivateLayout className="profilePage customLayoutWidth">
 			<PageTitle title="My Profile" />
 			<Row className="profileViewRow" gutter={[24, 24]}>
-				<Col lg={4}>
+				<Col xs={24} sm={24} md={8} lg={4} xl={4} xxl={4}>
 					<Menu
 						style={{ width: 256 }}
 						onSelect={(e: any) => {
@@ -149,7 +149,7 @@ const Profilepage: React.FC = () => {
 						items={items}
 					/>
 				</Col>
-				<Col lg={20}>{listOfViews[selectedView]}</Col>
+				<Col xs={24} sm={24} md={16} lg={20} xl={20} xxl={20}>{listOfViews[selectedView]}</Col>
 			</Row>
 		</PrivateLayout>
 	);
