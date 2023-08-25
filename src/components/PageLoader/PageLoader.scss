@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+.loading {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	border: 8px solid rgba(152, 183, 107, 1);
+	border-radius: 50%;
+	border-top-color: rgba(152, 183, 107, 0.6);
+	animation: spin 1s ease-in-out infinite;
+	-webkit-animation: spin 1s ease-in-out infinite;
+	left: calc(50%);
+	top: calc(50%);
+	position: fixed;
+	z-index: 1;
+}
+
+@keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
