@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BreederStorefront.scss';
 import BreederCard from '../BreederCard/BreederCard';
-import { Button, Col, Input, Row, Select, Typography, message } from 'antd';
+import { Button, Col, Empty, Input, Row, Select, Typography, message } from 'antd';
 import BreederCategoryCard from '../BreederCategoryCard/BreederCategoryCard';
 import AdvancedBreederStorefrontFilterDrawer from '../../drawers/AdvancedBreederStorefrontFilter/AdvancedBreederStorefrontFilterDrawer';
 import axios from 'axios';
@@ -64,7 +64,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 	}, [selectedCategory, breederId]);
 
 	const renderListOfBreeders = () => {
-		if (!Array.isArray(listOfBreeders) || !listOfBreeders.length) return;
+		if (!Array.isArray(listOfBreeders) || !listOfBreeders.length) return <Empty/>;
 		let listOfBreedersData = listOfBreeders.filter((data) => !data.isDeleted);
 
 		if (searchValue) {
@@ -175,7 +175,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 						</Button>
 					</Col>
 				</Row>
-				<Row gutter={[24, 24]}>{renderListOfBreeders()}</Row>
+				<Row justify={!Array.isArray(listOfBreeders) || !listOfBreeders.length ? 'center' : 'start'} gutter={[24, 24]}>{renderListOfBreeders()}</Row>
 			</div>
 			<AdvancedBreederStorefrontFilterDrawer
 				opened={openAdvancedFilter}
