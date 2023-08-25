@@ -3,7 +3,7 @@ import './Breederpage.scss';
 import PrivateLayout from '../../layouts/private/PrivateLayout';
 import { Avatar, Button, Card, Col, Empty, Image, Row, Typography, message } from 'antd';
 import { faker } from '@faker-js/faker';
-import BreederDocumentCard from '../../components/BreederDocumentCard/BreederDocumentCard';
+// import BreederDocumentCard from '../../components/BreederDocumentCard/BreederDocumentCard';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import { useParams } from 'react-router-dom';
 import ContactBreederPopup from '../../popups/ContactBreeder/ContactBreederPopup';
@@ -90,11 +90,13 @@ const Breederpage: React.FC = () => {
 							Documents
 						</Typography.Title>
 						<div className="breederCardDocumentList">
+							<Empty/>
+							{/* // remove empty component when document feature is fully implemented (needs proper storage of pdf files)
 							<BreederDocumentCard url="" title="Pedigree Paper of Sire" primary />
 							<BreederDocumentCard url="" title="Pedigree Paper of Damn" primary />
 							<BreederDocumentCard url="" title="Vaccination Records" />
 							<BreederDocumentCard url="" title="Vet Checks" />
-							<BreederDocumentCard url="" title="Video" primary />
+							<BreederDocumentCard url="" title="Video" primary /> */}
 						</div>
 					</Card>
 				</Col>

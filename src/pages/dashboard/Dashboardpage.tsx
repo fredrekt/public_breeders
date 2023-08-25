@@ -8,6 +8,7 @@ import DatatablesView from '../../views/dashboard/DatatablesView';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import { removeToken } from '../../utils/authHelpers';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const { Sider, Content, Header } = Layout;
 
@@ -30,7 +31,7 @@ const Dashboardpage: React.FC = () => {
 		<DatatablesView title="Showcase Profiles" categoryId={3} />
 	];
 
-	if (!user || isLoading) return <p>loading</p>;
+	if (!user || isLoading) return <PageLoader/>;
 	if (user.isBuyer) {
 		navigate(`/`);
 	}

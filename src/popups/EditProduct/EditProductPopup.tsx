@@ -155,6 +155,7 @@ const EditProductPopup: React.FC<EditProductPopupProps> = ({ opened, onCancel, o
 						action={`${API_URL}/upload`}
 						method='POST'
 						name="files"
+						accept='image/*'
 						headers={{
 							Authorization: `${BEARER} ${getToken()}`
 						}}
