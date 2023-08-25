@@ -171,7 +171,7 @@ const DatatablesView: React.FC<DatatablesViewProps> = ({ title, categoryId }) =>
 					{title ? title : `Datatables`}
 				</Typography.Title>
 				<Button onClick={() => setOpenCreateProduct(true)} type="primary">
-					Create Product
+					Create Listing
 				</Button>
 			</div>
 			<div className="datatableTableContainer">

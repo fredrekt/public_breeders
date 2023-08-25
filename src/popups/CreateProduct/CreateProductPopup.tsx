@@ -105,9 +105,9 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 			afterClose={closeWithReset}
 			okButtonProps={{ htmlType: 'submit' }}
 			onCancel={onCancel}
-			okText="Create product"
+			okText="Create listing"
 			centered closable={false}
-			title={'Create Product'}
+			title={'Create Listing'}
 			footer={null}
 			destroyOnClose
 		>
@@ -159,7 +159,7 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 					<Space className="createProductCtaSpace" align="center">
 						{!isLoading && <Button onClick={onCancel}>Cancel</Button>}
 						<Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
-							{isLoading ? `Creating Product...` : `Create Product`}
+							{isLoading ? `Creating Listing...` : `Create Listing`}
 						</Button>
 					</Space>
 				</Form.Item>
