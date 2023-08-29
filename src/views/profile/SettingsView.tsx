@@ -8,12 +8,13 @@ import { randomVector } from '../../utils/randomVector';
 import type { UploadProps } from 'antd';
 import { getToken } from '../../utils/authHelpers';
 import { Model } from '../../models/model';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const SettingsView: React.FC = () => {
 	const [form] = Form.useForm();
 	const { user, isLoading, setUser } = useUserContext();
 
-	if (!user || isLoading) return <p>loading</p>;
+	if (!user || isLoading) return <PageLoader/>;
 
 	const onUpdateInformation = async (values: any) => {
 		if (!user.id || !user) return;

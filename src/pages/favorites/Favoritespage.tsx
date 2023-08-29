@@ -8,9 +8,10 @@ import { Api } from '../../models/api';
 import axios from 'axios';
 import { API_URL } from '../../utils/constant';
 import { useUserContext } from '../../context/UserContext';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const Favoritespage: React.FC = () => {
-	const { user } = useUserContext();
+	const { user, isLoading } = useUserContext();
 	const [favorites, setFavorites] = useState<Api.Favorite.Res.FavoriteListing[]>([]);
 	const [forceUpdate, setForceUpdate] = useState<boolean>(false);
 
@@ -47,6 +48,8 @@ const Favoritespage: React.FC = () => {
 			</Col>
 		))
 	}
+
+	if (!user || isLoading) return <PageLoader/>;
 
 	return (
 		<PrivateLayout className="favoritesPage customLayoutWidth">

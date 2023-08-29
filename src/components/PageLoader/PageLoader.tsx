@@ -3,7 +3,7 @@ import './PageLoader.scss'
 
 const PageLoader: React.FC = () => {
   return (
-    <div>PageLoader</div>
+    <div className="loading"></div>
   )
 }
 

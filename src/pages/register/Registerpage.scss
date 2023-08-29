@@ -112,15 +112,20 @@
 		.prefixOptionalExtra {
 			color: orange;
 		}
-		.addBreederCard {
-			width: 100%;
-			height: 50px;
-			border-color: red;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 10px;
-			color: $textGray;
+		.uploadBreederCard {
+			.ant-upload {
+				width: 100%;
+			}
+			.addBreederCard {
+				width: 100%;
+				height: 50px;
+				border-color: red;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 10px;
+				color: $textGray;
+			}
 		}
 	}
 	.registerCtaText {

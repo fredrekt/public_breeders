@@ -22,19 +22,19 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ opened, onCancel, o
 			<div className="mobileMenuNavItems">
 				{getToken() ? (
 					<>
-						<Link className="mobileMenuItem" to="/">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/">
 							Home
 						</Link>
-                        <Link className="mobileMenuItem" to="/inbox">
+                        <Link onClick={onCancel} className="mobileMenuItem" to="/inbox">
 							Messages
 						</Link>
-                        <Link className="mobileMenuItem" to="/favorites">
+                        <Link onClick={onCancel} className="mobileMenuItem" to="/favorites">
 							Favorites
 						</Link>
-                        <Link className="mobileMenuItem" to="/orders">
+                        <Link onClick={onCancel} className="mobileMenuItem" to="/orders">
 							Orders
 						</Link>
-						<Link className="mobileMenuItem" to="/profile">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/profile">
 							Profile
 						</Link>
                         <Link className="mobileMenuItem cta" onClick={() => {
@@ -46,19 +46,19 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ opened, onCancel, o
 					</>
 				) : (
 					<>
-						<Link className="mobileMenuItem" to="/">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/?categoryId=2">
 							Pups for sale
 						</Link>
-						<Link className="mobileMenuItem" to="/">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/?categoryId=4">
 							Upcoming Litters
 						</Link>
-						<Link className="mobileMenuItem" to="/">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/?categoryId=1">
 							Stud Profiles
 						</Link>
-						<Link className="mobileMenuItem" to="/login">
+						<Link onClick={onCancel} className="mobileMenuItem" to="/login">
 							Login
 						</Link>
-						<Link className="mobileMenuItem cta" to="/register">
+						<Link onClick={onCancel} className="mobileMenuItem cta" to="/register">
 							Sign Up
 						</Link>
 					</>

@@ -7,6 +7,7 @@ export declare namespace Model {
 		lastName: string;
 		isBuyer: boolean;
 		avatar: Image;
+		phone: string;
 		isSubscribed: boolean;
 		stripeAccountId: string;
 		stripeAccountLink: string;

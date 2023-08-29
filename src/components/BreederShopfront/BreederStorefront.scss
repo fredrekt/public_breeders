@@ -8,6 +8,9 @@
 			&.relativePos {
 				margin-top: -100px;
 			}
+			&.unauthMarketplace {
+				display: none;
+			}
 		}
 		.breederStorefrontFilters {
 			margin-bottom: 35px;
@@ -85,6 +88,7 @@
 			}
 		}
 		.breederStorefrontFilters {
+			row-gap: 16px!important;
 			.sortFilterCta {
 				button {
 					.sortFilterCtaTxt {

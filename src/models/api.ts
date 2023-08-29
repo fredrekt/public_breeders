@@ -10,6 +10,7 @@ export declare namespace Api {
 				username: string;
 				email: string;
 				password: string;
+				phone?: string;
 				prefix?: string;
 				registryName?: string;
 			}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BreederStorefront.scss';
 import BreederCard from '../BreederCard/BreederCard';
-import { Button, Col, Input, Row, Select, Typography, message } from 'antd';
+import { Button, Col, Empty, Input, Row, Select, Typography, message } from 'antd';
 import BreederCategoryCard from '../BreederCategoryCard/BreederCategoryCard';
 import AdvancedBreederStorefrontFilterDrawer from '../../drawers/AdvancedBreederStorefrontFilter/AdvancedBreederStorefrontFilterDrawer';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import { API_URL } from '../../utils/constant';
 import { Api } from '../../models/api';
 import { Model } from '../../models/model';
 import { getToken } from '../../utils/authHelpers';
+import { useLocation } from 'react-router-dom';
 
 const Fade = require('react-reveal/Fade');
 
@@ -19,6 +20,9 @@ interface BreederStorefrontProps {
 type SortByTypes = 'asc' | 'desc' | 'createdDesc' | 'createdAsc' | '';
 
 const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const paramCategoryId: string | null = queryParams.get('categoryId');
 	const [listOfBreeders, setListOfBreeders] = useState<Api.Animal.Res.AnimalListing[]>([]);
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [openAdvancedFilter, setOpenAdvancedFiter] = useState<boolean>(false);
@@ -59,12 +63,26 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 	}, []);
 
 	useEffect(() => {
+		const loadParamsCategoryId = () => {
+			if (!paramCategoryId) {
+				if (!selectedCategory) {
+					setSelectedCategory(0);
+				}
+				return;
+			}
+			const parsedCategoryId: number = parseInt(paramCategoryId);
+			setSelectedCategory(parsedCategoryId);
+		}
+		loadParamsCategoryId();
+	}, [paramCategoryId, selectedCategory]);
+
+	useEffect(() => {
 		loadListOfBreeders();
 		// eslint-disable-next-line
 	}, [selectedCategory, breederId]);
 
 	const renderListOfBreeders = () => {
-		if (!Array.isArray(listOfBreeders) || !listOfBreeders.length) return;
+		if (!Array.isArray(listOfBreeders) || !listOfBreeders.length) return <Empty/>;
 		let listOfBreedersData = listOfBreeders.filter((data) => !data.isDeleted);
 
 		if (searchValue) {
@@ -140,11 +158,11 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 	return (
 		<div className="breederStorefront customLayoutWidth">
 			<div className="breederStoreContent">
-				<Row className={`breederStoreFilterCategory ${!breederId && getToken() ? 'relativePos' : ''}`} justify={'center'} gutter={[24, 24]}>
+				<Row className={`breederStoreFilterCategory ${!breederId && getToken() ? 'relativePos' : ''} ${!getToken() ? 'unauthMarketplace' : ''}`} justify={'center'} gutter={[24, 24]}>
 					{renderCategories()}
 				</Row>
 				<Row className="breederStorefrontFilters" gutter={[24, 24]}>
-					<Col xs={20} sm={20} lg={20}>
+					<Col xs={getToken() ? 20 : 24} sm={getToken() ? 20 : 24} lg={!getToken() ? 18 : 20} xl={!getToken() ? 18 : 20} xxl={!getToken() ? 18 : 20}>
 						<Input
 							className='searchFilter'
 							prefix={<i className="ri-search-line ri-lg primary-color-icon"></i>}
@@ -154,9 +172,9 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							onChange={(e: any) => setSearchValue(e.target.value)}
 						/>
 					</Col>
-					<Col xs={0} sm={0} lg={2}>
+					<Col xs={0} sm={0} lg={!getToken() ? 6 : 2} xl={!getToken() ? 6 : 2} xxl={!getToken() ? 6 : 2}>
 						<Select
-							placeholder="A-Z"
+							placeholder={getToken() ? "A-Z" : 'Filter'}
 							className="sortBySelect"
 							suffixIcon={<i className="ri-sort-desc ri-2x primary-color-icon"></i>}
 							size="large"
@@ -168,14 +186,14 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							<Select.Option value="createdAsc">Oldest</Select.Option>
 						</Select>
 					</Col>
-					<Col xs={4} sm={4} className="sortFilterCta" lg={2}>
+					<Col xs={getToken() ? 4 : 24} sm={getToken() ? 4 : 24} className="sortFilterCta" lg={!getToken() ? 0 : 2} xl={!getToken() ? 0 : 2} xxl={!getToken() ? 0 : 2}>
 						<Button onClick={() => setOpenAdvancedFiter(true)} size="large">
 							<i className="ri-equalizer-line ri-lg primary-color-icon"></i>
 							<Typography.Text className='sortFilterCtaTxt'>Filter</Typography.Text>
 						</Button>
 					</Col>
 				</Row>
-				<Row gutter={[24, 24]}>{renderListOfBreeders()}</Row>
+				<Row justify={!Array.isArray(listOfBreeders) || !listOfBreeders.length ? 'center' : 'start'} gutter={[24, 24]}>{renderListOfBreeders()}</Row>
 			</div>
 			<AdvancedBreederStorefrontFilterDrawer
 				opened={openAdvancedFilter}

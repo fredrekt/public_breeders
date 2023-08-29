@@ -23,6 +23,7 @@ import PrivacyPolicypage from './pages/privacyPolicy/PrivacyPolicypage';
 import BreederOnboardingPayoutpage from './pages/breederOnboardingPayout/BreederOnboardingPayoutpage';
 import SuccessPage from './pages/stripe/SuccessPage';
 import MissingPage from './pages/missing/MissingPage';
+import PendingApprovalpage from './pages/pendingApproval/PendingApprovalpage';
 
 message.config({
 	duration: 1,
@@ -45,6 +46,7 @@ const App: React.FC = () => {
 				<Route path="/terms-and-conditions" element={<TermsAndConditionsPage/>} />
 				<Route path="/privacy-policy" element={<PrivacyPolicypage/>} />
 				<Route path="/stripe/success" element={<SuccessPage />} />
+				<Route path="/pending-approval" element={<PendingApprovalpage />} />
 				<Route
 					path="/breeder/:id"
 					element={

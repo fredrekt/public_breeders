@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import footerLogo from '../../../assets/images/footer_logo.png';
 
 const PrivateFooter: React.FC = () => {
+	const scrollTop = () => window.scrollTo(0, 0);
 	return (
 		<footer className="privateFooter">
 			<Row align={'middle'} className="privateFooterRow">
@@ -16,9 +17,9 @@ const PrivateFooter: React.FC = () => {
 				<Col xs={24} sm={24} md={8} className='footerLinks' lg={4} xl={4} xxl={4}>
 					<b>Explore</b>
 					<ul>
-						<li><Link to="/">Pups for sale</Link></li>
-						<li><Link to="/">Upcoming Litters</Link></li>
-						<li><Link to="/">Stud Profiles</Link></li>
+						<li><Link onClick={scrollTop} to="/?categoryId=2">Pups for sale</Link></li>
+						<li><Link onClick={scrollTop} to="/?categoryId=4">Upcoming Litters</Link></li>
+						<li><Link onClick={scrollTop} to="/?categoryId=1">Stud Profiles</Link></li>
 					</ul>
 				</Col>
 				<Col xs={24} sm={24} md={8} className='footerLinks' lg={4} xl={4} xxl={4}>

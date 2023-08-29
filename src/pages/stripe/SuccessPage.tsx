@@ -9,7 +9,7 @@ const SuccessPage: React.FC = () => {
 				className="customOnboardingResult"
 				status="success"
 				title="Successfully onboarded"
-				subTitle="Breeder successfully setup stripe payout account. If you have any concerns/questions please reach out to support@studiolore.com.au."
+				subTitle={<span>Breeder successfully setup stripe payout account. If you have any concerns/questions please reach out to <a href="mailto:hello@mybreedersstore.com">hello@mybreedersstore.com</a></span>}
 				extra={[
 					<Button onClick={() => window.close()} type="primary" key="console">
 						Return to My Breeders Store

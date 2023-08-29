@@ -10,7 +10,7 @@ import AccountTypeSelection from '../../components/AccountTypeSelection/AccountT
 import axios from 'axios';
 import { API_URL, BEARER } from '../../utils/constant';
 import { Api } from '../../models/api';
-import { getToken, setToken } from '../../utils/authHelpers';
+import { getToken, removeToken, setToken } from '../../utils/authHelpers';
 import registerImg from '../../assets/images/mainHero.png';
 import { Steps } from 'antd';
 import type { UploadProps } from 'antd';
@@ -30,6 +30,9 @@ const Registerpage: React.FC = () => {
 		id: 0
 	});
 	const [user, setUser] = useState<Api.User.Res.LoggedInUser>();
+	const [breederData, setBreederData] = useState({
+		businessName: ''
+	});
 
 	const onRegister = async (values: any) => {
 		if (!values) return;
@@ -41,11 +44,15 @@ const Registerpage: React.FC = () => {
 				lastName: values.lastName,
 				username: values.username.split('@')[0],
 				email: values.username,
-				password: values.password
+				password: values.password,
 			};
 			if (accountType === 0) {
 				registerData.registryName = values.registryName;
 				registerData.prefix = values.prefix;
+				registerData.phone = values.phone;
+				setBreederData({
+					businessName: values.registryName
+				});
 			}
 			const res = await axios.post(
 				`${API_URL}/auth/local/register?breeder=${registerData.isBuyer ? false : true}`,
@@ -130,7 +137,10 @@ const Registerpage: React.FC = () => {
 		setIsLoading(true);
 		try {
 			let updateData = {
-				data: values
+				data: {
+					...values,
+					onboarding_registration: true
+				}
 			};
 			const update = await axios.put(`${API_URL}/breeders/${user.breeder}`, updateData, {
 				headers: {
@@ -140,7 +150,8 @@ const Registerpage: React.FC = () => {
 			if (update) {
 				setIsLoading(false);
 				message.success(`Successfully updated breeder details.`);
-				navigate(`/profile`);
+				removeToken();
+				navigate(`/pending-approval`);
 			}
 		} catch (error) {
 			setIsLoading(false);
@@ -211,6 +222,10 @@ const Registerpage: React.FC = () => {
 			}
 		}
 	};
+
+	const uploadBreederCard: UploadProps = {
+		className: 'uploadBreederCard'
+	}
 
 	return (
 		<PublicLayout navbar className="registerPage">
@@ -285,7 +300,7 @@ const Registerpage: React.FC = () => {
 
 									{accountType === 0 && (
 										<>
-											<Form.Item name="">
+											<Form.Item name="phone">
 												<Input placeholder="Phone" />
 											</Form.Item>
 											<Form.Item
@@ -303,9 +318,11 @@ const Registerpage: React.FC = () => {
 											</Form.Item>
 
 											<Form.Item>
-												<Button className="addBreederCard">
-													<i className="ri-upload-cloud-2-line"></i>Upload breeder card
-												</Button>
+												<Upload {...uploadBreederCard}>
+													<Button className="addBreederCard">
+														<i className="ri-upload-cloud-2-line"></i>Upload breeder card
+													</Button>
+												</Upload>
 											</Form.Item>
 										</>
 									)}
@@ -329,7 +346,7 @@ const Registerpage: React.FC = () => {
 								name="normal_login"
 								layout="vertical"
 								className="registerForm"
-								initialValues={{ remember: true }}
+								initialValues={{ remember: true, ...breederData  }}
 								onFinish={onUpdateBreeder}
 								size="large"
 							>

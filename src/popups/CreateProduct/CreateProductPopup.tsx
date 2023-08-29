@@ -31,6 +31,8 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 	const [previewTitle, setPreviewTitle] = useState<string>('');
 	const [fileList, setFileList] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isUploading, setIsUploading] = useState<boolean>(false);
+	// const [fileDocumentList, setFileDocumentList] = useState<any[]>([]);
 
 	const onCreate = async (values: any) => {
 		if (!user) return;
@@ -40,19 +42,37 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 				...values
 			};
 			const createProduct = await axios.post(`${API_URL}/animals`, { data: createData });
-			if ((createProduct.data && createProduct.data.id) && (Array.isArray(fileList) && fileList.length)) {
-				let imageIds: number[] = [];
-				for (let file of fileList) {
-					if (!file.response) continue;
-					imageIds.push(file.response[0].id);
+			if ((createProduct.data && createProduct.data.id)) {
+				// for images
+				if (Array.isArray(fileList) && fileList.length) {
+					let imageIds: number[] = [];
+					for (let file of fileList) {
+						if (!file.response) continue;
+						imageIds.push(file.response[0].id);
+					}
+					if (Array.isArray(imageIds) && imageIds) {
+						await axios.put(`${API_URL}/animals/${createProduct.data.id}`, {
+							data: {
+								images: imageIds
+							}
+						});
+					}
 				}
-				if (Array.isArray(imageIds) && imageIds) {
-					await axios.put(`${API_URL}/animals/${createProduct.data.id}`, {
-						data: {
-							images: imageIds
-						}
-					});
-				}
+				// for documents
+				// if (Array.isArray(fileDocumentList) && fileDocumentList.length) {
+				// 	let documentIds: number[] = [];
+				// 	for (let file of fileDocumentList) {
+				// 		if (!file.response) continue;
+				// 		documentIds.push(file.response[0].id);
+				// 	}
+				// 	if (Array.isArray(documentIds) && documentIds) {
+				// 		await axios.put(`${API_URL}/animals/${createProduct.data.id}`, {
+				// 			data: {
+				// 				documents: documentIds
+				// 			}
+				// 		});
+				// 	}
+				// }
 			}
 			message.success(`Successfully create a product.`);
 			setIsLoading(false);
@@ -75,13 +95,33 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 		setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 	};
 
-	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
+	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+		setIsUploading(true);
+		if (newFileList[newFileList.length - 1].status === 'done') {
+			setIsUploading(false);
+		}
+		setFileList(newFileList);
+	}
+
+	// const handleDocumentChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+	// 	setIsUploading(true);
+	// 	if (newFileList[newFileList.length - 1].status === 'done') {
+	// 		setIsUploading(false);
+	// 	}
+	// 	setFileDocumentList(newFileList);
+	// }
 
 	const handleRemoveImage = async (file: any) => {
 		if (!Array.isArray(fileList) || !fileList.length) return;
 		let filteredImages = fileList.filter((data) => data.id !== file.id);
 		setFileList(filteredImages);
 	}
+
+	// const handleRemoveDocument = async (file: any) => {
+	// 	if (!Array.isArray(fileDocumentList) || !fileDocumentList.length) return;
+	// 	let filteredDocuments = fileDocumentList.filter((data) => data.id !== file.id);
+	// 	setFileDocumentList(filteredDocuments);
+	// }
 
 	const uploadButton = (
 		<div>
@@ -142,6 +182,7 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 					<Upload
 						name='files'
 						method='POST'
+						accept='image/*'
 						headers={{
 							Authorization: `${BEARER} ${getToken()}`
 						}}
@@ -155,10 +196,27 @@ const CreateProductPopup: React.FC<CreateProductPopupProps> = ({ opened, onCance
 						{fileList.length >= 8 ? null : uploadButton}
 					</Upload>
 				</Form.Item>
+				{/* <Form.Item name="documents">
+					<Typography.Paragraph>Documents</Typography.Paragraph>
+					<Upload
+						name='files'
+						method='POST'
+						accept='application/pdf'
+						headers={{
+							Authorization: `${BEARER} ${getToken()}`
+						}}
+						action={`${API_URL}/upload`}
+						fileList={fileDocumentList}
+						onChange={handleDocumentChange}
+						onRemove={handleRemoveDocument}
+					>
+						<Button icon={<i className="ri-upload-cloud-line"></i>}>Upload</Button>
+					</Upload>
+				</Form.Item> */}
 				<Form.Item className="createProductCta">
 					<Space className="createProductCtaSpace" align="center">
 						{!isLoading && <Button onClick={onCancel}>Cancel</Button>}
-						<Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
+						<Button disabled={isLoading || isUploading} loading={isLoading || isUploading} type="primary" htmlType="submit">
 							{isLoading ? `Creating Listing...` : `Create Listing`}
 						</Button>
 					</Space>

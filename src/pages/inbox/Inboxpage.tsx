@@ -13,6 +13,7 @@ import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
 import MessageBlock from '../../components/MessageBlock/MessageBlock';
 import { randomVector } from '../../utils/randomVector';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const socket = io(API_BASE_URL); //Connecting to Socket.io backend
 
@@ -27,7 +28,7 @@ const debounce = <F extends (...args: any[]) => void>(func: F, delay: number) =>
 };
 
 const Inboxpage: React.FC = () => {
-	const { user } = useUserContext();
+	const { user, isLoading } = useUserContext();
 	const [selectedConversationId, setSelectedConversationId] = useLocalStorage<number>('selectedConversationId', 0);
 	const [selectedConversationMobileId, setSelectedConversationMobileId] = useLocalStorage<number>(
 		'selectedConversationMobileId',
@@ -377,6 +378,8 @@ const Inboxpage: React.FC = () => {
 			</div>
 		);
 	};
+
+	if (!user || isLoading) return <PageLoader/>;
 
 	return (
 		<PrivateLayout className="inboxPage customLayoutWidth">

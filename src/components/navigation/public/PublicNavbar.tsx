@@ -17,19 +17,19 @@ const PublicNavbar: React.FC = () => {
 			<div className="publicNavCenter">
 				<NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
-					to="/"
+					to="/?categoryId=2"
 				>
 					<b>Pups for sale</b>
 				</NavLink>
 				<NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
-					to="/"
+					to="/?categoryId=4"
 				>
 					<b>Upcoming Litters</b>
 				</NavLink>
 				<NavLink
 					className={({ isActive }: { isActive: boolean }) => (isActive ? 'navLink' : 'navLink')}
-					to="/"
+					to="/?categoryId=1"
 				>
 					<b>Stud Profiles</b>
 				</NavLink>

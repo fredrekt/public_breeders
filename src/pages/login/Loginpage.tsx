@@ -20,6 +20,10 @@ const Loginpage: React.FC = () => {
 			const res = await axios.post(`${API_URL}/auth/local`, values);
 			if (!res) return;
 			setIsLoading(false);
+			if (!res.data.user.isBuyer && res.data.user.breeder && !res.data.user.breeder.isVerified) {
+				navigate(`/pending-approval`)
+				return;
+			}
 			setToken(res.data.jwt);
 			message.success(`Successfully logged in.`);
 			navigate('/');
