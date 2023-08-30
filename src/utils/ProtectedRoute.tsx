@@ -46,8 +46,12 @@ const ProtectedRoute: React.FC<ProtectedRouteInterface> = (props) => {
 	const breederRestrictions = async () => {
 		if (!authToken) return;
 		if (!userData) return;
+		if (!userData.isBuyer && userData.breeder && !userData.breeder.isVerified) {
+			removeToken();
+			return;
+		}
 		if (!userData.isBuyer && !userData.isSubscribed) {
-			setOpenPaywall(true)
+			setOpenPaywall(true);
 		}
 		if (!userData.isBuyer && userData.isSubscribed && !userData.stripeAccountId && !userData.stripeAccountLink) {
 			// redirect to breeder onboarding payout setup page

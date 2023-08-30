@@ -15,6 +15,16 @@ import registerImg from '../../assets/images/mainHero.png';
 import { Steps } from 'antd';
 import type { UploadProps } from 'antd';
 import { Model } from '../../models/model';
+import Tesseract from 'tesseract.js';
+
+interface ParsedData {
+	firstName: string;
+	lastName: string;
+	name: string;
+	cardNumber: string;
+	prefix: string;
+	registryName: string;
+}
 
 const Registerpage: React.FC = () => {
 	const navigate = useNavigate();
@@ -33,6 +43,15 @@ const Registerpage: React.FC = () => {
 	const [breederData, setBreederData] = useState({
 		businessName: ''
 	});
+	const [parsedData, setParsedData] = useState<ParsedData>({
+		firstName: '',
+		lastName: '',
+		name: '',
+		cardNumber: '',
+		prefix: '',
+		registryName: ''
+	});
+	const [breederCardPhoto, setBreederCardPhoto] = useState<any>();
 
 	const onRegister = async (values: any) => {
 		if (!values) return;
@@ -44,16 +63,34 @@ const Registerpage: React.FC = () => {
 				lastName: values.lastName,
 				username: values.username.split('@')[0],
 				email: values.username,
-				password: values.password,
+				password: values.password
 			};
 			if (accountType === 0) {
+				let currentBusinessName: string = '';
 				registerData.registryName = values.registryName;
 				registerData.prefix = values.prefix;
 				registerData.phone = values.phone;
+				currentBusinessName = values.registryName;
+				if (parsedData) {
+					if (parsedData.firstName) {
+						registerData.firstName = parsedData.firstName;
+					}
+					if (parsedData.lastName) {
+						registerData.lastName = parsedData.lastName;
+					}
+					if (parsedData.prefix) {
+						registerData.prefix = parsedData.prefix;
+					}
+					if (parsedData.registryName) {
+						currentBusinessName = parsedData.registryName;
+					}
+				}
 				setBreederData({
-					businessName: values.registryName
+					businessName: currentBusinessName
 				});
 			}
+
+			// register function
 			const res = await axios.post(
 				`${API_URL}/auth/local/register?breeder=${registerData.isBuyer ? false : true}`,
 				registerData
@@ -142,11 +179,26 @@ const Registerpage: React.FC = () => {
 					onboarding_registration: true
 				}
 			};
-			const update = await axios.put(`${API_URL}/breeders/${user.breeder}`, updateData, {
+			const update = await axios.put(`${API_URL}/breeders/${user.breeder.id}`, updateData, {
 				headers: {
 					Authorization: `${BEARER} ${getToken()}`
 				}
 			});
+			if (breederCardPhoto && user && user.breeder) {
+				const breederId: any = user.breeder.id;
+				const formData = new FormData();
+				formData.append('files', breederCardPhoto);
+				formData.append('field', 'cardPhoto');
+				formData.append('ref', 'api::breeder.breeder');
+				formData.append('refId', breederId);
+
+				await axios.post(`${API_URL}/upload`, formData, {
+					headers: {
+						Authorization: `${BEARER} ${getToken()}`,
+						'Content-Type': 'multipart/form-data'
+					}
+				});
+			}
 			if (update) {
 				setIsLoading(false);
 				message.success(`Successfully updated breeder details.`);
@@ -165,7 +217,7 @@ const Registerpage: React.FC = () => {
 		data: {
 			field: 'coverPhoto',
 			ref: 'api::breeder.breeder',
-			refId: user && user.breeder && user.breeder
+			refId: user && user.breeder && user.breeder.id
 		},
 		accept: 'image/*',
 		method: 'POST',
@@ -197,7 +249,7 @@ const Registerpage: React.FC = () => {
 		data: {
 			field: 'avatar',
 			ref: 'api::breeder.breeder',
-			refId: user && user.breeder && user.breeder
+			refId: user && user.breeder && user.breeder.id
 		},
 		accept: 'image/*',
 		method: 'POST',
@@ -223,9 +275,83 @@ const Registerpage: React.FC = () => {
 		}
 	};
 
-	const uploadBreederCard: UploadProps = {
-		className: 'uploadBreederCard'
-	}
+	const parseTextToJSON = async (text: string): Promise<ParsedData> => {
+		// Define the position marker for card number
+		const cardNumberMarker = 'Member Number:';
+		const cardNumberIndex = text.indexOf(cardNumberMarker);
+
+		if (cardNumberIndex !== -1) {
+			// Extract the text before the card number marker
+			const textBeforeCardNumber = text.substring(0, cardNumberIndex);
+
+			// Split the text before card number marker into lines
+			const lines = textBeforeCardNumber.split('\n');
+
+			// Find the last non-empty line, which likely contains the name
+			let name = '';
+			for (let i = lines.length - 1; i >= 0; i--) {
+				const line = lines[i].trim();
+				if (line.length > 0) {
+					name = line;
+					break;
+				}
+			}
+
+			// Extract the card number and kennel prefix based on their marker positions
+			const cardNumberMatch = text.match(/Member Number: (.+)/);
+			const prefixMatch = text.match(/Kennel Prefix: (.+)/);
+
+			const cardNumber = cardNumberMatch ? cardNumberMatch[1].trim() : '';
+			const prefix = prefixMatch ? prefixMatch[1].trim() : '';
+			const cleanedName = name.replace(/(^|\s)(.)(?=\s|$)/g, '');
+
+			const parts = cleanedName.split(/\s+/);
+
+			let firstName = '';
+			let lastName = '';
+
+			if (parts.length > 0) {
+				firstName = parts[0];
+				lastName = parts.slice(1).join(' ');
+			}
+
+			return { name: cleanedName, cardNumber, prefix, firstName, lastName, registryName: prefix };
+		} else {
+			// Card number marker not found
+			return { name: '', cardNumber: '', prefix: '', firstName: '', lastName: '', registryName: '' };
+		}
+	};
+
+	const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsLoading(true);
+		const imageFile = event.target.files?.[0];
+
+		if (!imageFile) return;
+
+		console.log(JSON.stringify(imageFile));
+
+		// Process the image using Tesseract.js
+		const { data } = await Tesseract.recognize(imageFile);
+		const extractedText = data.text;
+
+		// Parse extracted text and generate JSON
+		console.log('extracted ocr text', extractedText);
+		const parsedJson = await parseTextToJSON(extractedText);
+
+		if (!parsedJson.name || !parsedJson.prefix) {
+			message.error('Breeder card is invalid.');
+			setIsLoading(false);
+			return;
+		}
+		setIsLoading(false);
+		setParsedData({ ...parsedData, ...parsedJson });
+		setBreederCardPhoto(imageFile);
+		message.success('Successfully uploaded breeder card.');
+	};
+
+	const handleInputChange = (e: any) => setParsedData({ ...parsedData, [e.target.name]: e.target.value });
+
+	const { prefix, registryName } = parsedData;
 
 	return (
 		<PublicLayout navbar className="registerPage">
@@ -260,7 +386,7 @@ const Registerpage: React.FC = () => {
 								<Form
 									name="normal_login"
 									className="registerForm"
-									initialValues={{ remember: true }}
+									initialValues={parsedData}
 									onFinish={onRegister}
 									size="large"
 								>
@@ -309,20 +435,38 @@ const Registerpage: React.FC = () => {
 													{ required: true, message: 'Please input your Registry name!' }
 												]}
 											>
-												<Input placeholder="Enter Registry Name" />
+												<Input
+													value={registryName}
+													name="registryName"
+													onChange={handleInputChange}
+													placeholder="Enter Registry Name"
+												/>
 											</Form.Item>
 
 											<Form.Item name="prefix">
-												<Input placeholder="Enter Prefix" />
+												<Input
+													value={prefix}
+													name="prefix"
+													onChange={handleInputChange}
+													placeholder="Enter Prefix"
+												/>
 												<small className="prefixOptionalExtra">Prefix is optional</small>
 											</Form.Item>
 
 											<Form.Item>
-												<Upload {...uploadBreederCard}>
-													<Button className="addBreederCard">
-														<i className="ri-upload-cloud-2-line"></i>Upload breeder card
-													</Button>
-												</Upload>
+												<label
+													className={`custom-breeder-card-upload ${
+														isLoading ? 'disabled' : ''
+													}`}
+												>
+													<input
+														type="file"
+														accept="image/*"
+														disabled={isLoading}
+														onChange={handleImageUpload}
+													/>
+													<i className="ri-upload-cloud-2-line ri-lg"></i>Upload breeder card
+												</label>
 											</Form.Item>
 										</>
 									)}
@@ -346,7 +490,7 @@ const Registerpage: React.FC = () => {
 								name="normal_login"
 								layout="vertical"
 								className="registerForm"
-								initialValues={{ remember: true, ...breederData  }}
+								initialValues={{ remember: true, ...breederData }}
 								onFinish={onUpdateBreeder}
 								size="large"
 							>
@@ -355,7 +499,11 @@ const Registerpage: React.FC = () => {
 										<Upload {...breederUploadPropsCoverPhoto}>
 											<Button className={`breederCoverPhoto ${avatarImageCover ? 'hasImg' : ''}`}>
 												{avatarImageCover && avatarImageCover.url ? (
-													<img className='breederCoverPhotoImg' src={avatarImageCover.url || registerImg} alt="breeder cover" />
+													<img
+														className="breederCoverPhotoImg"
+														src={avatarImageCover.url || registerImg}
+														alt="breeder cover"
+													/>
 												) : (
 													<i className="ri-image-line ri-5x"></i>
 												)}
