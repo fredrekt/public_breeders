@@ -109,7 +109,7 @@ const ForgotPassword: React.FC = () => {
 									]}
 									name="email"
 								>
-									<Input type="email" placeholder="Emaill Address" />
+									<Input type="email" placeholder="Email Address" />
 								</Form.Item>
 							)}
 							{id ? (

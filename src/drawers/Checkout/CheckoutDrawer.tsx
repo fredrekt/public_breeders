@@ -96,7 +96,7 @@ const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({ opened, onCancel, onFor
 							onChange={onChangeContactFields}
 							size="large"
 							type="email"
-							placeholder="Emaill Address"
+							placeholder="Email Address"
 						/>
 						<Input
 							name="phoneNumber"

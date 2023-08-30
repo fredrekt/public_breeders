@@ -51,7 +51,7 @@ const Loginpage: React.FC = () => {
 							size="large"
 						>
 							<Form.Item name="identifier">
-								<Input placeholder="Emaill Address" />
+								<Input placeholder="Email Address" />
 							</Form.Item>
 							<Form.Item name="password">
 								<Input.Password type="password" placeholder="Password" />

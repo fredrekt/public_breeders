@@ -411,7 +411,7 @@ const Registerpage: React.FC = () => {
 										name="username"
 										rules={[{ required: true, message: 'Please enter your Username!' }]}
 									>
-										<Input type="email" placeholder="Emaill Address" />
+										<Input type="email" placeholder="Email Address" />
 									</Form.Item>
 
 									<Form.Item

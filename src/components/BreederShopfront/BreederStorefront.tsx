@@ -168,7 +168,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							prefix={<i className="ri-search-line ri-lg primary-color-icon"></i>}
 							size="large"
 							value={searchValue}
-							placeholder="Find breeders here"
+							placeholder="Find breeds here"
 							onChange={(e: any) => setSearchValue(e.target.value)}
 						/>
 					</Col>
