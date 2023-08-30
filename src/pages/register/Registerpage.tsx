@@ -55,6 +55,10 @@ const Registerpage: React.FC = () => {
 
 	const onRegister = async (values: any) => {
 		if (!values) return;
+		if (!accountType && !breederCardPhoto) {
+			message.error(`Breeder card upload is required.`);
+			return;
+		}
 		try {
 			setIsLoading(true);
 			let registerData: Api.User.Req.Create = {
