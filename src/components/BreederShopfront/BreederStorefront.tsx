@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BreederStorefront.scss';
 import BreederCard from '../BreederCard/BreederCard';
-import { Button, Col, Empty, Input, Row, Select, Typography, message } from 'antd';
+import { Col, Empty, Input, Row, Select, message } from 'antd';
 import BreederCategoryCard from '../BreederCategoryCard/BreederCategoryCard';
 import AdvancedBreederStorefrontFilterDrawer from '../../drawers/AdvancedBreederStorefrontFilter/AdvancedBreederStorefrontFilterDrawer';
 import axios from 'axios';
@@ -162,7 +162,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 					{renderCategories()}
 				</Row>
 				<Row className="breederStorefrontFilters" gutter={[24, 24]}>
-					<Col xs={getToken() ? 20 : 24} sm={getToken() ? 20 : 24} lg={!getToken() ? 18 : 20} xl={!getToken() ? 18 : 20} xxl={!getToken() ? 18 : 20}>
+					<Col xs={24} sm={24} lg={!getToken() ? 18 : 20} xl={!getToken() ? 18 : 20} xxl={!getToken() ? 18 : 20}>
 						<Input
 							className='searchFilter'
 							prefix={<i className="ri-search-line ri-lg primary-color-icon"></i>}
@@ -172,7 +172,7 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							onChange={(e: any) => setSearchValue(e.target.value)}
 						/>
 					</Col>
-					<Col xs={0} sm={0} lg={!getToken() ? 6 : 2} xl={!getToken() ? 6 : 2} xxl={!getToken() ? 6 : 2}>
+					<Col xs={24} sm={24} lg={!getToken() ? 6 : 4} xl={!getToken() ? 6 : 4} xxl={!getToken() ? 6 : 4}>
 						<Select
 							placeholder={getToken() ? "A-Z" : 'Filter'}
 							className="sortBySelect"
@@ -186,12 +186,12 @@ const BreederStorefront: React.FC<BreederStorefrontProps> = ({ breederId }) => {
 							<Select.Option value="createdAsc">Oldest</Select.Option>
 						</Select>
 					</Col>
-					<Col xs={getToken() ? 4 : 24} sm={getToken() ? 4 : 24} className="sortFilterCta" lg={!getToken() ? 0 : 2} xl={!getToken() ? 0 : 2} xxl={!getToken() ? 0 : 2}>
+					{/* <Col xs={getToken() ? 4 : 24} sm={getToken() ? 4 : 24} className="sortFilterCta" lg={!getToken() ? 0 : 2} xl={!getToken() ? 0 : 2} xxl={!getToken() ? 0 : 2}>
 						<Button onClick={() => setOpenAdvancedFiter(true)} size="large">
 							<i className="ri-equalizer-line ri-lg primary-color-icon"></i>
 							<Typography.Text className='sortFilterCtaTxt'>Filter</Typography.Text>
 						</Button>
-					</Col>
+					</Col> */}
 				</Row>
 				<Row justify={!Array.isArray(listOfBreeders) || !listOfBreeders.length ? 'center' : 'start'} gutter={[24, 24]}>{renderListOfBreeders()}</Row>
 			</div>
